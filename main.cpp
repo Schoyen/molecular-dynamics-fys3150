@@ -27,7 +27,9 @@ int main()
     system.createFCCLattice(5, UnitConverter::lengthFromAngstroms(5.26));
     system.setPotential(new LennardJones(1.0, 1.0)); // You must insert correct parameters here
     system.setIntegrator(new EulerCromer());
-    system.removeMomentum();
+    // Is the removeMomentum() function supposed to be here?
+    // There are no atoms nor any velocity.
+    //system.removeMomentum();
 
     for(int n=0; n<100; n++) {
         // Add one example atom. You'll have to create many such atoms in the createFCCLattice function above.
@@ -36,7 +38,7 @@ int main()
         atom->position.randomUniform(0, system.systemSize().x());
         system.atoms().push_back(atom); // Add it to the list of atoms
     }
-
+    system.removeMomentum();
     StatisticsSampler *statisticsSampler = new StatisticsSampler(); //
 
     IO *movie = new IO(); // To write the state to file
