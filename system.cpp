@@ -1,6 +1,7 @@
 #include "system.h"
 #include "integrators/integrator.h"
 #include "potentials/potential.h"
+#include "unitconverter.h"
 
 System::System() :
     m_potential(0),
@@ -20,6 +21,32 @@ System::~System()
 
 void System::applyPeriodicBoundaryConditions() {
     // Read here: http://en.wikipedia.org/wiki/Periodic_boundary_conditions#Practical_implementation:_continuity_and_the_minimum_image_convention
+    double x, y, z;
+    double lengthOfCube = 5;
+    for (int n = 0; n < 100; n++) {
+        x = m_atoms[n]->position.x();
+        y = m_atoms[n]->position.y();
+        z = m_atoms[n]->position.z();
+        if (x < -lengthOfCube) {
+            x = m_atoms[n]->position.x() + lengthOfCube;
+        }
+        else if (x >= lengthOfCube) {
+            x = m_atoms[n]->position.x() - lengthOfCube;
+        }
+        if (y < -lengthOfCube) {
+            y = m_atoms[n]->position.y() + lengthOfCube;
+        }
+        else if (y >= lengthOfCube) {
+            y = m_atoms[n]->position.y() - lengthOfCube;
+        }
+        if (z < -lengthOfCube) {
+            z = m_atoms[n]->position.z() + lengthOfCube;
+        }
+        else if (z >= lengthOfCube) {
+            z = m_atoms[n]->position.z() - lengthOfCube;
+        }
+        m_atoms[n]->position = vec3(x, y, z);
+    }
 }
 
 void System::removeMomentum() {

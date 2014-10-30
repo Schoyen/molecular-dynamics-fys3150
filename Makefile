@@ -48,4 +48,4 @@ build/MAINCPP: main.cpp $(DEPS) $(COMP) | build
 	$(CXX) $(CPPFLAGS) $(COMP) $< -o $@
 
 clean:
-	$(RM) build
+	$(RM) build movie.xyz
