@@ -22,28 +22,27 @@ System::~System()
 void System::applyPeriodicBoundaryConditions() {
     // Read here: http://en.wikipedia.org/wiki/Periodic_boundary_conditions#Practical_implementation:_continuity_and_the_minimum_image_convention
     double x, y, z;
-    double lengthOfCube = 5;
     for (int n = 0; n < 100; n++) {
         x = m_atoms[n]->position.x();
         y = m_atoms[n]->position.y();
         z = m_atoms[n]->position.z();
-        if (x < -lengthOfCube) {
-            x = m_atoms[n]->position.x() + lengthOfCube;
+        if (x < -m_systemSize.x() * 0.5) {
+            x = m_atoms[n]->position.x() + (m_systemSize.x() * 0.5);
         }
-        else if (x >= lengthOfCube) {
-            x = m_atoms[n]->position.x() - lengthOfCube;
+        else if (x >= m_systemSize.x() * 0.5) {
+            x = m_atoms[n]->position.x() - (m_systemSize.x() * 0.5);
         }
-        if (y < -lengthOfCube) {
-            y = m_atoms[n]->position.y() + lengthOfCube;
+        if (y < -m_systemSize.y() * 0.5) {
+            y = m_atoms[n]->position.y() + (m_systemSize.y() * 0.5);
         }
-        else if (y >= lengthOfCube) {
-            y = m_atoms[n]->position.y() - lengthOfCube;
+        else if (y >= m_systemSize.y() * 0.5) {
+            y = m_atoms[n]->position.y() - (m_systemSize.y() * 0.5);
         }
-        if (z < -lengthOfCube) {
-            z = m_atoms[n]->position.z() + lengthOfCube;
+        if (z < -m_systemSize.z() * 0.5) {
+            z = m_atoms[n]->position.z() + (m_systemSize.z() * 0.5);
         }
-        else if (z >= lengthOfCube) {
-            z = m_atoms[n]->position.z() - lengthOfCube;
+        else if (z >= m_systemSize.z() * 0.5) {
+            z = m_atoms[n]->position.z() - (m_systemSize.z() * 0.5);
         }
         m_atoms[n]->position = vec3(x, y, z);
     }
@@ -51,6 +50,7 @@ void System::applyPeriodicBoundaryConditions() {
 
 void System::removeMomentum() {
     // Initially, when the atoms are given random velocities, there is a non-zero net momentum. We don't want any drift in the system, so we need to remove it.
+
 }
 
 void System::resetForcesOnAllAtoms() {
