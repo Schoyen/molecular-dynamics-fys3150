@@ -1,13 +1,13 @@
 #include <iostream>
-#include <math/random.h>
-
-#include <potentials/lennardjones.h>
-#include <integrators/eulercromer.h>
-#include <system.h>
-#include <statisticssampler.h>
-#include <atom.h>
-#include <io.h>
-#include <unitconverter.h>
+#include "math/random.h"
+#include "potentials/potential.h"
+#include "potentials/lennardjones.h"
+#include "integrators/eulercromer.h"
+#include "system.h"
+#include "statisticssampler.h"
+#include "atom.h"
+#include "io.h"
+#include "unitconverter.h"
 
 using namespace std;
 

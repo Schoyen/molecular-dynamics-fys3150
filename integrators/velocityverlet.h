@@ -1,5 +1,5 @@
 #pragma once
-#include <integrators/integrator.h>
+#include "integrator.h"
 
 class VelocityVerlet : public Integrator
 {

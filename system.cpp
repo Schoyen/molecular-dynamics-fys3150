@@ -1,6 +1,6 @@
-#include <system.h>
-#include <integrators/integrator.h>
-#include <potentials/potential.h>
+#include "system.h"
+#include "integrators/integrator.h"
+#include "potentials/potential.h"
 
 System::System() :
     m_potential(0),

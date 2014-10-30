@@ -1,4 +1,4 @@
-#include <statisticssampler.h>
+#include "statisticssampler.h"
 
 StatisticsSampler::StatisticsSampler()
 {

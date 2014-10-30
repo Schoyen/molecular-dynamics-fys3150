@@ -1,5 +1,5 @@
 #pragma once
-#include <math/vec3.h>
+#include "math/vec3.h"
 using CompPhys::vec3;
 
 class Atom

@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
-#include <atom.h>
-#include <math/vec3.h>
+#include "atom.h"
+#include "math/vec3.h"
 
 class Potential; class Integrator;
 using std::vector;

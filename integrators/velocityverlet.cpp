@@ -1,5 +1,5 @@
-#include <integrators/velocityverlet.h>
-#include <system.h>
+#include "velocityverlet.h"
+#include "../system.h"
 
 VelocityVerlet::VelocityVerlet() :
     m_firstStep(true) // This will set the variable m_firstStep to false when the object is created

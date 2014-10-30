@@ -1,6 +1,6 @@
 #include <cmath>
-#include <atom.h>
-#include <math/random.h>
+#include "atom.h"
+#include "math/random.h"
 
 Atom::Atom(double mass) :
     m_mass(mass)

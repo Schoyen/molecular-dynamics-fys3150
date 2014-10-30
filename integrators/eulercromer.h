@@ -1,5 +1,5 @@
 #pragma once
-#include <integrators/integrator.h>
+#include "integrator.h"
 
 class System;
 class EulerCromer : public Integrator

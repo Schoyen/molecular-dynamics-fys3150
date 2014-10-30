@@ -1,5 +1,5 @@
 #pragma once
-#include <potentials/potential.h>
+#include "potential.h"
 
 class LennardJones : public Potential
 {
