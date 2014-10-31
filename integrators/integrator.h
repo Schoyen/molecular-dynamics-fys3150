@@ -1,6 +1,6 @@
 #pragma once
 
-enum Integrators {VelocityVerlet = 0};
+//enum Integrators {VelocityVerlet = 0};
 
 class System;
 class Integrator
