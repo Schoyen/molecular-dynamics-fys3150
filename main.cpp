@@ -43,11 +43,12 @@ int main()
     IO *movie = new IO(); // To write the state to file
     movie->open("movie.xyz");
 
-    for(int timestep=0; timestep<1000; timestep++) {
+    for(int timestep=0; timestep<100; timestep++) {
         system.step(dt);
         statisticsSampler->sample(&system);
 
         movie->saveState(&system);
+        std::cout << timestep << std::endl;
     }
 
     movie->close();

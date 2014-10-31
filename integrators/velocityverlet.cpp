@@ -51,4 +51,5 @@ void VelocityVerlet::integrate(System *system, double dt)
     system->applyPeriodicBoundaryConditions();
     system->calculateForces();
     halfKick(system, dt);
+    system->resetForcesOnAllAtoms();
 }

@@ -22,6 +22,8 @@ System::~System()
 /*
  * The atoms are not properly contained inside the box. Is this correct?
  * Do I need to convert to another system?
+ *
+ * Remember to add distances.
  */
 void System::applyPeriodicBoundaryConditions() {
     // Read here: http://en.wikipedia.org/wiki/Periodic_boundary_conditions#Practical_implementation:_continuity_and_the_minimum_image_convention
@@ -82,7 +84,9 @@ void System::removeMomentum() {
 }
 
 void System::resetForcesOnAllAtoms() {
-
+    for (int n = 0; n < (int) m_atoms.size(); n++) {
+        m_atoms[n]->resetForce();
+    }
 }
 
 /*
