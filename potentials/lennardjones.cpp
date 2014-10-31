@@ -29,6 +29,7 @@ void LennardJones::calculateForces(System *system)
             forceZ = 4*m_epsilon*distance.z()*((12*pow(m_sigma, 12))/pow(distanceBetweenAtoms, 14) - (6*pow(m_sigma, 6))/pow(distanceBetweenAtoms, 8));
             tempForce = vec3(forceX, forceY, forceZ);
             system->atoms()[i]->force.add(tempForce);
+            tempForce = vec3(-forceX, -forceY, -forceZ);
             system->atoms()[j]->force.add(tempForce);
         }
     }
