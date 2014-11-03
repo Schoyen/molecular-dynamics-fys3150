@@ -24,8 +24,10 @@ int main()
 
     System system;
     system.setSystemSize(UnitConverter::lengthFromAngstroms(vec3(10, 10, 10)));
-    system.createFCCLattice(5, UnitConverter::lengthFromAngstroms(5.26));
-    system.setPotential(new LennardJones(1.0, 1.0)); // You must insert correct parameters here
+    // For some reason this isn't working for 5 FCCLattice.
+    system.createFCCLattice(2, UnitConverter::lengthFromAngstroms(5.26));
+    // These ones are not working.
+    system.setPotential(new LennardJones(UnitConverter::lengthFromAngstroms(3.405), UnitConverter::temperatureToSI(100) * UnitConverter::kb)); // You must insert correct parameters here
     system.setIntegrator(new VelocityVerlet());
     system.removeMomentum();
 
@@ -43,7 +45,7 @@ int main()
     IO *movie = new IO(); // To write the state to file
     movie->open("movie.xyz");
 
-    for(int timestep=0; timestep<100; timestep++) {
+    for(int timestep=0; timestep<1000; timestep++) {
         system.step(dt);
         statisticsSampler->sample(&system);
 

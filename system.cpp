@@ -35,24 +35,12 @@ void System::applyPeriodicBoundaryConditions() {
         x = m_atoms[n]->position.x();
         y = m_atoms[n]->position.y();
         z = m_atoms[n]->position.z();
-        if (x < -xlen * 0.5) {
-            x += xlen;
-        }
-        else if (x >= xlen * 0.5) {
-            x -= xlen;
-        }
-        if (y < -ylen * 0.5) {
-            y += ylen;
-        }
-        else if (y >= ylen * 0.5) {
-            y -= ylen;
-        }
-        if (z < -zlen * 0.5) {
-            z += zlen;
-        }
-        else if (z >= zlen * 0.5) {
-            z -= zlen;
-        }
+        if (x < -xlen * 0.5) x += xlen;
+        else if (x >= xlen * 0.5) x -= xlen;
+        if (y < -ylen * 0.5) y += ylen;
+        else if (y >= ylen * 0.5) y -= ylen;
+        if (z < -zlen * 0.5) z += zlen;
+        else if (z >= zlen * 0.5) z -= zlen;
         m_atoms[n]->position = vec3(x, y, z);
     }
 }
@@ -94,14 +82,13 @@ void System::resetForcesOnAllAtoms() {
  */
 void System::createFCCLattice(int numberOfUnitCellsEachDimension, double latticeConstant) {
     int totalNumberOfUnitCells = numberOfUnitCellsEachDimension * numberOfUnitCellsEachDimension * numberOfUnitCellsEachDimension;
-    //int numberOfAtomsPerUnitCell = 4; // For Argon.
     vec3 r1 = vec3(0.0, 0.0, 0.0);
     vec3 r2 = vec3(latticeConstant/2.0, latticeConstant/2.0, 0.0);
     vec3 r3 = vec3(0, latticeConstant/2.0, latticeConstant/2.0);
     vec3 r4 = vec3(latticeConstant/2.0, 0.0, latticeConstant/2.0);
-    //vec3 UNIT = vec3(latticeConstant, latticeConstant, latticeConstant);
     vector<vec3> R;
     vec3 temp;
+
     // Creating positions for the center of each unit cell.
     for (int i = 0; i < numberOfUnitCellsEachDimension; i++) {
         for (int j = 0; j < numberOfUnitCellsEachDimension; j++) {
