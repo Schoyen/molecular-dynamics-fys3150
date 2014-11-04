@@ -21,7 +21,7 @@ public:
     System();
     ~System();
     void resetForcesOnAllAtoms();
-    void createFCCLattice(int numberOfUnitCellsEachDimension, double latticeConstant);
+    void createFCCLattice(int numberOfUnitCellsEachDimension, double latticeConstant, double iT);
     void applyPeriodicBoundaryConditions();
     void removeMomentum();
     void calculateForces();

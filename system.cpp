@@ -78,9 +78,9 @@ void System::resetForcesOnAllAtoms() {
 }
 
 /*
- * Is this correct?
+ * Is this correct? Nope.
  */
-void System::createFCCLattice(int numberOfUnitCellsEachDimension, double latticeConstant) {
+void System::createFCCLattice(int numberOfUnitCellsEachDimension, double latticeConstant, double iT) {
     int totalNumberOfUnitCells = numberOfUnitCellsEachDimension * numberOfUnitCellsEachDimension * numberOfUnitCellsEachDimension;
     vec3 r1 = vec3(0.0, 0.0, 0.0);
     vec3 r2 = vec3(latticeConstant/2.0, latticeConstant/2.0, 0.0);
@@ -88,36 +88,55 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
     vec3 r4 = vec3(latticeConstant/2.0, 0.0, latticeConstant/2.0);
     vector<vec3> R;
     vec3 temp;
+    double initialTemperature = iT; // Dimensionless temperature.
 
-    // Creating positions for the center of each unit cell.
-    for (int i = 0; i < numberOfUnitCellsEachDimension; i++) {
-        for (int j = 0; j < numberOfUnitCellsEachDimension; j++) {
-            for (int k = 0; k < numberOfUnitCellsEachDimension; k++) {
-                temp = vec3(i*latticeConstant, j*latticeConstant, k*latticeConstant);
-                R.push_back(temp);
+    // Creating the center of each unit cell.
+    if (numberOfUnitCellsEachDimension % 2 == 0) {
+        int nOUCEDHALF = numberOfUnitCellsEachDimension / 2;
+        for (int i = -nOUCEDHALF; i < nOUCEDHALF; i++) {
+            for (int j = -nOUCEDHALF; j < nOUCEDHALF; j++) {
+                for (int k = -nOUCEDHALF; k < nOUCEDHALF; k++) {
+                    temp = vec3(i * latticeConstant, j * latticeConstant, k * latticeConstant);
+                    R.push_back(temp);
+                }
+            }
+        }
+    } else {
+        int nOUCEDHALF = (numberOfUnitCellsEachDimension - 1) / 2;
+        for (int i = -nOUCEDHALF; i <= nOUCEDHALF; i++) {
+            for (int j = -nOUCEDHALF; j <= nOUCEDHALF; j++) {
+                for (int k = -nOUCEDHALF; k <= nOUCEDHALF; k++) {
+                    temp = vec3(i * latticeConstant, j * latticeConstant, k * latticeConstant);
+                    R.push_back(temp);
+                }
             }
         }
     }
 
     for (int n = 0; n < totalNumberOfUnitCells; n++) {
+        std::cout << "\n" << R[n] << std::endl;
         Atom *atom1 = new Atom(UnitConverter::massFromSI(6.63352088e-26));
-        atom1->resetVelocityMaxwellian(UnitConverter::temperatureFromSI(300));
+        atom1->resetVelocityMaxwellian(initialTemperature);
         atom1->position = r1 + R[n];
+        std::cout << atom1->position << std::endl;
         m_atoms.push_back(atom1);
 
         Atom *atom2 = new Atom(UnitConverter::massFromSI(6.63352088e-26));
-        atom2->resetVelocityMaxwellian(UnitConverter::temperatureFromSI(300));
+        atom2->resetVelocityMaxwellian(initialTemperature);
         atom2->position = r2 + R[n];
+        std::cout << atom2->position << std::endl;
         m_atoms.push_back(atom2);
 
         Atom *atom3 = new Atom(UnitConverter::massFromSI(6.63352088e-26));
-        atom3->resetVelocityMaxwellian(UnitConverter::temperatureFromSI(300));
+        atom3->resetVelocityMaxwellian(initialTemperature);
         atom3->position = r3 + R[n];
+        std::cout << atom3->position << std::endl;
         m_atoms.push_back(atom3);
 
         Atom *atom4 = new Atom(UnitConverter::massFromSI(6.63352088e-26));
-        atom4->resetVelocityMaxwellian(UnitConverter::temperatureFromSI(300));
+        atom4->resetVelocityMaxwellian(initialTemperature);
         atom4->position = r4 + R[n];
+        std::cout << atom4->position << std::endl;
         m_atoms.push_back(atom4);
     }
 }

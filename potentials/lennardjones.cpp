@@ -1,5 +1,7 @@
 #include "lennardjones.h"
+#include "../unitconverter.h"
 #include <cmath>
+#include <fstream>
 
 LennardJones::LennardJones(double sigma, double epsilon) :
     m_sigma(sigma),
@@ -15,7 +17,10 @@ LennardJones::LennardJones(double sigma, double epsilon) :
  */
 void LennardJones::calculateForces(System *system)
 {
+    /*
     m_potentialEnergy = 0; // Remember to compute this in the loop
+    m_kineticEnergy = 0;
+    double temperature = 0;
     double distanceBetweenAtoms = 0;
     double divisionOfSigmaAndDistance = 0;
     vec3 tempForce = vec3(0.0, 0.0, 0.0); // N3L
@@ -49,5 +54,11 @@ void LennardJones::calculateForces(System *system)
             tempForce = tempForce*(-1);
             system->atoms()[j]->force.add(tempForce);
         }
+        m_kineticEnergy += 0.5*system->atoms()[i]->mass()*system->atoms()[i]->velocity.lengthSquared();
     }
+    double temp_kineticEnergy = UnitConverter::energyToSI(m_kineticEnergy);
+    temperature = (2.0/3.0) * (m_kineticEnergy/((double) system->atoms().size() * 1));
+    temperature = UnitConverter::temperatureToSI(temperature);
+    std::cout << "Ek = " << temp_kineticEnergy << " J, \t T = " << temperature << " K" << std::endl;
+    */
 }

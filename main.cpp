@@ -25,9 +25,8 @@ int main()
     System system;
     system.setSystemSize(UnitConverter::lengthFromAngstroms(vec3(10, 10, 10)));
     // For some reason this isn't working for 5 FCCLattice.
-    system.createFCCLattice(2, UnitConverter::lengthFromAngstroms(5.26));
-    // These ones are not working.
-    system.setPotential(new LennardJones(UnitConverter::lengthFromAngstroms(3.405), UnitConverter::temperatureToSI(100) * UnitConverter::kb)); // You must insert correct parameters here
+    system.createFCCLattice(3, UnitConverter::lengthFromAngstroms(5.26), UnitConverter::temperatureFromSI(100.0));
+    system.setPotential(new LennardJones(3.405, 1.0)); // You must insert correct parameters here
     system.setIntegrator(new VelocityVerlet());
     system.removeMomentum();
 
@@ -50,7 +49,6 @@ int main()
         statisticsSampler->sample(&system);
 
         movie->saveState(&system);
-        std::cout << timestep << std::endl;
     }
 
     movie->close();

@@ -7,6 +7,7 @@ class Potential
 {
 protected:
     double m_potentialEnergy;
+    double m_kineticEnergy; // Added for use in the calculateForces-function.
 public:
     Potential();
     virtual ~Potential() {}
