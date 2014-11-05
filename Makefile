@@ -1,9 +1,9 @@
 CXX = g++
 RM = rm -r
 CPPFLAGS = -Wno-write-strings -g -O3 -std=c++11 -pedantic -Wall
-DEPS = atom.h io.h statisticssampler.h system.h unitconverter.h potentials/lennardjones.h potentials/potential.h math/random.h math/vec3.h integrators/eulercromer.h integrators/integrator.h integrators/velocityverlet.h
+DEPS = atom.h io.h statisticssampler.h system.h unitconverter.h potentials/lennardjones.h potentials/potential.h math/random.h math/vec3.h integrators/eulercromer.h integrators/integrator.h integrators/velocityverlet.h celllist.h
 TESTFLAGS = -lgtest
-COMP = build/atom.o build/io.o build/statisticssampler.o build/system.o build/unitconverter.o build/POTENTIALS/lennardjones.o build/POTENTIALS/potential.o build/MATH/random.o build/MATH/vec3.o build/INTEGRATORS/eulercromer.o build/INTEGRATORS/integrator.o build/INTEGRATORS/velocityverlet.o
+COMP = build/atom.o build/io.o build/statisticssampler.o build/system.o build/unitconverter.o build/POTENTIALS/lennardjones.o build/POTENTIALS/potential.o build/MATH/random.o build/MATH/vec3.o build/INTEGRATORS/eulercromer.o build/INTEGRATORS/integrator.o build/INTEGRATORS/velocityverlet.o build/celllist.o
 
 build:
 	mkdir -p build/MATH build/INTEGRATORS build/POTENTIALS
@@ -21,6 +21,9 @@ build/system.o: system.cpp $(DEPS)
 	$(CXX) $(CPPFLAGS) $< -c -o $@
 
 build/unitconverter.o: unitconverter.cpp $(DEPS)
+	$(CXX) $(CPPFLAGS) $< -c -o $@
+
+build/celllist.o: celllist.cpp $(DEPS)
 	$(CXX) $(CPPFLAGS) $< -c -o $@
 
 build/POTENTIALS/lennardjones.o: potentials/lennardjones.cpp $(DEPS)

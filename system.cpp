@@ -19,12 +19,6 @@ System::~System()
     m_atoms.clear();
 }
 
-/*
- * The atoms are not properly contained inside the box. Is this correct?
- * Do I need to convert to another system?
- *
- * Remember to add distances.
- */
 void System::applyPeriodicBoundaryConditions() {
     // Read here: http://en.wikipedia.org/wiki/Periodic_boundary_conditions#Practical_implementation:_continuity_and_the_minimum_image_convention
     double x, y, z;
@@ -47,7 +41,6 @@ void System::applyPeriodicBoundaryConditions() {
 
 /*
  * Is this enough?
- * Do I need to convert to another system?
  */
 void System::removeMomentum() {
     // Initially, when the atoms are given random velocities, there is a non-zero net momentum. We don't want any drift in the system, so we need to remove it.
@@ -77,9 +70,6 @@ void System::resetForcesOnAllAtoms() {
     }
 }
 
-/*
- * Is this correct? Yuuup.
- */
 void System::createFCCLattice(int numberOfUnitCellsEachDimension, double latticeConstant, double iT) {
     int totalNumberOfUnitCells = numberOfUnitCellsEachDimension * numberOfUnitCellsEachDimension * numberOfUnitCellsEachDimension;
     vec3 r1 = vec3(0.0, 0.0, 0.0);

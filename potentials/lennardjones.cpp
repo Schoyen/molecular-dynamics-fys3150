@@ -10,10 +10,6 @@ LennardJones::LennardJones(double sigma, double epsilon) :
 
 }
 
-/*
- * This does not seem to work.
- * The temperature is rising massively in the beginning of the program.
- */
 void LennardJones::calculateForces(System *system)
 {
     m_potentialEnergy = 0; // Remember to compute this in the loop
