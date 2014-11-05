@@ -78,7 +78,7 @@ void System::resetForcesOnAllAtoms() {
 }
 
 /*
- * Is this correct? Nope.
+ * Is this correct? Yuuup.
  */
 void System::createFCCLattice(int numberOfUnitCellsEachDimension, double latticeConstant, double iT) {
     int totalNumberOfUnitCells = numberOfUnitCellsEachDimension * numberOfUnitCellsEachDimension * numberOfUnitCellsEachDimension;
@@ -114,29 +114,24 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
     }
 
     for (int n = 0; n < totalNumberOfUnitCells; n++) {
-        std::cout << "\n" << R[n] << std::endl;
         Atom *atom1 = new Atom(UnitConverter::massFromSI(6.63352088e-26));
         atom1->resetVelocityMaxwellian(initialTemperature);
         atom1->position = r1 + R[n];
-        std::cout << atom1->position << std::endl;
         m_atoms.push_back(atom1);
 
         Atom *atom2 = new Atom(UnitConverter::massFromSI(6.63352088e-26));
         atom2->resetVelocityMaxwellian(initialTemperature);
         atom2->position = r2 + R[n];
-        std::cout << atom2->position << std::endl;
         m_atoms.push_back(atom2);
 
         Atom *atom3 = new Atom(UnitConverter::massFromSI(6.63352088e-26));
         atom3->resetVelocityMaxwellian(initialTemperature);
         atom3->position = r3 + R[n];
-        std::cout << atom3->position << std::endl;
         m_atoms.push_back(atom3);
 
         Atom *atom4 = new Atom(UnitConverter::massFromSI(6.63352088e-26));
         atom4->resetVelocityMaxwellian(initialTemperature);
         atom4->position = r4 + R[n];
-        std::cout << atom4->position << std::endl;
         m_atoms.push_back(atom4);
     }
 }

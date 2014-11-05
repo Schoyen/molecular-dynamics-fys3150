@@ -12,12 +12,10 @@ LennardJones::LennardJones(double sigma, double epsilon) :
 
 /*
  * This does not seem to work.
- * When we try for 5 unit cells in each dimension we achieve nan.
- * Is that a fault of overflow or a faulty force calculation?
+ * The temperature is rising massively in the beginning of the program.
  */
 void LennardJones::calculateForces(System *system)
 {
-    /*
     m_potentialEnergy = 0; // Remember to compute this in the loop
     m_kineticEnergy = 0;
     double temperature = 0;
@@ -37,7 +35,7 @@ void LennardJones::calculateForces(System *system)
             y = distance.y();
             z = distance.z();
 
-            // Periodic boundary conditions with the minimum image criterion.
+            // Minimum image criterion.
             if (x > xlen * 0.5) x = x - xlen;
             else if (x < -xlen * 0.5) x = x + xlen;
             if (y > ylen * 0.5) y = y - ylen;
@@ -47,18 +45,17 @@ void LennardJones::calculateForces(System *system)
             distance = vec3(x, y, z);
             distanceBetweenAtoms = distance.length();
             divisionOfSigmaAndDistance = m_sigma/distanceBetweenAtoms;
-            m_potentialEnergy += 4*m_epsilon * (pow(distanceBetweenAtoms, 12) - pow(divisionOfSigmaAndDistance, 6));
-            expressionOfForce = 4*m_epsilon*(12*pow(m_sigma, 12)/pow(distanceBetweenAtoms, 14) - 6*pow(m_sigma, 6)/pow(distanceBetweenAtoms, 8));
+            m_potentialEnergy += 4 * m_epsilon * (pow(distanceBetweenAtoms, 12) - pow(divisionOfSigmaAndDistance, 6));
+            expressionOfForce = 4 * m_epsilon * (12 * pow(m_sigma, 12)/pow(distanceBetweenAtoms, 14) - 6 * pow(m_sigma, 6)/pow(distanceBetweenAtoms, 8));
             tempForce = distance*expressionOfForce;
             system->atoms()[i]->force.add(tempForce);
-            tempForce = tempForce*(-1);
+            tempForce = tempForce * (-1);
             system->atoms()[j]->force.add(tempForce);
         }
-        m_kineticEnergy += 0.5*system->atoms()[i]->mass()*system->atoms()[i]->velocity.lengthSquared();
+        m_kineticEnergy += 0.5 * system->atoms()[i]->mass() * system->atoms()[i]->velocity.lengthSquared();
     }
     double temp_kineticEnergy = UnitConverter::energyToSI(m_kineticEnergy);
     temperature = (2.0/3.0) * (m_kineticEnergy/((double) system->atoms().size() * 1));
     temperature = UnitConverter::temperatureToSI(temperature);
     std::cout << "Ek = " << temp_kineticEnergy << " J, \t T = " << temperature << " K" << std::endl;
-    */
 }

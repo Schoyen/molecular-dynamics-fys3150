@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include "math/random.h"
 #include "potentials/potential.h"
 #include "potentials/lennardjones.h"
@@ -8,8 +9,10 @@
 #include "atom.h"
 #include "io.h"
 #include "unitconverter.h"
+#include <chrono>
 
 using namespace std;
+using namespace chrono;
 
 int main()
 {
@@ -22,10 +25,13 @@ int main()
     cout << "One unit of temperature is " << UnitConverter::temperatureToSI(1.0) << " K" << endl;
     cout << "One unit of pressure is " << UnitConverter::pressureToSI(1.0) << " Pa" << endl;
 
+    auto start = high_resolution_clock::now();
     System system;
-    system.setSystemSize(UnitConverter::lengthFromAngstroms(vec3(10, 10, 10)));
-    // For some reason this isn't working for 5 FCCLattice.
-    system.createFCCLattice(3, UnitConverter::lengthFromAngstroms(5.26), UnitConverter::temperatureFromSI(100.0));
+    // For more than 2 x 2 x 2 FCCLattice we need a bigger system size.
+    system.setSystemSize(UnitConverter::lengthFromAngstroms(vec3(30, 30, 30)));
+    int numberOfFCCLattices = 5;
+    int numberOfAtoms = 4 * numberOfFCCLattices * numberOfFCCLattices * numberOfFCCLattices;
+    system.createFCCLattice(numberOfFCCLattices, UnitConverter::lengthFromAngstroms(5.26), UnitConverter::temperatureFromSI(3000.0));
     system.setPotential(new LennardJones(3.405, 1.0)); // You must insert correct parameters here
     system.setIntegrator(new VelocityVerlet());
     system.removeMomentum();
@@ -50,6 +56,13 @@ int main()
 
         movie->saveState(&system);
     }
+    auto finish = high_resolution_clock::now();
+    string filename = "build/calculationTime" + to_string(numberOfAtoms) + ".txt";
+    ofstream file(filename);
+    if (file.is_open()) {
+        file << duration_cast<nanoseconds>(finish - start).count()*(1.0e-9) << " s";
+    } else cout << "Unable to write to file." << endl;
+
 
     movie->close();
 
