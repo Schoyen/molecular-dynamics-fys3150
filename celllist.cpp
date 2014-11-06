@@ -11,7 +11,6 @@ CellList::~CellList() {
 
 // Implement the method.
 void setEmptyList() {
-    m_atomsClose.clear();
 }
 
 // Implement the method.

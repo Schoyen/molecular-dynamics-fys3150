@@ -39,9 +39,6 @@ void System::applyPeriodicBoundaryConditions() {
     }
 }
 
-/*
- * Is this enough?
- */
 void System::removeMomentum() {
     // Initially, when the atoms are given random velocities, there is a non-zero net momentum. We don't want any drift in the system, so we need to remove it.
     

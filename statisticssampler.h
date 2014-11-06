@@ -1,6 +1,9 @@
 #pragma once
 #include "system.h"
 
+/*
+ * Add samples.
+ */
 class StatisticsSampler
 {
 public:

@@ -12,29 +12,53 @@ vec3::vec3(double x, double y, double z)
     set(x,y,z);
 }
 
-bool vec3::operator==(vec3 &rhs) {
+bool vec3::operator==(vec3 rhs) {
     return(m_vec[0] == rhs.x() && m_vec[1] == rhs.y() && m_vec[2] == rhs.z());
 }
 
-vec3 vec3::operator+(vec3 &rhs) {
+vec3 vec3::operator+(vec3 rhs) {
     return vec3( m_vec[0] + rhs.x(),
                  m_vec[1] + rhs.y(),
                  m_vec[2] + rhs.z());
 }
 
-vec3 vec3::operator-(vec3 &rhs) {
+vec3 vec3::operator+=(vec3 rhs) {
+    return vec3( m_vec[0] + rhs.x(),
+                 m_vec[1] + rhs.y(),
+                 m_vec[2] + rhs.z());
+}
+
+vec3 vec3::operator-(vec3 rhs) {
     return vec3( m_vec[0] - rhs.x(),
                  m_vec[1] - rhs.y(),
                  m_vec[2] - rhs.z());
 }
 
-vec3 vec3::operator*(vec3 &rhs) {
+vec3 vec3::operator-=(vec3 rhs) {
+    return vec3( m_vec[0] - rhs.x(),
+                 m_vec[1] - rhs.y(),
+                 m_vec[2] - rhs.z());
+}
+
+vec3 vec3::operator*(vec3 rhs) {
     return vec3( m_vec[0] * rhs.x(),
                  m_vec[1] * rhs.y(),
                  m_vec[2] * rhs.z());
 }
 
-vec3 vec3::operator/(vec3 &rhs) {
+vec3 vec3::operator*=(vec3 rhs) {
+    return vec3( m_vec[0] * rhs.x(),
+                 m_vec[1] * rhs.y(),
+                 m_vec[2] * rhs.z());
+}
+
+vec3 vec3::operator/(vec3 rhs) {
+    return vec3( m_vec[0] / rhs.x(),
+                 m_vec[1] / rhs.y(),
+                 m_vec[2] / rhs.z());
+}
+
+vec3 vec3::operator/=(vec3 rhs) {
     return vec3( m_vec[0] / rhs.x(),
                  m_vec[1] / rhs.y(),
                  m_vec[2] / rhs.z());
@@ -46,7 +70,20 @@ vec3 vec3::operator+(double scalar) {
                 m_vec[2] + scalar);
 }
 
+vec3 vec3::operator+=(double scalar) {
+    return vec3(m_vec[0] + scalar,
+                m_vec[1] + scalar,
+                m_vec[2] + scalar);
+}
+
+
 vec3 vec3::operator-(double scalar) {
+    return vec3(m_vec[0] - scalar,
+                m_vec[1] - scalar,
+                m_vec[2] - scalar);
+}
+
+vec3 vec3::operator-=(double scalar) {
     return vec3(m_vec[0] - scalar,
                 m_vec[1] - scalar,
                 m_vec[2] - scalar);
@@ -58,7 +95,19 @@ vec3 vec3::operator*(double scalar) {
                 m_vec[2] * scalar);
 }
 
+vec3 vec3::operator*=(double scalar) {
+    return vec3(m_vec[0] * scalar,
+                m_vec[1] * scalar,
+                m_vec[2] * scalar);
+}
+
 vec3 vec3::operator/(double scalar) {
+    return vec3(m_vec[0] / scalar,
+                m_vec[1] / scalar,
+                m_vec[2] / scalar);
+}
+
+vec3 vec3::operator/=(double scalar) {
     return vec3(m_vec[0] / scalar,
                 m_vec[1] / scalar,
                 m_vec[2] / scalar);

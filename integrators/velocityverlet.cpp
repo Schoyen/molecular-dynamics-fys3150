@@ -19,9 +19,6 @@ void VelocityVerlet::firstKick(System *system, double dt)
     halfKick(system, dt);
 }
 
-/*
- * Is this correct?
- */
 void VelocityVerlet::halfKick(System *system, double dt)
 {
     for (int n = 0; n < (int) system->atoms().size(); n++) {
@@ -31,16 +28,12 @@ void VelocityVerlet::halfKick(System *system, double dt)
     }
 }
 
-/*
- * And this?
- */
 void VelocityVerlet::move(System *system, double dt)
 {
     for (int n = 0; n < (int) system->atoms().size(); n++) {
         Atom *atom = system->atoms()[n];
         atom->position.addAndMultiply(atom->velocity, dt);
     }
-    system->applyPeriodicBoundaryConditions();
 }
 
 void VelocityVerlet::integrate(System *system, double dt)

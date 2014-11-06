@@ -8,15 +8,24 @@ private:
 public:
     vec3(); // Create a zero vector
     vec3(double x, double y, double z);
-    bool operator==(vec3 &rhs);
-    vec3 operator+(vec3 &rhs);
-    vec3 operator-(vec3 &rhs);
-    vec3 operator*(vec3 &rhs);
-    vec3 operator/(vec3 &rhs);
+    bool operator==(vec3 rhs);
+    vec3 operator+(vec3 rhs);
+    vec3 operator+=(vec3 rhs);
+    vec3 operator-(vec3 rhs);
+    vec3 operator-=(vec3 rhs);
+    vec3 operator*(vec3 rhs);
+    vec3 operator*=(vec3 rhs);
+    vec3 operator/(vec3 rhs);
+    vec3 operator/=(vec3 rhs);
     vec3 operator+(double scalar);
+    vec3 operator+=(double scalar);
     vec3 operator-(double scalar);
+    vec3 operator-=(double scalar);
     vec3 operator*(double scalar);
+    vec3 operator*=(double scalar);
     vec3 operator/(double scalar);
+    vec3 operator/=(double scalar);
+    vec3 operator-();
     void add(vec3 &rhs) { // Possibly broken
         m_vec[0] += rhs.x();
         m_vec[1] += rhs.y();
