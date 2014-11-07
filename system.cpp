@@ -85,6 +85,7 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
     vec3 temp;
     m_celllist = new CellList();
     m_celllist->setrcut(cellSize);
+    m_celllist->setSystem(this);
     double initialTemperature = iT; // Dimensionless temperature.
 
     // Creating the center of each unit cell.
@@ -110,6 +111,18 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
         }
     }
 
+    int startingValueX = (int) m_systemSize.x()/(2 * cellSize);
+    int startingValueY = (int) m_systemSize.y()/(2 * cellSize);
+    int startingValueZ = (int) m_systemSize.z()/(2 * cellSize);
+    for (int i = -startingValueX; i < startingValueX; i++) {
+        for (int j = -startingValueY; j < startingValueY; j ++) {
+            for (int k = -startingValueZ; k < startingValueZ; k++) {
+                temp = vec3(i * cellSize, j * cellSize, k * cellSize);
+                m_celllist->createCell(temp);
+            }
+        }
+    }
+
     for (int n = 0; n < totalNumberOfUnitCells; n++) {
         Atom *atom1 = new Atom(UnitConverter::massFromSI(6.63352088e-26));
         atom1->resetVelocityMaxwellian(initialTemperature);
@@ -131,6 +144,7 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
         atom4->position = r4 + R[n];
         m_atoms.push_back(atom4);
     }
+    m_celllist->calculateCellAtoms();
 }
 
 void System::calculateForces() {
