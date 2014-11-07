@@ -3,8 +3,9 @@
 #include "atom.h"
 #include "math/vec3.h"
 #include "potentials/potential.h"
+#include "celllist.h"
 
-class Potential; class Integrator;
+class Potential; class Integrator; class CellList;
 using std::vector;
 using CompPhys::vec3;
 
@@ -19,12 +20,13 @@ private:
     int m_steps;
     vec3 velocityOfCM;
     vec3 velocityOfCMAfter;
+    CellList *m_celllist;
 
 public:
     System();
     ~System();
     void resetForcesOnAllAtoms();
-    void createFCCLattice(int numberOfUnitCellsEachDimension, double latticeConstant, double iT);
+    void createFCCLattice(int numberOfUnitCellsEachDimension, double latticeConstant, double iT, double cellSize);
     void applyPeriodicBoundaryConditions();
     void removeMomentum();
     void calculateForces();
@@ -44,4 +46,5 @@ public:
     void setSteps(int steps) { m_steps = steps; }
     vec3 getVelocityOfCM() { return velocityOfCM; }
     vec3 getVelocityOfCMAfter() { return velocityOfCMAfter; }
+    CellList *celllist() { return m_celllist; }
 };

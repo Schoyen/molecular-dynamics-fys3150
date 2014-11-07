@@ -4,19 +4,19 @@
 #include <vector>
 
 class CellList;
+using std::vector;
 
 class Cell {
     private:
-        CellList *m_cellList;
-        std::vector<Atom*> m_atomsClose;
+        vec3 size;
+        vector<Atom*> m_atomsClose;
 
     public:
-        vec3 position;
+        vec3 position; // Position of Cell.
 
         Cell();
         ~Cell();
         void addAtom(Atom *atom);
-        void setEmptyList();
-        void setCellList(CellList *celllist) {m_cellList = celllist;}
-        std::vector<Atom *> &atoms() {return m_atomsClose;}
+        void clearList();
+        void setSize(double length) {size = vec3(length, length, length);}
 };

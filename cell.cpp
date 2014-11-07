@@ -1,7 +1,6 @@
 #include "cell.h"
 
-Cell::Cell() :
-    m_cellList(0),
+Cell::Cell()
 {
 
 }
@@ -11,10 +10,11 @@ Cell::~Cell()
 
 }
 
-// Implement this method.
-void addAtom(Atom *atom) {
+void Cell::clearList() {
+    m_atomsClose.clear();
 }
 
-void setEmptyList() {
-    m_atomsClose.clear();
+// Implement this method.
+void Cell::addAtom(Atom *atom) {
+    m_atomsClose.push_back(atom);
 }

@@ -7,7 +7,8 @@ System::System() :
     m_potential(0),
     m_integrator(0),
     m_currentTime(0),
-    m_steps(0)
+    m_steps(0),
+    m_celllist(0)
 {
 
 }
@@ -16,6 +17,7 @@ System::~System()
 {
     delete m_potential;
     delete m_integrator;
+    delete m_celllist;
     m_atoms.clear();
 }
 
@@ -73,7 +75,7 @@ void System::resetForcesOnAllAtoms() {
     }
 }
 
-void System::createFCCLattice(int numberOfUnitCellsEachDimension, double latticeConstant, double iT) {
+void System::createFCCLattice(int numberOfUnitCellsEachDimension, double latticeConstant, double iT, double cellSize) {
     int totalNumberOfUnitCells = numberOfUnitCellsEachDimension * numberOfUnitCellsEachDimension * numberOfUnitCellsEachDimension;
     vec3 r1 = vec3(0.0, 0.0, 0.0);
     vec3 r2 = vec3(latticeConstant/2.0, latticeConstant/2.0, 0.0);
@@ -81,6 +83,8 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
     vec3 r4 = vec3(latticeConstant/2.0, 0.0, latticeConstant/2.0);
     vector<vec3> R;
     vec3 temp;
+    m_celllist = new CellList();
+    m_celllist->setrcut(cellSize);
     double initialTemperature = iT; // Dimensionless temperature.
 
     // Creating the center of each unit cell.

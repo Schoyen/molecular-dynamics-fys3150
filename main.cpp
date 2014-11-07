@@ -30,8 +30,9 @@ int main()
     // For more than 2 x 2 x 2 FCCLattice we need a bigger system size.
     system.setSystemSize(UnitConverter::lengthFromAngstroms(vec3(35, 35, 35)));
     int numberOfFCCLattices = 5;
+    double cellSize = 3.5;
     int numberOfAtoms = 4 * numberOfFCCLattices * numberOfFCCLattices * numberOfFCCLattices;
-    system.createFCCLattice(numberOfFCCLattices, UnitConverter::lengthFromAngstroms(5.26), UnitConverter::temperatureFromSI(3000.0));
+    system.createFCCLattice(numberOfFCCLattices, UnitConverter::lengthFromAngstroms(5.26), UnitConverter::temperatureFromSI(3000.0), cellSize);
     system.setPotential(new LennardJones(3.405, 1.0)); // You must insert correct parameters here
     system.setIntegrator(new VelocityVerlet());
     system.removeMomentum();

@@ -1,21 +1,21 @@
 #include "celllist.h"
 
 CellList::CellList() :
-    m_system(0),
     m_listOfCells(0)
 {
 
 }
 
 CellList::~CellList() {
-    delete m_system;
     m_listOfCells.clear();
 }
 
-void createCells() {
-
+void CellList::createCell() {
+    Cell *cell = new Cell();
+    cell->setSize(m_rcut);
+    m_listOfCells.push_back(cell);
 }
 
 // Implement the method.
-void calculateCellAtoms() {
+void CellList::calculateCellAtoms() {
 }
