@@ -1,16 +1,19 @@
 #include "celllist.h"
 
-CellList::CellList(System *system) {
-    m_system = system;
+CellList::CellList() :
+    m_system(0),
+    m_listOfCells(0)
+{
+
 }
 
 CellList::~CellList() {
     delete m_system;
-    m_atomsClose.clear();
+    m_listOfCells.clear();
 }
 
-// Implement the method.
-void setEmptyList() {
+void createCells() {
+
 }
 
 // Implement the method.

@@ -45,20 +45,26 @@ void System::removeMomentum() {
     // First we calculate the net momentum of the system.
     // We then subtract this sum from the velocity of each atom.
     
-    vec3 speedOfCM (0.0, 0.0, 0.0);
+    velocityOfCM = vec3(0.0, 0.0, 0.0);
+    velocityOfCMAfter = vec3(0.0, 0.0, 0.0);
     vec3 temp;
     double totalMass = 0;
     for (int n = 0; n < (int) m_atoms.size(); n++) {
-        temp = m_atoms[n]->velocity*(m_atoms[n]->mass());
-        speedOfCM = speedOfCM + temp;
+        temp = m_atoms[n]->velocity * (m_atoms[n]->mass());
+        velocityOfCM += temp;
         totalMass += m_atoms[n]->mass();
     }
 
-    speedOfCM = speedOfCM/totalMass;
+    velocityOfCM /=totalMass;
     for (int n = 0; n < (int) m_atoms.size(); n++) {
-        m_atoms[n]->velocity = m_atoms[n]->velocity - speedOfCM;
+        m_atoms[n]->velocity = m_atoms[n]->velocity - velocityOfCM;
     }
 
+    for (int n = 0; n < (int) m_atoms.size(); n++) {
+        temp = m_atoms[n]->velocity * (m_atoms[n]->mass());
+        velocityOfCMAfter += temp;
+    }
+    velocityOfCMAfter /= totalMass;
 }
 
 void System::resetForcesOnAllAtoms() {

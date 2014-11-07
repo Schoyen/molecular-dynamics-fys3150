@@ -28,7 +28,7 @@ int main()
     auto start = high_resolution_clock::now();
     System system;
     // For more than 2 x 2 x 2 FCCLattice we need a bigger system size.
-    system.setSystemSize(UnitConverter::lengthFromAngstroms(vec3(30, 30, 30)));
+    system.setSystemSize(UnitConverter::lengthFromAngstroms(vec3(35, 35, 35)));
     int numberOfFCCLattices = 5;
     int numberOfAtoms = 4 * numberOfFCCLattices * numberOfFCCLattices * numberOfFCCLattices;
     system.createFCCLattice(numberOfFCCLattices, UnitConverter::lengthFromAngstroms(5.26), UnitConverter::temperatureFromSI(3000.0));
@@ -50,20 +50,23 @@ int main()
     IO *movie = new IO(); // To write the state to file
     movie->open("movie.xyz");
 
+    string filename;
     for(int timestep=0; timestep<1000; timestep++) {
+        filename = "build/DATA/statistics" + to_string(timestep) + ".txt";
         system.step(dt);
-        statisticsSampler->sample(&system);
+        statisticsSampler->sample(&system, filename);
 
         movie->saveState(&system);
     }
     auto finish = high_resolution_clock::now();
-    string filename = "build/calculationTime" + to_string(numberOfAtoms) + ".txt";
+    filename = "build/DATA/calculationTime" + to_string(numberOfAtoms) + ".txt";
     ofstream file(filename);
     if (file.is_open()) {
         file << duration_cast<nanoseconds>(finish - start).count()*(1.0e-9) << " s";
     } else cout << "Unable to write to file." << endl;
 
 
+    file.close();
     movie->close();
 
     return 0;

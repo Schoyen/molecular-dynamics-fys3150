@@ -11,7 +11,12 @@ double Potential::potentialEnergy()
     return m_potentialEnergy;
 }
 
-void Potential::setPotentialEnergy(double potentialEnergy)
+double Potential::kineticEnergy()
 {
-    m_potentialEnergy = potentialEnergy;
+    return m_kineticEnergy;
+}
+
+double Potential::temperature()
+{
+    return m_temperature;
 }

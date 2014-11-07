@@ -3,15 +3,19 @@
 #include <vector>
 #include "../system.h"
 
+class System;
+
 class Potential
 {
 protected:
     double m_potentialEnergy;
-    double m_kineticEnergy; // Added for use in the calculateForces-function.
+    double m_kineticEnergy;
+    double m_temperature;
 public:
     Potential();
     virtual ~Potential() {}
     virtual void calculateForces(System *system) = 0;
     double potentialEnergy();
-    void setPotentialEnergy(double potentialEnergy);
+    double kineticEnergy();
+    double temperature();
 };

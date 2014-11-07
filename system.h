@@ -2,6 +2,7 @@
 #include <vector>
 #include "atom.h"
 #include "math/vec3.h"
+#include "potentials/potential.h"
 
 class Potential; class Integrator;
 using std::vector;
@@ -16,6 +17,8 @@ private:
     Integrator *m_integrator;
     double m_currentTime;
     int m_steps;
+    vec3 velocityOfCM;
+    vec3 velocityOfCMAfter;
 
 public:
     System();
@@ -39,4 +42,6 @@ public:
     void setIntegrator(Integrator *integrator) { m_integrator = integrator; }
     int steps() { return m_steps; }
     void setSteps(int steps) { m_steps = steps; }
+    vec3 getVelocityOfCM() { return velocityOfCM; }
+    vec3 getVelocityOfCMAfter() { return velocityOfCMAfter; }
 };
