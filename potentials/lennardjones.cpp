@@ -2,6 +2,8 @@
 #include "../unitconverter.h"
 #include <cmath>
 #include <fstream>
+#include "../celllist.h"
+#include "../cell.h"
 
 LennardJones::LennardJones(double sigma, double epsilon) :
     m_sigma(sigma),
@@ -23,6 +25,8 @@ void LennardJones::calculateForces(System *system)
     double xlen = system->systemSize().x();
     double ylen = system->systemSize().y();
     double zlen = system->systemSize().z();
+
+    // Old force calculation.
     for (int i = 0; i < (int) system->atoms().size(); i++) {
         for (int j = i + 1; j < (int) system->atoms().size(); j++) {
             distance = system->atoms()[i]->position - system->atoms()[j]->position;

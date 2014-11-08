@@ -21,4 +21,5 @@ class CellList {
         double getrcut() {return m_rcut;}
         void setSystem(System *system) {m_system = system;}
         void setrcut(double val) {m_rcut = val;}
+        vector<Cell *> listOfCells() {return m_listOfCells;}
 };

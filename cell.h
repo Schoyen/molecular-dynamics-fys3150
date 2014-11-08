@@ -9,7 +9,7 @@ using std::vector;
 class Cell {
     private:
         vec3 size;
-        vector<Atom*> m_atomsClose;
+        vector<Atom *> m_atomsClose;
 
     public:
         vec3 position; // Position of Cell.
@@ -19,4 +19,5 @@ class Cell {
         void addAtom(Atom *atom);
         void clearList();
         void setSize(double length) {size = vec3(length, length, length);}
+        vector<Atom *> atomsClose() {return m_atomsClose;}
 };
