@@ -23,6 +23,7 @@ void StatisticsSampler::sample(System *system, std::string filename)
         sampleNetMomentum(system);
         sampledNetMomentum = true;
     }
+    sampleTemperature(system);
 
     double temperatureInSI = UnitConverter::temperatureToSI(m_temperature);
     double kineticEnergyInSI = UnitConverter::energyToSI(m_kineticEnergy);
