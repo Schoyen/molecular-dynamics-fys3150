@@ -12,6 +12,9 @@ LennardJones::LennardJones(double sigma, double epsilon) :
 
 }
 
+/*
+ * This does not look correct...
+ */
 void LennardJones::calculateForces(System *system)
 {
     m_potentialEnergy = 0; // Remember to compute this in the loop
@@ -32,6 +35,35 @@ void LennardJones::calculateForces(System *system)
         for (int j = i + 1; j < (int) celllist->listOfCells().size(); j++) {
             if ((celllist->listOfCells()[i]->position - celllist->listOfCells()[j]->position).length() < pow(celllist->getrcut(), 2)) {
                 for (int k = 0; k < (int) celllist->listOfCells()[i]->atomsClose().size(); k++) {
+
+                    // Calculation of force inside each cell.
+                    for (int m = k + 1; m < (int) celllist->listOfCells()[i]->atomsClose().size(); m++) {
+                        distance = celllist->listOfCells()[i]->atomsClose()[k]->position - celllist->listOfCells()[i]->atomsClose()[m]->position;
+                        x = distance.x();
+                        y = distance.y();
+                        z = distance.z();
+
+                        // Minimum image criterion.
+                        if (x > xlen * 0.5) x = x - xlen;
+                        else if (x < -xlen * 0.5) x = x + xlen;
+                        if (y > ylen * 0.5) y = y - ylen;
+                        else if (y < -ylen * 0.5) y = y + ylen;
+                        if (z > zlen * 0.5) z = z - zlen;
+                        else if (z < -zlen * 0.5) z = z + zlen;
+                        
+                        distance = vec3(x, y, z);
+                        distanceBetweenAtoms = distance.length();
+                        divisionOfSigmaAndDistance = m_sigma/distanceBetweenAtoms;
+                        // Calculate the new potential energy.
+                        m_potentialEnergy += 4 * m_epsilon * (pow(divisionOfSigmaAndDistance, 12) - pow(divisionOfSigmaAndDistance, 6));
+                        divisionOfSigmaAndDistance = m_sigma/celllist->getrcut();
+                        m_potentialEnergy -= 4 * m_epsilon * (pow(divisionOfSigmaAndDistance, 12) - pow(divisionOfSigmaAndDistance, 6));
+                        expressionOfForce = 4 * m_epsilon * (12 * pow(m_sigma, 12)/pow(distanceBetweenAtoms, 14) - 6 * pow(m_sigma, 6)/pow(distanceBetweenAtoms, 8));
+                        tempForce = distance * expressionOfForce;
+                        celllist->listOfCells()[i]->atomsClose()[k]->force.add(tempForce);
+                    }
+
+                    // Calculation of force between each atom in neighbour cell[i] and cell[j].
                     for (int m = 0; m < (int) celllist->listOfCells()[j]->atomsClose().size(); m++) {
                         distance = celllist->listOfCells()[i]->atomsClose()[k]->position - celllist->listOfCells()[j]->atomsClose()[m]->position;
                         x = distance.x();
@@ -64,7 +96,7 @@ void LennardJones::calculateForces(System *system)
     }
 
     // TODO: Remember to remove atoms from cells.
-    celllist->calucalteCellAtoms();
+    //celllist->calucalteCellAtoms();
 
     /*
     // Old force calculation.
