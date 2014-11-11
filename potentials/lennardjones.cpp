@@ -91,12 +91,16 @@ void LennardJones::calculateForces(System *system)
                     }
                     m_kineticEnergy += 0.5 * celllist->listOfCells()[i]->atomsClose()[k]->mass() * celllist->listOfCells()[i]->atomsClose()[k]->velocity.lengthSquared();
                 }
+                m_temperature = (2.0/3.0) * (m_kineticEnergy/((double) system->atoms().size() * 1));
+
             }
         }
     }
 
+    // TODO: Remember to compute temperature.
     // TODO: Remember to remove atoms from cells.
-    //celllist->calucalteCellAtoms();
+    celllist->emptyCells();
+    celllist->calculateCellAtoms();
 
     /*
     // Old force calculation.

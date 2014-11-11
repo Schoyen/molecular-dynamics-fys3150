@@ -19,6 +19,12 @@ void CellList::createCell(vec3 pos) {
     m_listOfCells.push_back(cell);
 }
 
+void CellList::emptyCells() {
+    for (int i = 0; i < (int) m_listOfCells.size(); i++) {
+        m_listOfCells[i]->clearList();
+    }
+}
+
 void CellList::calculateCellAtoms() {
     double distance;
     vec3 temp;

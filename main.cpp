@@ -58,6 +58,7 @@ int main()
         statisticsSampler->sample(&system, filename);
 
         movie->saveState(&system);
+        cout << timestep << endl;
     }
     auto finish = high_resolution_clock::now();
     filename = "build/DATA/calculationTime" + to_string(numberOfAtoms) + ".txt";
