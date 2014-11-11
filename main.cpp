@@ -30,7 +30,7 @@ int main()
     // For more than 2 x 2 x 2 FCCLattice we need a bigger system size.
     system.setSystemSize(UnitConverter::lengthFromAngstroms(vec3(35, 35, 35)));
     int numberOfFCCLattices = 5;
-    double cellSize = 7.0;
+    double cellSize = 7;
     int numberOfAtoms = 4 * numberOfFCCLattices * numberOfFCCLattices * numberOfFCCLattices;
     system.createFCCLattice(numberOfFCCLattices, UnitConverter::lengthFromAngstroms(5.26), UnitConverter::temperatureFromSI(3000.0), cellSize);
     system.setPotential(new LennardJones(3.405, 1.0)); // You must insert correct parameters here
@@ -52,13 +52,13 @@ int main()
     movie->open("movie.xyz");
 
     string filename;
-    for(int timestep=0; timestep<100; timestep++) {
+    for(int timestep=0; timestep<1000; timestep++) {
         filename = "build/DATA/statistics" + to_string(timestep) + ".txt";
         system.step(dt);
         statisticsSampler->sample(&system, filename);
 
         movie->saveState(&system);
-        cout << timestep << endl;
+        //cout << timestep << endl;
     }
     auto finish = high_resolution_clock::now();
     filename = "build/DATA/calculationTime" + to_string(numberOfAtoms) + ".txt";

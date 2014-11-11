@@ -123,6 +123,7 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
         }
     }
 
+
     for (int n = 0; n < totalNumberOfUnitCells; n++) {
         Atom *atom1 = new Atom(UnitConverter::massFromSI(6.63352088e-26));
         atom1->resetVelocityMaxwellian(initialTemperature);
@@ -145,6 +146,9 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
         m_atoms.push_back(atom4);
     }
     m_celllist->calculateCellAtoms();
+    std::cout << m_celllist->listOfCells()[0]->atomsClose().size() << std::endl;
+    std::cout << m_celllist->listOfCells()[1]->atomsClose().size() << std::endl;
+
 }
 
 void System::calculateForces() {

@@ -1,0 +1,3 @@
+Initial net momentum of the system: 0 m/s
+Net momentum of the system after removal: 0 m/s
+U = 1.87403e-16 J	K = 5.86499e-14 J	T = 5.66399e+06 K
