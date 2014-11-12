@@ -70,9 +70,16 @@ void System::removeMomentum() {
 }
 
 void System::resetForcesOnAllAtoms() {
+    for (int i = 0; i < (int) m_celllist->listOfCells().size(); i++) {
+        for (int j = 0; j < (int) m_celllist->listOfCells()[i]->atomsClose().size(); j++) {
+            m_celllist->listOfCells()[i]->atomsClose()[j]->resetForce();
+        }
+    }
+    /*
     for (int n = 0; n < (int) m_atoms.size(); n++) {
         m_atoms[n]->resetForce();
     }
+    */
 }
 
 void System::createFCCLattice(int numberOfUnitCellsEachDimension, double latticeConstant, double iT, double cellSize) {
