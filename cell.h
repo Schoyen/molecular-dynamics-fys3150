@@ -13,6 +13,7 @@ class Cell {
 
     public:
         vec3 position; // Position of Cell.
+        bool calculatedLocally = false;
 
         Cell();
         ~Cell();

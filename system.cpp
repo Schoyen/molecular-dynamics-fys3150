@@ -73,6 +73,7 @@ void System::resetForcesOnAllAtoms() {
     for (int i = 0; i < (int) m_celllist->listOfCells().size(); i++) {
         for (int j = 0; j < (int) m_celllist->listOfCells()[i]->atomsClose().size(); j++) {
             m_celllist->listOfCells()[i]->atomsClose()[j]->resetForce();
+            m_celllist->listOfCells()[i]->calculatedLocally = false;
         }
     }
     /*
@@ -118,13 +119,16 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
         }
     }
 
+    //int counter = 0;
     int startingValueX = (int) m_systemSize.x()/(2 * cellSize);
     int startingValueY = (int) m_systemSize.y()/(2 * cellSize);
     int startingValueZ = (int) m_systemSize.z()/(2 * cellSize);
-    for (int i = -startingValueX; i < startingValueX; i++) {
-        for (int j = -startingValueY; j < startingValueY; j ++) {
-            for (int k = -startingValueZ; k < startingValueZ; k++) {
+    for (int i = -startingValueX; i <= startingValueX; i++) {
+        for (int j = -startingValueY; j <= startingValueY; j ++) {
+            for (int k = -startingValueZ; k <= startingValueZ; k++) {
                 temp = vec3(i * cellSize, j * cellSize, k * cellSize);
+                //counter++;
+                //std::cout << counter << "\t" << temp << std::endl;
                 m_celllist->createCell(temp);
             }
         }
@@ -153,8 +157,7 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
         m_atoms.push_back(atom4);
     }
     m_celllist->calculateCellAtoms();
-    std::cout << m_celllist->listOfCells()[0]->atomsClose().size() << std::endl;
-    std::cout << m_celllist->listOfCells()[1]->atomsClose().size() << std::endl;
+    std::cout << m_celllist->listOfCells().size() << std::endl;
 
 }
 
