@@ -38,13 +38,12 @@ void LennardJones::calculateForces(System *system)
         std::cout << celllist->listOfCells()[i]->atomsClose().size() << std::endl;
     }
     */
-    // FIXED
-    // I think the cells are too big.
-    // Atoms are not properly put into the correct cells.
     // TODO: Check whether or not we need N3L for all atoms. Remember that we iterate over all cells twice.
     for (int i = 0; i < (int) celllist->listOfCells().size(); i++) {
         // Calculation of force inside each cell.
         if (!celllist->listOfCells()[i]->calculatedLocally) {
+            //std::cout << "Calculating force locally" << std::endl;
+            //std::cout << celllist->listOfCells()[i]->atomsClose().size() << std::endl;
             for (int k = 0; k < (int) celllist->listOfCells()[i]->atomsClose().size(); i++) {
                 for (int m = k + 1; m < (int) celllist->listOfCells()[i]->atomsClose().size(); m++) {
                     distance = celllist->listOfCells()[i]->atomsClose()[k]->position - celllist->listOfCells()[i]->atomsClose()[m]->position;
@@ -65,11 +64,11 @@ void LennardJones::calculateForces(System *system)
 
                 }
                 celllist->listOfCells()[i]->calculatedLocally = true;
-                //std::cout << celllist->listOfCells()[i]->atomsClose().size() << std::endl;
             }
             //std::cout << celllist->listOfCells()[i]->atomsClose().size() << std::endl;
         }
         //std::cout << celllist->listOfCells()[i]->atomsClose().size() << std::endl;
+        //std::cout << "Calculating force from cell lists" << std::endl;
 
         for (int j = 0; j < (int) celllist->listOfCells().size(); j++) {
             if (i != j) {
@@ -133,9 +132,10 @@ void LennardJones::calculateForces(System *system)
         }
     }
     m_temperature = (2.0/3.0) * (m_kineticEnergy/((double) system->atoms().size() * 1));
+    std::cout << "FORCE" << std::endl;
 
     /*
-     * Needed for timing of the methods.
+    // Needed for timing of the methods.
     // Old force calculation.
     for (int i = 0; i < (int) system->atoms().size(); i++) {
         for (int j = i + 1; j < (int) system->atoms().size(); j++) {

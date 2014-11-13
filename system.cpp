@@ -179,7 +179,6 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
         atom4->position = r4 + R[n];
         m_atoms.push_back(atom4);
     }
-    std::cout << m_atoms.size() << std::endl;
     m_celllist->calculateCellAtoms();
     /*
     for (int i = 0; i < (int) m_celllist->listOfCells().size(); i++) {

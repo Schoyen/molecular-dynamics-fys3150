@@ -28,9 +28,9 @@ int main()
     auto start = high_resolution_clock::now();
     System system;
     // For more than 2 x 2 x 2 FCCLattice we need a bigger system size.
-    system.setSystemSize(UnitConverter::lengthFromAngstroms(vec3(30, 30, 30)));
+    system.setSystemSize(UnitConverter::lengthFromAngstroms(vec3(28, 28, 28)));
     int numberOfFCCLattices = 5;
-    double cellSize = 6;
+    double cellSize = 4;
     int numberOfAtoms = 4 * numberOfFCCLattices * numberOfFCCLattices * numberOfFCCLattices;
     system.createFCCLattice(numberOfFCCLattices, UnitConverter::lengthFromAngstroms(5.26), UnitConverter::temperatureFromSI(3000.0), cellSize);
     system.setPotential(new LennardJones(3.405, 1.0)); // You must insert correct parameters here
