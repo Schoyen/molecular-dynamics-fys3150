@@ -39,6 +39,8 @@ void System::applyPeriodicBoundaryConditions() {
         else if (z >= zlen * 0.5) z -= zlen;
         m_atoms[n]->position = vec3(x, y, z);
     }
+    m_celllist->emptyCells();
+    m_celllist->calculateCellAtoms();
 }
 
 void System::removeMomentum() {
@@ -119,7 +121,6 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
         }
     }
 
-    //int counter = 0;
     int startingValueX = (int) m_systemSize.x()/(2 * cellSize);
     int startingValueY = (int) m_systemSize.y()/(2 * cellSize);
     int startingValueZ = (int) m_systemSize.z()/(2 * cellSize);
@@ -127,8 +128,6 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
         for (int j = -startingValueY; j <= startingValueY; j ++) {
             for (int k = -startingValueZ; k <= startingValueZ; k++) {
                 temp = vec3(i * cellSize, j * cellSize, k * cellSize);
-                //counter++;
-                //std::cout << counter << "\t" << temp << std::endl;
                 m_celllist->createCell(temp);
             }
         }
@@ -157,8 +156,6 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
         m_atoms.push_back(atom4);
     }
     m_celllist->calculateCellAtoms();
-    std::cout << m_celllist->listOfCells().size() << std::endl;
-
 }
 
 void System::calculateForces() {

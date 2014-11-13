@@ -30,14 +30,20 @@ void LennardJones::calculateForces(System *system)
     double zlen = system->systemSize().z();
     vec3 temp;
 
-    // TODO: Remember to update the celllists.
-    // TODO: You must check whether or not the atoms in neighbouring cells are within r_cut.
     
+    // TODO: Use getsize().lengthSquared() to calculate r_cut.
     CellList *celllist = system->celllist();
+    /*
     for (int i = 0; i < (int) celllist->listOfCells().size(); i++) {
-
+        std::cout << celllist->listOfCells()[i]->atomsClose().size() << std::endl;
+    }
+    */
+    // FIXED
+    // I think the cells are too big.
+    // Atoms are not properly put into the correct cells.
+    // TODO: Check whether or not we need N3L for all atoms. Remember that we iterate over all cells twice.
+    for (int i = 0; i < (int) celllist->listOfCells().size(); i++) {
         // Calculation of force inside each cell.
-        // This seems to be working.
         if (!celllist->listOfCells()[i]->calculatedLocally) {
             for (int k = 0; k < (int) celllist->listOfCells()[i]->atomsClose().size(); i++) {
                 for (int m = k + 1; m < (int) celllist->listOfCells()[i]->atomsClose().size(); m++) {
@@ -56,12 +62,19 @@ void LennardJones::calculateForces(System *system)
                     celllist->listOfCells()[i]->atomsClose()[k]->force.add(tempForce);
                     tempForce = tempForce * (-1); // N3L
                     celllist->listOfCells()[i]->atomsClose()[m]->force.add(tempForce);
+
                 }
                 celllist->listOfCells()[i]->calculatedLocally = true;
+                //std::cout << celllist->listOfCells()[i]->atomsClose().size() << std::endl;
             }
+            //std::cout << celllist->listOfCells()[i]->atomsClose().size() << std::endl;
         }
+        //std::cout << celllist->listOfCells()[i]->atomsClose().size() << std::endl;
+
         for (int j = 0; j < (int) celllist->listOfCells().size(); j++) {
             if (i != j) {
+                //std::cout << celllist->listOfCells()[i]->atomsClose().size() << std::endl;
+
                 temp = celllist->listOfCells()[i]->position - celllist->listOfCells()[j]->position;
                 x = temp.x();
                 y = temp.y();
@@ -79,6 +92,7 @@ void LennardJones::calculateForces(System *system)
 
                 if (temp.lengthSquared() <= 3 * pow(celllist->getrcut(), 2)) {
                     for (int k = 0; k < (int) celllist->listOfCells()[i]->atomsClose().size(); k++) {
+                        std::cout << "Calculating force between atoms" << std::endl;
                         // Check whether of not the cells are within r_cut, at least for the potential.
                         // Calculation of force between each atom in neighbour cell[i] and cell[j].
                         for (int m = 0; m < (int) celllist->listOfCells()[j]->atomsClose().size(); m++) {
@@ -119,9 +133,6 @@ void LennardJones::calculateForces(System *system)
         }
     }
     m_temperature = (2.0/3.0) * (m_kineticEnergy/((double) system->atoms().size() * 1));
-
-    system->celllist()->emptyCells();
-    system->celllist()->calculateCellAtoms();
 
     /*
      * Needed for timing of the methods.

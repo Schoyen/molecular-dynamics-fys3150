@@ -3,12 +3,11 @@
 #include "math/vec3.h"
 #include <vector>
 
-class CellList;
 using std::vector;
 
 class Cell {
     private:
-        vec3 size;
+        vec3 m_size;
         vector<Atom *> m_atomsClose;
 
     public:
@@ -19,6 +18,7 @@ class Cell {
         ~Cell();
         void addAtom(Atom *atom);
         void clearList();
-        void setSize(double length) {size = vec3(length, length, length);}
+        void setSize(double length) {m_size = vec3(length, length, length);}
+        vec3 getSize() {return m_size;}
         vector<Atom *> atomsClose() {return m_atomsClose;}
 };
