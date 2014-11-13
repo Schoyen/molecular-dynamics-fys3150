@@ -38,6 +38,7 @@ void LennardJones::calculateForces(System *system)
         std::cout << celllist->listOfCells()[i]->atomsClose().size() << std::endl;
     }
     */
+    /*
     // TODO: Check whether or not we need N3L for all atoms. Remember that we iterate over all cells twice.
     for (int i = 0; i < (int) celllist->listOfCells().size(); i++) {
         // Calculation of force inside each cell.
@@ -133,8 +134,8 @@ void LennardJones::calculateForces(System *system)
     }
     m_temperature = (2.0/3.0) * (m_kineticEnergy/((double) system->atoms().size() * 1));
     std::cout << "FORCE" << std::endl;
+    */
 
-    /*
     // Needed for timing of the methods.
     // Old force calculation.
     for (int i = 0; i < (int) system->atoms().size(); i++) {
@@ -164,5 +165,4 @@ void LennardJones::calculateForces(System *system)
         m_kineticEnergy += 0.5 * system->atoms()[i]->mass() * system->atoms()[i]->velocity.lengthSquared();
     }
     m_temperature = (2.0/3.0) * (m_kineticEnergy/((double) system->atoms().size() * 1));
-    */
 }

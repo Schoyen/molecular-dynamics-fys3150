@@ -52,7 +52,7 @@ int main()
     movie->open("movie.xyz");
 
     string filename;
-    for(int timestep=0; timestep<1; timestep++) {
+    for(int timestep=0; timestep<100; timestep++) {
         filename = "build/DATA/statistics" + to_string(timestep) + ".txt";
         system.step(dt);
         statisticsSampler->sample(&system, filename);
