@@ -98,6 +98,7 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
     m_celllist->setSystem(this);
     double initialTemperature = iT; // Dimensionless temperature.
 
+    /*
     // Creating the center of each unit cell.
     if (numberOfUnitCellsEachDimension % 2 == 0) {
         int nOUCEDHALF = numberOfUnitCellsEachDimension / 2;
@@ -128,11 +129,34 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
         for (int j = -startingValueY; j <= startingValueY; j ++) {
             for (int k = -startingValueZ; k <= startingValueZ; k++) {
                 temp = vec3(i * cellSize, j * cellSize, k * cellSize);
+                std::cout << temp << std::endl;
                 m_celllist->createCell(temp);
             }
         }
     }
+    */
 
+    // TODO: Fix cells.
+    for (int i = 0; i < numberOfUnitCellsEachDimension; i++) {
+        for (int j = 0; j < numberOfUnitCellsEachDimension; j++) {
+            for (int k = 0; k < numberOfUnitCellsEachDimension; k++) {
+                temp = vec3(i * latticeConstant, j * latticeConstant, k * latticeConstant);
+                R.push_back(temp);
+            }
+        }
+    }
+
+    int startingValueX = (int) m_systemSize.x()/(cellSize);
+    int startingValueY = (int) m_systemSize.y()/(cellSize);
+    int startingValueZ = (int) m_systemSize.z()/(cellSize);
+    for (int i = 0; i < startingValueX; i++) {
+        for (int j = 0; j < startingValueY; j ++) {
+            for (int k = 0; k < startingValueZ; k++) {
+                temp = vec3(i * cellSize, j * cellSize, k * cellSize);
+                m_celllist->createCell(temp);
+            }
+        }
+    }
 
     for (int n = 0; n < totalNumberOfUnitCells; n++) {
         Atom *atom1 = new Atom(UnitConverter::massFromSI(6.63352088e-26));
@@ -155,7 +179,13 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
         atom4->position = r4 + R[n];
         m_atoms.push_back(atom4);
     }
+    std::cout << m_atoms.size() << std::endl;
     m_celllist->calculateCellAtoms();
+    /*
+    for (int i = 0; i < (int) m_celllist->listOfCells().size(); i++) {
+        std::cout << m_celllist->listOfCells()[i]->atomsClose().size() << std::endl;
+    }
+    */
 }
 
 void System::calculateForces() {
