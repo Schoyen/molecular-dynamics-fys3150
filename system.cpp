@@ -21,6 +21,22 @@ System::~System()
     m_atoms.clear();
 }
 
+vec3 System::minimumImageCriterion(vec3 pos)
+{
+    double x = pos.x();
+    double y = pos.y();
+    double z = pos.z();
+
+    if (x > m_systemSize.x() * 0.5) x = x - m_systemSize.x();
+    else if (x < -m_systemSize.x() * 0.5) x = x + m_systemSize.x();
+    if (y > m_systemSize.y() * 0.5) y = y - m_systemSize.y();
+    else if (y < -m_systemSize.y() * 0.5) y = y + m_systemSize.y();
+    if (z > m_systemSize.z() * 0.5) z = z - m_systemSize.z();
+    else if (z < -m_systemSize.z() * 0.5) z = z + m_systemSize.z();
+
+    return vec3(x, y, z);
+}
+
 void System::applyPeriodicBoundaryConditions() {
     // Read here: http://en.wikipedia.org/wiki/Periodic_boundary_conditions#Practical_implementation:_continuity_and_the_minimum_image_convention
     double x, y, z;
@@ -196,7 +212,7 @@ void System::calculateForces() {
     m_potential->calculateForces(this);
 }
 
-void System::step(double dt) {
+void System::step(double dt, bool thermostatOn) {
     m_integrator->integrate(this, dt);
     m_steps++;
     m_currentTime += dt;

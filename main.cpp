@@ -9,6 +9,7 @@
 #include "atom.h"
 #include "io.h"
 #include "unitconverter.h"
+#include "berendsen.h"
 #include <chrono>
 
 using namespace std;
@@ -32,8 +33,11 @@ int main()
     int numberOfFCCLattices = 5;
     double cellSize = 7;
     int numberOfAtoms = 4 * numberOfFCCLattices * numberOfFCCLattices * numberOfFCCLattices;
-    system.createFCCLattice(numberOfFCCLattices, UnitConverter::lengthFromAngstroms(5.26), UnitConverter::temperatureFromSI(300.0), cellSize);
-    system.setPotential(new LennardJones(3.405, 1.0)); // You must insert correct parameters here
+    double inititalTemperature = 3000.0 // In Kelvin.
+    system.createFCCLattice(numberOfFCCLattices, UnitConverter::lengthFromAngstroms(5.26), UnitConverter::temperatureFromSI(initialTemperature), cellSize);
+    double tbath = initialTemperature;
+    double relaxationTime = 4.0; // Figure this one out.
+    system.setPotential(new LennardJones(3.405, 1.0, new BerendsenThermostat(UnitConverter::temperatureFromSI(tbath), relaxationTime))); // You must insert correct parameters here
     system.setIntegrator(new VelocityVerlet());
     system.removeMomentum();
 
@@ -42,9 +46,14 @@ int main()
     movie->open("movie.xyz");
 
     string filename;
-    for(int timestep=0; timestep<100; timestep++) {
-        filename = "build/DATA/statistics" + to_string(timestep) + ".txt";
-        system.step(dt);
+    for(int timestep=0; timestep<200; timestep++) {
+        if (timestep < 100) {
+            filename = "build/DATA/statisticsTHERMO" + to_string(timestep) + ".txt";
+            system.step(dt, true);
+        } else {
+            filename = "build/DATA/statistics" + to_string(timestep) + ".txt";
+            system.step(dt, false);
+        }
         statisticsSampler->sample(&system, filename);
 
         movie->saveState(&system);

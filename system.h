@@ -28,9 +28,10 @@ public:
     void resetForcesOnAllAtoms();
     void createFCCLattice(int numberOfUnitCellsEachDimension, double latticeConstant, double iT, double cellSize);
     void applyPeriodicBoundaryConditions();
+    vec3 minimumImageCriterion(vec3 pos);
     void removeMomentum();
     void calculateForces();
-    void step(double dt);
+    void step(double dt, bool thermostatOn);
 
     // Setters and getters
     vector<Atom *> &atoms() { return m_atoms; }

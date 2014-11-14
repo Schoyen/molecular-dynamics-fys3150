@@ -48,13 +48,18 @@ void CellList::calculateCellAtoms()
     for (int i = 0; i < (int) m_system->atoms().size(); i++) {
         // Iterating over all atoms.
         for (int j = 0; j < (int) m_listOfCells.size(); j++) {
-            cellPos = m_listOfCells[j]->position;
+            //cellPos = m_listOfCells[j]->position;
             atomPos = m_system->atoms()[i]->position;
+            if (m_listOfCells[j]->isInCell(atomPos, m_rcut)) {
+                m_listOfCells[j]->addAtom(m_system->atoms()[i]);
+            }
+            /*
             if (cellPos.x() <= atomPos.x() && atomPos.x() < cellPos.x() + m_rcut &&
                 cellPos.y() <= atomPos.y() && atomPos.y() < cellPos.y() + m_rcut &&
                 cellPos.z() <= atomPos.z() && atomPos.z() < cellPos.z() + m_rcut) {
                 m_listOfCells[j]->addAtom(m_system->atoms()[i]);
             }
+            */
             /*
             // Iterating over all cells in cell list.
             positionOfCenter = m_listOfCells[j]->position + center;
