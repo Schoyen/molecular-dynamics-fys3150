@@ -20,4 +20,5 @@ public:
     double potentialEnergy();
     double kineticEnergy();
     double temperature();
+    BerendsenThermostat *berendsen() {return m_berendsen;}
 };

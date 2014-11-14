@@ -213,7 +213,7 @@ void System::calculateForces() {
 }
 
 void System::step(double dt, bool thermostatOn) {
-    m_integrator->integrate(this, dt);
+    m_integrator->integrate(this, dt, thermostatOn);
     m_steps++;
     m_currentTime += dt;
 }
