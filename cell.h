@@ -19,6 +19,7 @@ class Cell {
         void addAtom(Atom *atom);
         void clearList();
         void setSize(double length) {m_size = vec3(length, length, length);}
+        double calculateLocally(double sigma, double epsilon, double rcut);
         vec3 getSize() {return m_size;}
         vector<Atom *> atomsClose() {return m_atomsClose;}
 };

@@ -30,23 +30,13 @@ int main()
     // For more than 2 x 2 x 2 FCCLattice we need a bigger system size.
     system.setSystemSize(UnitConverter::lengthFromAngstroms(vec3(28, 28, 28)));
     int numberOfFCCLattices = 5;
-    double cellSize = 4;
+    double cellSize = 7;
     int numberOfAtoms = 4 * numberOfFCCLattices * numberOfFCCLattices * numberOfFCCLattices;
-    system.createFCCLattice(numberOfFCCLattices, UnitConverter::lengthFromAngstroms(5.26), UnitConverter::temperatureFromSI(3000.0), cellSize);
+    system.createFCCLattice(numberOfFCCLattices, UnitConverter::lengthFromAngstroms(5.26), UnitConverter::temperatureFromSI(300.0), cellSize);
     system.setPotential(new LennardJones(3.405, 1.0)); // You must insert correct parameters here
     system.setIntegrator(new VelocityVerlet());
     system.removeMomentum();
 
-    /*
-    for(int n=0; n<100; n++) {
-        // Add one example atom. You'll have to create many such atoms in the createFCCLattice function above.
-        Atom *atom = new Atom(UnitConverter::massFromSI(6.63352088e-26)); // Argon mass, see http://en.wikipedia.org/wiki/Argon
-        atom->resetVelocityMaxwellian(UnitConverter::temperatureFromSI(300));
-        atom->position = vec3(0.0, 0.0, 0.0);
-        //atom->position.randomUniform(0, system.systemSize().x());
-        system.atoms().push_back(atom); // Add it to the list of atoms
-    }
-    */
     StatisticsSampler *statisticsSampler = new StatisticsSampler(); //
     IO *movie = new IO(); // To write the state to file
     movie->open("movie.xyz");

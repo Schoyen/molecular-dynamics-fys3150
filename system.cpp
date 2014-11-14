@@ -40,8 +40,8 @@ void System::applyPeriodicBoundaryConditions() {
         m_atoms[n]->position = vec3(x, y, z);
     }
     // Make sure the right atoms are put in correct cells.
-    //m_celllist->emptyCells();
-    //m_celllist->calculateCellAtoms();
+    m_celllist->emptyCells();
+    m_celllist->calculateCellAtoms();
 }
 
 void System::removeMomentum() {
@@ -69,21 +69,22 @@ void System::removeMomentum() {
         temp = m_atoms[n]->velocity * (m_atoms[n]->mass());
         velocityOfCMAfter += temp;
     }
+
     velocityOfCMAfter /= totalMass;
 }
 
 void System::resetForcesOnAllAtoms() {
-    /*
     for (int i = 0; i < (int) m_celllist->listOfCells().size(); i++) {
         for (int j = 0; j < (int) m_celllist->listOfCells()[i]->atomsClose().size(); j++) {
             m_celllist->listOfCells()[i]->atomsClose()[j]->resetForce();
             m_celllist->listOfCells()[i]->calculatedLocally = false;
         }
     }
-    */
+    /*
     for (int n = 0; n < (int) m_atoms.size(); n++) {
         m_atoms[n]->resetForce();
     }
+    */
 }
 
 void System::createFCCLattice(int numberOfUnitCellsEachDimension, double latticeConstant, double iT, double cellSize) {
@@ -122,7 +123,6 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
         }
     }
 
-    /*
     int startingValueX = (int) m_systemSize.x()/(2 * cellSize);
     int startingValueY = (int) m_systemSize.y()/(2 * cellSize);
     int startingValueZ = (int) m_systemSize.z()/(2 * cellSize);
@@ -130,13 +130,12 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
         for (int j = -startingValueY; j <= startingValueY; j ++) {
             for (int k = -startingValueZ; k <= startingValueZ; k++) {
                 temp = vec3(i * cellSize, j * cellSize, k * cellSize);
-                std::cout << temp << std::endl;
                 m_celllist->createCell(temp);
             }
         }
     }
-    */
 
+    // These methods create cells and unit cells from 0 to the system width.
     /*
     // TODO: Fix cells.
     for (int i = 0; i < numberOfUnitCellsEachDimension; i++) {
@@ -184,7 +183,7 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
         atom4->position = r4 + R[n];
         m_atoms.push_back(atom4);
     }
-    //m_celllist->calculateCellAtoms();
+    m_celllist->calculateCellAtoms();
     /*
     for (int i = 0; i < (int) m_celllist->listOfCells().size(); i++) {
         std::cout << m_celllist->listOfCells()[i]->atomsClose().size() << std::endl;

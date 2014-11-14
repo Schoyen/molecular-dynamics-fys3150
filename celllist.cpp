@@ -29,7 +29,10 @@ void CellList::emptyCells()
 }
 
 /*
- * Calcualting the center of each atom and checking whether or not the positions of the atoms are inside the cell.
+ * Calculating the center of each atom and checking whether or not the positions of the atoms are inside the cell.
+ * 
+ * CHECK: Are the cells overlapping?
+ *
  */
 void CellList::calculateCellAtoms()
 {
@@ -76,6 +79,8 @@ void CellList::calculateCellAtoms()
     }
     */
 
+    
+    /*
     int tempt = 0;
     for (int i = 0; i < (int) m_listOfCells.size(); i++) {
         tempt += m_listOfCells[i]->atomsClose().size();
@@ -83,6 +88,7 @@ void CellList::calculateCellAtoms()
         std::cout << m_listOfCells[i]->atomsClose().size() << "\t" << temp <<  std::endl;
     }
     std::cout << tempt << std::endl;
+    */
     /*
     std::cout << tempt << "\n" << std::endl;
     temp = m_listOfCells[0]->position + center;
@@ -110,5 +116,5 @@ void CellList::calculateCellAtoms()
         std::cout << m_listOfCells[3]->atomsClose()[i]->position << std::endl;
     }
     */
-    std::cout << "Calculating cell atoms" << std::endl;
+    //std::cout << "Calculating cell atoms" << std::endl;
 }
