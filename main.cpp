@@ -33,10 +33,10 @@ int main()
     int numberOfFCCLattices = 5;
     double cellSize = 7;
     int numberOfAtoms = 4 * numberOfFCCLattices * numberOfFCCLattices * numberOfFCCLattices;
-    double initialTemperature = 3000.0; // In Kelvin.
+    double initialTemperature = 100.0; // In Kelvin.
     system.createFCCLattice(numberOfFCCLattices, UnitConverter::lengthFromAngstroms(5.26), UnitConverter::temperatureFromSI(initialTemperature), cellSize);
-    double tbath = initialTemperature;
-    double relaxationTime = 4.0; // Figure this one out.
+    double tbath = 3000;
+    double relaxationTime = 0.01; // Figure this one out.
     system.setPotential(new LennardJones(3.405, 1.0, new BerendsenThermostat(UnitConverter::temperatureFromSI(tbath), relaxationTime))); // You must insert correct parameters here
     system.setIntegrator(new VelocityVerlet());
     system.removeMomentum();
@@ -49,10 +49,10 @@ int main()
     for(int timestep=0; timestep<200; timestep++) {
         if (timestep < 100) {
             filename = "build/DATA/statisticsTHERMO" + to_string(timestep) + ".txt";
-            system.step(dt, true);
+            system.step(dt, false);
         } else {
             filename = "build/DATA/statistics" + to_string(timestep) + ".txt";
-            system.step(dt, false);
+            system.step(dt, true);
         }
         statisticsSampler->sample(&system, filename);
 

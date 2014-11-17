@@ -6,7 +6,7 @@ class VelocityVerlet : public Integrator
 private:
     void firstKick(System *system, double dt, bool thermostatOn);
     void halfKick(System *system, double dt, bool thermostatOn);
-    void move(System *system, double dt, bool thermostatOn);
+    void move(System *system, double dt);
     bool m_firstStep;
 public:
     VelocityVerlet();

@@ -1,5 +1,6 @@
 #include "velocityverlet.h"
 #include "../system.h"
+#include "../berendsen.h"
 
 VelocityVerlet::VelocityVerlet() :
     m_firstStep(true) // This will set the variable m_firstStep to false when the object is created
@@ -48,20 +49,20 @@ void VelocityVerlet::move(System *system, double dt)
 void VelocityVerlet::integrate(System *system, double dt, bool thermostatOn)
 {
     if (thermostatOn) {
-        if(m_firstStep) firstKick(system, dt);
-        else halfKick(system, dt);
+        if(m_firstStep) firstKick(system, dt, true);
+        else halfKick(system, dt, true);
         move(system, dt);
         system->applyPeriodicBoundaryConditions();
         system->calculateForces();
-        halfKick(system, dt);
+        halfKick(system, dt, true);
         system->resetForcesOnAllAtoms();
     } else {
-        if(m_firstStep) firstKick(system, dt);
-        else halfKick(system, dt);
+        if(m_firstStep) firstKick(system, dt, false);
+        else halfKick(system, dt, false);
         move(system, dt);
         system->applyPeriodicBoundaryConditions();
         system->calculateForces();
-        halfKick(system, dt);
+        halfKick(system, dt, false);
         system->resetForcesOnAllAtoms();
     }
 }
