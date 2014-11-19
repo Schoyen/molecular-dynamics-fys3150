@@ -2,6 +2,9 @@
 #include "integrators/integrator.h"
 #include "potentials/potential.h"
 #include "unitconverter.h"
+#include <fstream>
+
+using namespace std;
 
 System::System() :
     m_potential(0),
@@ -216,4 +219,71 @@ void System::step(double dt, bool thermostatOn) {
     m_integrator->integrate(this, dt, thermostatOn);
     m_steps++;
     m_currentTime += dt;
+}
+
+
+void System::save(string filename)
+{
+    ofstream file(filename, ios::out | ios::binary);
+    if (!file.is_open()) {
+        cerr << "Could not open file " << filename << ". Aborting!" << endl;
+        exit(1);
+    }
+    int numberOfPhaseSpaceCoordinates = 6 * m_atoms.size();
+    double *phaseSpace = new double[numberOfPhaseSpaceCoordinates];
+
+    int phaseSpaceCounter = 0;
+    for (int i = 0; i < (int) m_atoms.size(); i++) {
+        phaseSpace[phaseSpaceCounter++] = m_atoms[i]->position.x();
+        phaseSpace[phaseSpaceCounter++] = m_atoms[i]->position.y();
+        phaseSpace[phaseSpaceCounter++] = m_atoms[i]->position.z();
+        phaseSpace[phaseSpaceCounter++] = m_atoms[i]->velocity.x();
+        phaseSpace[phaseSpaceCounter++] = m_atoms[i]->velocity.y();
+        phaseSpace[phaseSpaceCounter++] = m_atoms[i]->velocity.z();
+    }
+
+    int numberOfAtoms = m_atoms.size();
+    file.write(reinterpret_cast<char*>(&numberOfAtoms), sizeof(int));
+    file.write(reinterpret_cast<char*>(phaseSpace),
+               numberOfPhaseSpaceCoordinates * sizeof(double));
+    file.write(reinterpret_cast<char*>(&m_systemSize[0]), 3 * sizeof(double));
+
+    file.close();
+    delete phaseSpace;
+}
+
+void System::load(string filename)
+{
+    ifstream file(filename, ios::in | ios::binary);
+    if (!file.is_open()) {
+        cerr << "Could not open file " << filename << ". Aborting!" << endl;
+        exit(1);
+    }
+
+    int numberOfAtoms;
+    file.read(reinterpret_cast<char*>(&numberOfAtoms), sizeof(int));
+
+    double *phaseSpace = new double[6 * numberOfAtoms];
+    file.read(reinterpret_cast<char*>(phaseSpace), 6 * numberOfAtoms * sizeof(double));
+
+    vec3 systemSize;
+    file.read(reinterpret_cast<char*>(&systemSize[0]), 3 * sizeof(double));
+    m_systemSize = systemSize;
+
+    int phaseSpaceCounter = 0;
+    double mass = 39.948;
+    m_atoms.clear();
+    for (int i = 0; i < numberOfAtoms; i++) {
+        Atom *atom = new Atom(mass);
+        atom->position = vec3(phaseSpace[phaseSpaceCounter++],
+                              phaseSpace[phaseSpaceCounter++],
+                              phaseSpace[phaseSpaceCounter++]);
+        atom->velocity = vec3(phaseSpace[phaseSpaceCounter++],
+                              phaseSpace[phaseSpaceCounter++],
+                              phaseSpace[phaseSpaceCounter++]);
+        m_atoms.push_back(atom);
+    }
+
+    file.close();
+    delete phaseSpace;
 }

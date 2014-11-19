@@ -8,6 +8,7 @@
 class Potential; class Integrator; class CellList;
 using std::vector;
 using CompPhys::vec3;
+using namespace std;
 
 class System
 {
@@ -32,6 +33,8 @@ public:
     void removeMomentum();
     void calculateForces();
     void step(double dt, bool thermostatOn);
+    void save(string filename);
+    void load(string filename);
 
     // Setters and getters
     vector<Atom *> &atoms() { return m_atoms; }

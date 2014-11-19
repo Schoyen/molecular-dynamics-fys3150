@@ -46,13 +46,17 @@ int main()
     movie->open("movie.xyz");
 
     string filename;
+    //filename = "test.txt";
+    //system.load(filename);
     for(int timestep=0; timestep<200; timestep++) {
         if (timestep < 100) {
             filename = "build/DATA/statisticsTHERMO" + to_string(timestep) + ".txt";
-            system.step(dt, false);
+            system.step(dt, true);
         } else {
             filename = "build/DATA/statistics" + to_string(timestep) + ".txt";
             system.step(dt, true);
+            //system.save("test.txt");
+            //break;
         }
         statisticsSampler->sample(&system, filename);
 
