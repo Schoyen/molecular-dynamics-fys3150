@@ -1,9 +1,10 @@
 #include "statisticssampler.h"
-#include <fstream>
+
+using namespace std;
 
 StatisticsSampler::StatisticsSampler()
 {
-    sampledNetMomentum = false;
+    m_sampledNetMomentum = false;
 }
 
 StatisticsSampler::~StatisticsSampler()
@@ -11,33 +12,51 @@ StatisticsSampler::~StatisticsSampler()
 
 }
 
+
+void StatisticsSampler::createFiles()
+{
+    m_kineticEnergyFile.open("build/DATA/kineticEnergy.txt");
+    m_potentialEnergyFile.open("build/DATA/potentialEnergy.txt");
+    m_netMomentumFile.open("build/DATA/netMomentum.txt");
+    m_numberDensityFile.open("build/DATA/numberDensity.txt");
+    m_heatCapacityFile.open("build/DATA/heatCapacity.txt");
+}
+
+
+void StatisticsSampler::closeFiles()
+{
+    m_kineticEnergyFile.close();
+    m_potentialEnergyFile.close();
+    m_numberDensityFile.close();
+    m_heatCapacityFile.close();
+}
+
 /*
- * The system seems to be working, but the temperature is 0 K and the
- * energies are fluctuating.
+ * Figure out trouble with the net momentum. It is zero to begin with.
  */
-void StatisticsSampler::sample(System *system, std::string filename)
+void StatisticsSampler::sample(System *system, int timestep)
 {
     sampleKineticEnergy(system);
     samplePotentialEnergy(system);
-    if (!sampledNetMomentum) {
+    if (!m_sampledNetMomentum) {
         sampleNetMomentum(system);
-        sampledNetMomentum = true;
+        m_sampledNetMomentum = true;
+        double netMomentumInSI = UnitConverter::velocityToSI(m_netMomentum);
+        double netMomentumAfterInSI = UnitConverter::velocityToSI(m_netMomentumAfter);
+        if (!m_netMomentumFile.is_open()) {
+            cerr << "Unable to write to build/DATA/netMomentum.txt" << endl;
+            exit(1);
+        }
+        m_netMomentumFile << "Net momentum before removal: " << to_string(netMomentumInSI) << "\n";
+        m_netMomentumFile << "Net momentum after removal: " << to_string(netMomentumAfterInSI);
     }
     sampleTemperature(system);
 
     double temperatureInSI = UnitConverter::temperatureToSI(m_temperature);
     double kineticEnergyInSI = UnitConverter::energyToSI(m_kineticEnergy);
     double potentialEnergyInSI = UnitConverter::energyToSI(m_potentialEnergy);
-    double netMomentumInSI = UnitConverter::velocityToSI(m_netMomentum);
-    double netMomentumAfterInSI = UnitConverter::velocityToSI(m_netMomentumAfter);
+    // Add the extra conversions for the rest of the files.
 
-    std::ofstream file(filename);
-    if (file.is_open()) {
-        file << "Initial net momentum of the system: " << netMomentumInSI << " m/s\n";
-        file << "Net momentum of the system after removal: " << netMomentumAfterInSI << " m/s\n";
-        file << "U = " << potentialEnergyInSI << " J\tK = " << kineticEnergyInSI << " J\tT = " << temperatureInSI << " K\n";
-    } else std::cout << "Unable to write to file." << std::endl;
-    file.close();
 }
 
 void StatisticsSampler::sampleKineticEnergy(System *system) {
@@ -50,6 +69,7 @@ void StatisticsSampler::samplePotentialEnergy(System *system) {
 
 void StatisticsSampler::sampleNetMomentum(System *system) {
     // Value of the net momentum of the system before we remove it.
+    // Both are zero. Make sure the function is working properly.
     m_netMomentum = system->getVelocityOfCM().length();
     m_netMomentumAfter = system->getVelocityOfCMAfter().length();
 }

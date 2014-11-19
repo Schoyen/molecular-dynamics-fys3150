@@ -45,20 +45,19 @@ int main()
     IO *movie = new IO(); // To write the state to file
     movie->open("movie.xyz");
 
+    statisticsSampler->createFiles();
     string filename;
     //filename = "test.txt";
     //system.load(filename);
     for(int timestep=0; timestep<200; timestep++) {
         if (timestep < 100) {
-            filename = "build/DATA/statisticsTHERMO" + to_string(timestep) + ".txt";
             system.step(dt, true);
         } else {
-            filename = "build/DATA/statistics" + to_string(timestep) + ".txt";
             system.step(dt, true);
             //system.save("test.txt");
             //break;
         }
-        statisticsSampler->sample(&system, filename);
+        statisticsSampler->sample(&system, timestep);
 
         movie->saveState(&system);
         //cout << timestep << endl;
@@ -72,6 +71,7 @@ int main()
 
 
     file.close();
+    statisticsSampler->closeFiles();
     movie->close();
 
     return 0;

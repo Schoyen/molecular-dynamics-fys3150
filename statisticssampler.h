@@ -1,7 +1,9 @@
 #pragma once
 #include "system.h"
 #include "unitconverter.h"
-#include <iostream>
+#include <fstream>
+
+using namespace std;
 
 class StatisticsSampler
 {
@@ -11,11 +13,20 @@ private:
     double m_kineticEnergy;
     double m_potentialEnergy;
     double m_temperature;
-    bool sampledNetMomentum;
+    ofstream m_kineticEnergyFile;
+    ofstream m_potentialEnergyFile;
+    ofstream m_netMomentumFile;
+    ofstream m_numberDensityFile;
+    ofstream m_pressureFile;
+    ofstream m_heatCapacityFile;
+    // Add optional pressure minus heat capacity.
+    bool m_sampledNetMomentum;
 public:
     StatisticsSampler();
     ~StatisticsSampler();
-    void sample(System *system, std::string filename);
+    void createFiles();
+    void closeFiles();
+    void sample(System *system, int timestep);
     void sampleKineticEnergy(System *system);
     void samplePotentialEnergy(System *system);
     void sampleNetMomentum(System *system);

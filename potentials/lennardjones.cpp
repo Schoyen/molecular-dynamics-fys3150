@@ -24,9 +24,9 @@ void LennardJones::calculateForces(System *system)
     vec3 tempForce = vec3(0.0, 0.0, 0.0);
     vec3 distance;
     double expressionOfForce;
-    double counter = 0;
+    //double counter = 0;
     vec3 temp;
-    CellList *celllist = system->celllist();
+    //CellList *celllist = system->celllist();
 
     /*
     for (int i = 0; i < (int) celllist->listOfCells().size(); i++) {
