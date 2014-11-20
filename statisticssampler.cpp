@@ -42,6 +42,7 @@ void StatisticsSampler::sample(System *system, int timestep)
     sampleKineticEnergy(system);
     samplePotentialEnergy(system);
     sampleTemperature(system);
+    sampleNumberDensity(system);
     if (!m_sampledNetMomentum) {
         sampleNetMomentum(system);
         m_sampledNetMomentum = true;
@@ -80,24 +81,42 @@ void StatisticsSampler::sample(System *system, int timestep)
     
     m_temperatureFile << temperatureInSI << "\n";
 
+    if (!m_numberDensityFile.is_open()) {
+        cerr << "Unable to write to build/DATA/numberDensity.txt" << endl;
+        exit(1);
+    }
+
+    m_numberDensityFile << m_numberDensity << endl;
+
     // Add the extra conversions for the rest of the files.
 }
 
-void StatisticsSampler::sampleKineticEnergy(System *system) {
+void StatisticsSampler::sampleKineticEnergy(System *system)
+{
     m_kineticEnergy = system->potential()->kineticEnergy();
 }
 
-void StatisticsSampler::samplePotentialEnergy(System *system) {
+void StatisticsSampler::samplePotentialEnergy(System *system)
+{
     m_potentialEnergy = system->potential()->potentialEnergy();
 }
 
-void StatisticsSampler::sampleNetMomentum(System *system) {
+void StatisticsSampler::sampleNetMomentum(System *system)
+{
     // Value of the net momentum of the system before we remove it.
     // Both are zero. Make sure the function is working properly.
     m_netMomentum = system->getVelocityOfCM().length();
     m_netMomentumAfter = system->getVelocityOfCMAfter().length();
 }
 
-void StatisticsSampler::sampleTemperature(System *system) {
+void StatisticsSampler::sampleTemperature(System *system)
+{
     m_temperature = system->potential()->temperature();
+}
+
+void StatisticsSampler::sampleNumberDensity(System *system)
+{
+    // Consider using dimensionless variables due to large numbers.
+    // m_numberDensity = system->atoms().size() / UnitConverter::lengthToSI(system->systemSize().x() * system->systemSize().y() * system->systemSize().z());
+    m_numberDensity = system->atoms().size() / (system->systemSize().x() * system->systemSize().y() * system->systemSize().z());
 }
