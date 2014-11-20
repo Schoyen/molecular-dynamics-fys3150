@@ -20,6 +20,9 @@ void StatisticsSampler::createFiles()
     m_temperatureFile.open("build/DATA/temperature.txt");
     m_netMomentumFile.open("build/DATA/netMomentum.txt");
     m_numberDensityFile.open("build/DATA/numberDensity.txt");
+    m_pressureFile.open("build/DATA/pressure.txt");
+    // Consider calculating this in a python program when plotting.
+    // Check whether or not you are supposed to use energy divided by temperature or some other way.
     m_heatCapacityFile.open("build/DATA/heatCapacity.txt");
 }
 
@@ -31,6 +34,7 @@ void StatisticsSampler::closeFiles()
     m_temperatureFile.close();
     m_netMomentumFile.close();
     m_numberDensityFile.close();
+    m_pressureFile.close();
     m_heatCapacityFile.close();
 }
 
@@ -43,6 +47,7 @@ void StatisticsSampler::sample(System *system, int timestep)
     samplePotentialEnergy(system);
     sampleTemperature(system);
     sampleNumberDensity(system);
+    samplePressure(system);
     if (!m_sampledNetMomentum) {
         sampleNetMomentum(system);
         m_sampledNetMomentum = true;
@@ -59,6 +64,7 @@ void StatisticsSampler::sample(System *system, int timestep)
     double temperatureInSI = UnitConverter::temperatureToSI(m_temperature);
     double kineticEnergyInSI = UnitConverter::energyToSI(m_kineticEnergy);
     double potentialEnergyInSI = UnitConverter::energyToSI(m_potentialEnergy);
+    double pressureInSI = UnitConverter::pressureToSI(m_pressure);
 
     if (!m_kineticEnergyFile.is_open()) {
         cerr << "Unable to write to build/DATA/kineticEnergy.txt" << endl;
@@ -88,6 +94,13 @@ void StatisticsSampler::sample(System *system, int timestep)
 
     m_numberDensityFile << m_numberDensity << endl;
 
+    if (!m_pressureFile.is_open()) {
+        cerr << "Unable to write to build/DATA/pressure.txt" << endl;
+        exit(1);
+    }
+
+    m_pressureFile << pressureInSI << endl;
+
     // Add the extra conversions for the rest of the files.
 }
 
@@ -116,7 +129,14 @@ void StatisticsSampler::sampleTemperature(System *system)
 
 void StatisticsSampler::sampleNumberDensity(System *system)
 {
+    m_numberDensity = system->potential()->numberDensity();
     // Consider using dimensionless variables due to large numbers.
     // m_numberDensity = system->atoms().size() / UnitConverter::lengthToSI(system->systemSize().x() * system->systemSize().y() * system->systemSize().z());
-    m_numberDensity = system->atoms().size() / (system->systemSize().x() * system->systemSize().y() * system->systemSize().z());
+    // The number density needs to be computed in the force calculation.
+    // m_numberDensity = system->atoms().size() / (system->systemSize().x() * system->systemSize().y() * system->systemSize().z());
+}
+
+void StatisticsSampler::samplePressure(System *system)
+{
+    m_pressure = system->potential()->pressure();
 }

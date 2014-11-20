@@ -28,3 +28,13 @@ double Potential::temperature()
 {
     return m_temperature;
 }
+
+double Potential::numberDensity()
+{
+    return m_numberDensity;
+}
+
+double Potential::pressure()
+{
+    return m_pressure;
+}

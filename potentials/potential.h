@@ -11,6 +11,8 @@ protected:
     double m_potentialEnergy;
     double m_kineticEnergy;
     double m_temperature;
+    double m_numberDensity;
+    double m_pressure;
     BerendsenThermostat *m_berendsen;
 public:
     Potential();
@@ -20,5 +22,7 @@ public:
     double potentialEnergy();
     double kineticEnergy();
     double temperature();
+    double numberDensity();
+    double pressure();
     BerendsenThermostat *berendsen() {return m_berendsen;}
 };

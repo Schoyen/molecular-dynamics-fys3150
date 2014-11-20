@@ -19,6 +19,7 @@ void LennardJones::calculateForces(System *system)
 {
     m_potentialEnergy = 0; // Remember to compute this in the loop
     m_kineticEnergy = 0;
+    m_numberDensity = system->atoms().size() / (system->systemSize().x() * system->systemSize().y() * system->systemSize().z());
     double distanceBetweenAtoms = 0;
     double divisionOfSigmaAndDistance = 0;
     vec3 tempForce = vec3(0.0, 0.0, 0.0);
@@ -26,6 +27,8 @@ void LennardJones::calculateForces(System *system)
     double expressionOfForce;
     //double counter = 0;
     vec3 temp;
+
+    // TODO: Add the statistical property calculations to the cell lists.
     //CellList *celllist = system->celllist();
 
     /*
@@ -97,10 +100,15 @@ void LennardJones::calculateForces(System *system)
             expressionOfForce = 4 * m_epsilon * (12 * pow(m_sigma, 12)/pow(distanceBetweenAtoms, 14) - 6 * pow(m_sigma, 6)/pow(distanceBetweenAtoms, 8));
             tempForce = distance*expressionOfForce;
             system->atoms()[i]->force.add(tempForce);
+
+            m_pressure += tempForce.dot(distance);
+
             tempForce = tempForce * (-1);
             system->atoms()[j]->force.add(tempForce);
         }
         m_kineticEnergy += 0.5 * system->atoms()[i]->mass() * system->atoms()[i]->velocity.lengthSquared();
     }
     m_temperature = (2.0/3.0) * (m_kineticEnergy/((double) system->atoms().size() * 1));
+    m_pressure = 1.0 / (3.0 * system->systemSize().x() * system->systemSize().y() * system->systemSize().z()) * (m_pressure / ((double) system->atoms().size())) + m_numberDensity * 1 * m_temperature;
+
 }
