@@ -51,7 +51,7 @@ int main()
     //system.load(filename);
     for(int timestep=0; timestep<200; timestep++) {
         if (timestep < 100) {
-            system.step(dt, true);
+            system.step(dt, false);
         } else {
             system.step(dt, true);
             //system.save("test.txt");
