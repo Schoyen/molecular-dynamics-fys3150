@@ -16,6 +16,7 @@ private:
     ofstream m_kineticEnergyFile;
     ofstream m_potentialEnergyFile;
     ofstream m_netMomentumFile;
+    ofstream m_temperatureFile;
     ofstream m_numberDensityFile;
     ofstream m_pressureFile;
     ofstream m_heatCapacityFile;

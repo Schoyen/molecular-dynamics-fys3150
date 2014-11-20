@@ -17,6 +17,7 @@ void StatisticsSampler::createFiles()
 {
     m_kineticEnergyFile.open("build/DATA/kineticEnergy.txt");
     m_potentialEnergyFile.open("build/DATA/potentialEnergy.txt");
+    m_temperatureFile.open("build/DATA/temperature.txt");
     m_netMomentumFile.open("build/DATA/netMomentum.txt");
     m_numberDensityFile.open("build/DATA/numberDensity.txt");
     m_heatCapacityFile.open("build/DATA/heatCapacity.txt");
@@ -27,6 +28,8 @@ void StatisticsSampler::closeFiles()
 {
     m_kineticEnergyFile.close();
     m_potentialEnergyFile.close();
+    m_temperatureFile.close();
+    m_netMomentumFile.close();
     m_numberDensityFile.close();
     m_heatCapacityFile.close();
 }
@@ -38,6 +41,7 @@ void StatisticsSampler::sample(System *system, int timestep)
 {
     sampleKineticEnergy(system);
     samplePotentialEnergy(system);
+    sampleTemperature(system);
     if (!m_sampledNetMomentum) {
         sampleNetMomentum(system);
         m_sampledNetMomentum = true;
@@ -50,13 +54,33 @@ void StatisticsSampler::sample(System *system, int timestep)
         m_netMomentumFile << "Net momentum before removal: " << to_string(netMomentumInSI) << "\n";
         m_netMomentumFile << "Net momentum after removal: " << to_string(netMomentumAfterInSI);
     }
-    sampleTemperature(system);
 
     double temperatureInSI = UnitConverter::temperatureToSI(m_temperature);
     double kineticEnergyInSI = UnitConverter::energyToSI(m_kineticEnergy);
     double potentialEnergyInSI = UnitConverter::energyToSI(m_potentialEnergy);
-    // Add the extra conversions for the rest of the files.
 
+    if (!m_kineticEnergyFile.is_open()) {
+        cerr << "Unable to write to build/DATA/kineticEnergy.txt" << endl;
+        exit(1);
+    }
+    
+    m_kineticEnergyFile << kineticEnergyInSI << "\n";
+
+    if (!m_potentialEnergyFile.is_open()) {
+        cerr << "Unable to write to build/DATA/potentialEnergy.txt" << endl;
+        exit(1);
+    }
+    
+    m_potentialEnergyFile << potentialEnergyInSI << "\n";
+
+    if (!m_temperatureFile.is_open()) {
+        cerr << "Unable to write to build/DATA/temperature.txt" << endl;
+        exit(1);
+    }
+    
+    m_temperatureFile << temperatureInSI << "\n";
+
+    // Add the extra conversions for the rest of the files.
 }
 
 void StatisticsSampler::sampleKineticEnergy(System *system) {
