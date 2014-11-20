@@ -69,21 +69,16 @@ void CellList::calculateCellAtoms()
     }
 
 
-
+    // A check to see if all the atoms inside the volume of the cell are added.
     /*
+    std::cout << m_listOfCells[0]->position << std::endl;
     for (int i = 0; i < (int) m_system->atoms().size(); i++) {
-        for (int j = 0; j < (int) m_system->atoms().size(); j++) {
-            temp = m_listOfCells[j]->position + center;
-            temp = m_system->atoms()[i]->position - temp;
-            //distance = temp.lengthSquared();
-            if (temp.x() < center.x() && temp.y() < center.y() && temp.z() < center.z()) {
-                m_listOfCells[j]->addAtom(m_system->atoms()[i]);
-                break;
-            }
+        atomPos = m_system->atoms()[i]->position;
+        if (m_listOfCells[0]->isInCell(atomPos, m_rcut)) {
+            std::cout << atomPos << std::endl;
         }
     }
     */
-
     
     /*
     int tempt = 0;
@@ -120,6 +115,6 @@ void CellList::calculateCellAtoms()
     for (int i = 0; i < (int) m_listOfCells[3]->atomsClose().size(); i++) {
         std::cout << m_listOfCells[3]->atomsClose()[i]->position << std::endl;
     }
-    */
     //std::cout << "Calculating cell atoms" << std::endl;
+    */
 }

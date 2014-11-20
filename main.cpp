@@ -35,7 +35,7 @@ int main()
     int numberOfAtoms = 4 * numberOfFCCLattices * numberOfFCCLattices * numberOfFCCLattices;
     double initialTemperature = 100.0; // In Kelvin.
     system.createFCCLattice(numberOfFCCLattices, UnitConverter::lengthFromAngstroms(5.26), UnitConverter::temperatureFromSI(initialTemperature), cellSize);
-    double tbath = 3000;
+    double tbath = 500;
     double relaxationTime = 0.01; // Figure this one out.
     system.setPotential(new LennardJones(3.405, 1.0, new BerendsenThermostat(UnitConverter::temperatureFromSI(tbath), relaxationTime))); // You must insert correct parameters here
     system.setIntegrator(new VelocityVerlet());
@@ -49,7 +49,7 @@ int main()
     string filename;
     //filename = "test.txt";
     //system.load(filename);
-    for(int timestep=0; timestep<200; timestep++) {
+    for(int timestep=0; timestep<1; timestep++) {
         if (timestep < 100) {
             system.step(dt, false);
         } else {

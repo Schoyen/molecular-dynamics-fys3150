@@ -28,10 +28,10 @@ void LennardJones::calculateForces(System *system)
     //double counter = 0;
     vec3 temp;
 
-    // TODO: Add the statistical property calculations to the cell lists.
-    //CellList *celllist = system->celllist();
-
     /*
+    // TODO: Add the statistical property calculations to the cell lists.
+    CellList *celllist = system->celllist();
+
     for (int i = 0; i < (int) celllist->listOfCells().size(); i++) {
         // Calculation of force inside each cell.
         // The local force seems to be computed properly.
@@ -74,7 +74,7 @@ void LennardJones::calculateForces(System *system)
                 }
             }
         }
-        std::cout << counter << std::endl;
+        //std::cout << counter << std::endl;
         counter = 0;
     }
     m_temperature = (2.0/3.0) * (m_kineticEnergy/((double) system->atoms().size() * 1));
