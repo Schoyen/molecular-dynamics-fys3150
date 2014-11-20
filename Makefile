@@ -53,7 +53,7 @@ build/INTEGRATORS/integrator.o: integrators/integrator.cpp $(DEPS)
 build/INTEGRATORS/velocityverlet.o: integrators/velocityverlet.cpp $(DEPS)
 	$(CXX) $(CPPFLAGS) $< -c -o $@
 
-build/MAINCPP: main.cpp $(DEPS) $(COMP) | build
+build/OLDMAINCPP: oldmain.cpp $(DEPS) $(COMP) | build
 	$(CXX) $(CPPFLAGS) $(COMP) $< -o $@
 
 clean:

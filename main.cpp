@@ -1,78 +1,54 @@
 #include <iostream>
-#include <fstream>
-#include "math/random.h"
-#include "potentials/potential.h"
-#include "potentials/lennardjones.h"
-#include "integrators/velocityverlet.h"
-#include "system.h"
-#include "statisticssampler.h"
-#include "atom.h"
-#include "io.h"
-#include "unitconverter.h"
-#include "berendsen.h"
-#include <chrono>
+#include <cstdlib>
 
 using namespace std;
-using namespace chrono;
-
-int main()
+/*
+ * List of things that need to be sent to the main-method.
+ * double dt
+ * int systemSize (only quadratic cubes)
+ * int numberOfFCCLattices
+ * int cellSize
+ * double initialTemperature
+ * double tbath
+ * double relaxationTime
+ * int timestep
+ * int timestepStartThermostat
+ * int timestepEndThermostat
+ * bool oldForceCalculation
+ */
+int main(int argc, char* argv[])
 {
-    double dt = UnitConverter::timeFromSI(1e-15); // You should try different values for dt as well.
-
-    cout << "One unit of length is " << UnitConverter::lengthToSI(1.0) << " meters" << endl;
-    cout << "One unit of velocity is " << UnitConverter::velocityToSI(1.0) << " meters/second" << endl;
-    cout << "One unit of time is " << UnitConverter::timeToSI(1.0) << " seconds" << endl;
-    cout << "One unit of mass is " << UnitConverter::massToSI(1.0) << " kg" << endl;
-    cout << "One unit of temperature is " << UnitConverter::temperatureToSI(1.0) << " K" << endl;
-    cout << "One unit of pressure is " << UnitConverter::pressureToSI(1.0) << " Pa" << endl;
-
-    auto start = high_resolution_clock::now();
-    System system;
-    // For more than 2 x 2 x 2 FCCLattice we need a bigger system size.
-    system.setSystemSize(UnitConverter::lengthFromAngstroms(vec3(28, 28, 28)));
-    int numberOfFCCLattices = 5;
-    double cellSize = 7;
-    int numberOfAtoms = 4 * numberOfFCCLattices * numberOfFCCLattices * numberOfFCCLattices;
-    double initialTemperature = 100.0; // In Kelvin.
-    system.createFCCLattice(numberOfFCCLattices, UnitConverter::lengthFromAngstroms(5.26), UnitConverter::temperatureFromSI(initialTemperature), cellSize);
-    double tbath = 500;
-    double relaxationTime = 0.01; // Figure this one out.
-    system.setPotential(new LennardJones(3.405, 1.0, new BerendsenThermostat(UnitConverter::temperatureFromSI(tbath), relaxationTime))); // You must insert correct parameters here
-    system.setIntegrator(new VelocityVerlet());
-    system.removeMomentum();
-
-    StatisticsSampler *statisticsSampler = new StatisticsSampler(); //
-    IO *movie = new IO(); // To write the state to file
-    movie->open("movie.xyz");
-
-    statisticsSampler->createFiles();
-    string filename;
-    //filename = "test.txt";
-    //system.load(filename);
-    for(int timestep=0; timestep<1; timestep++) {
-        if (timestep < 100) {
-            system.step(dt, false);
-        } else {
-            system.step(dt, true);
-            //system.save("test.txt");
-            //break;
-        }
-        statisticsSampler->sample(&system, timestep);
-
-        movie->saveState(&system);
-        //cout << timestep << endl;
+    if (argc < 12) {
+        cout << "\n==================================" << endl;
+        cout << "Not enough command line arguments." << endl;
+        cout << "Usage: " << argv[0] << " 1 2 3 4 5 6 7 8 9 10 11\n"
+             << "1: double dt\n"
+             << "2: int system size (only quadratic cubes)\n"
+             << "3: int number of FCC lattices\n"
+             << "4: int cell size\n"
+             << "5: double initial temperature\n"
+             << "6: double t_bath\n"
+             << "7: double relaxation time\n"
+             << "8: int number of timesteps\n"
+             << "9: int number of timesteps before turning on the thermostat\n"
+             << "10: int number of timesteps before turning off the thermostat\n"
+             << "11: bool 1='true' for old force calculation and 0 (or anything) ='false' for cell lists"
+             << endl;
+        cout << "==================================\n" << endl;
+        exit(1);
     }
-    auto finish = high_resolution_clock::now();
-    filename = "build/DATA/calculationTime" + to_string(numberOfAtoms) + ".txt";
-    ofstream file(filename);
-    if (file.is_open()) {
-        file << duration_cast<nanoseconds>(finish - start).count()*(1.0e-9) << " s";
-    } else cout << "Unable to write to file." << endl;
 
-
-    file.close();
-    statisticsSampler->closeFiles();
-    movie->close();
-
-    return 0;
+    double dt = atof(argv[1]);
+    int systemSize = atoi(argv[2]);
+    int numberOfFCCLattices = atoi(argv[3]);
+    int cellSize = atoi(argv[4]);
+    double initialTemperature = atof(argv[5]);
+    double tbath = atof(argv[6]);
+    double relaxationTime = atof(argv[7]);
+    int timestep = atoi(argv[8]);
+    int timestepStartThermostat = atoi(argv[9]);
+    int timestepEndThermostat = atoi(argv[10]);
+    bool oldForceCalculation;
+    if (atoi(argv[11]) == 1) oldForceCalculation = true;
+    else oldForceCalculation = false;
 }
