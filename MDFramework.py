@@ -21,7 +21,7 @@ class MDFramework:
         if not path.exists("build"):
             print ("Compiling program.")
             system("make")
-            system("make build/OLDMAINCPP")
+            system("make build/MAINCPP")
 
     def clean_MD(self):
         print ("Removing build.")
@@ -31,7 +31,6 @@ class MDFramework:
     def create_article(self):
         # Let all files needed be created and let pdflatex run its course before cleaning.
         print ("Creating article and removing build.")
-        pass
 
     def run_MD_simulation(self):
         if self.old_force_calculation == 1:
@@ -39,21 +38,23 @@ class MDFramework:
         else:
             self.compile_MD()
             print ("""
-                   Running program for:
-                   dt                      = %g
-                   system_size             = %g
-                   fcc_lattice             = %g
-                   cell_size               = %g
-                   initial_temp            = %g
-                   t_bath                  = %g
-                   relaxation_time         = %g
-                   timesteps               = %g
-                   timesteps_before_thermo = %g
-                   timesteps_after_thermo  = %g
-                   old_force_calculation   = %g
+==============================
+Running program for:
+dt                      = %g
+system_size             = %g
+fcc_lattice             = %g
+cell_size               = %g
+initial_temp            = %g
+t_bath                  = %g
+relaxation_time         = %g
+timesteps               = %g
+timesteps_before_thermo = %g
+timesteps_after_thermo  = %g
+old_force_calculation   = %g
+==============================
                    """ % (self.dt, self.system_size, self.fcc_lattice, self.cell_size, self.initial_temp,\
                           self.t_bath, self.relaxation_time, self.timesteps, self.timesteps_before_thermo,\
-                          self.timesteps_after_thermo, self.old_force_calculation))
+                          self.timesteps_after_thermo, self.old_force_calculation)) # *cringe*
             system("./build/MAINCPP %g %g %g %g %g %g %g %g %g %g %g" % (self.dt, self.system_size,\
                    self.fcc_lattice, self.cell_size, self.initial_temp, self.t_bath, self.relaxation_time,\
                    self.timesteps, self.timesteps_before_thermo, self.timesteps_after_thermo,\

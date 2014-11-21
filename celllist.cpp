@@ -13,6 +13,9 @@ CellList::~CellList()
     m_listOfCells.clear();
 }
 
+/*
+ * Method used by system upon creation of the fcc lattices.
+ */
 void CellList::createCell(vec3 pos)
 {
     Cell *cell = new Cell();
@@ -21,6 +24,9 @@ void CellList::createCell(vec3 pos)
     m_listOfCells.push_back(cell);
 }
 
+/*
+ * Removing the atoms from the cells.
+ */
 void CellList::emptyCells()
 {
     for (int i = 0; i < (int) m_listOfCells.size(); i++) {
@@ -37,8 +43,6 @@ void CellList::emptyCells()
 void CellList::calculateCellAtoms()
 {
     //double distance;
-    // The atoms seems to be uniformly distributed among the cells.
-    // Negative Houston.
     vec3 temp;
     //vec3 center = vec3(m_rcut/2.0, m_rcut/2.0, m_rcut/2.0);
     vec3 positionOfCenter;
@@ -46,25 +50,13 @@ void CellList::calculateCellAtoms()
     vec3 atomPos;
 
     for (int i = 0; i < (int) m_system->atoms().size(); i++) {
+        atomPos = m_system->atoms()[i]->position;
         // Iterating over all atoms.
         for (int j = 0; j < (int) m_listOfCells.size(); j++) {
             //cellPos = m_listOfCells[j]->position;
-            atomPos = m_system->atoms()[i]->position;
             if (m_listOfCells[j]->isInCell(atomPos, m_rcut)) {
                 m_listOfCells[j]->addAtom(m_system->atoms()[i]);
             }
-            /*
-            if (cellPos.x() <= atomPos.x() && atomPos.x() < cellPos.x() + m_rcut &&
-                cellPos.y() <= atomPos.y() && atomPos.y() < cellPos.y() + m_rcut &&
-                cellPos.z() <= atomPos.z() && atomPos.z() < cellPos.z() + m_rcut) {
-                m_listOfCells[j]->addAtom(m_system->atoms()[i]);
-            }
-            */
-            /*
-            // Iterating over all cells in cell list.
-            positionOfCenter = m_listOfCells[j]->position + center;
-            temp = m_system->atoms()[i]->position - positionOfCenter;
-            */
         }
     }
 

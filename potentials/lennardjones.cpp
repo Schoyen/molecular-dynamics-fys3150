@@ -12,9 +12,6 @@ LennardJones::LennardJones(double sigma, double epsilon, BerendsenThermostat *be
     m_berendsen = berendsen;
 }
 
-/*
- * This does not look correct...
- */
 void LennardJones::calculateForces(System *system)
 {
     m_potentialEnergy = 0; // Remember to compute this in the loop
@@ -25,11 +22,10 @@ void LennardJones::calculateForces(System *system)
     vec3 tempForce = vec3(0.0, 0.0, 0.0);
     vec3 distance;
     double expressionOfForce;
-    //double counter = 0;
+    double counter = 0;
     vec3 temp;
 
-    /*
-    // TODO: Add the statistical property calculations to the cell lists.
+    //TODO: "Add the statistical property calculations to the cell lists";
     CellList *celllist = system->celllist();
 
     for (int i = 0; i < (int) celllist->listOfCells().size(); i++) {
@@ -78,7 +74,6 @@ void LennardJones::calculateForces(System *system)
         counter = 0;
     }
     m_temperature = (2.0/3.0) * (m_kineticEnergy/((double) system->atoms().size() * 1));
-    */
 
 
 
@@ -89,6 +84,8 @@ void LennardJones::calculateForces(System *system)
 
     // Needed for timing of the methods.
     // Old force calculation.
+    // TODO: Write the old force calculation in a different method.
+    /*
     for (int i = 0; i < (int) system->atoms().size(); i++) {
         for (int j = i + 1; j < (int) system->atoms().size(); j++) {
             distance = system->atoms()[i]->position - system->atoms()[j]->position;
@@ -109,6 +106,8 @@ void LennardJones::calculateForces(System *system)
         m_kineticEnergy += 0.5 * system->atoms()[i]->mass() * system->atoms()[i]->velocity.lengthSquared();
     }
     m_temperature = (2.0/3.0) * (m_kineticEnergy/((double) system->atoms().size() * 1));
+    */
+
     m_pressure = 1.0 / (3.0 * system->systemSize().x() * system->systemSize().y() * system->systemSize().z()) * (m_pressure / ((double) system->atoms().size())) + m_numberDensity * 1 * m_temperature;
 
 }

@@ -1,5 +1,8 @@
 #include <iostream>
 #include <cstdlib>
+#include "io.h"
+#include "system.h"
+#include "unitconverter.h"
 
 using namespace std;
 /*
@@ -14,14 +17,15 @@ using namespace std;
  * int timestep
  * int timestepStartThermostat
  * int timestepEndThermostat
+ * double latticeConstant
  * bool oldForceCalculation
  */
 int main(int argc, char* argv[])
 {
-    if (argc < 12) {
+    if (argc < 13) {
         cout << "\n==================================" << endl;
         cout << "Not enough command line arguments." << endl;
-        cout << "Usage: " << argv[0] << " 1 2 3 4 5 6 7 8 9 10 11\n"
+        cout << "Usage: " << argv[0] << " 1 2 3 4 5 6 7 8 9 10 11 12\n"
              << "1: double dt\n"
              << "2: int system size (only quadratic cubes)\n"
              << "3: int number of FCC lattices\n"
@@ -51,4 +55,13 @@ int main(int argc, char* argv[])
     bool oldForceCalculation;
     if (atoi(argv[11]) == 1) oldForceCalculation = true;
     else oldForceCalculation = false;
+
+    IO *movie = new IO();
+    System system;
+    system.setSystemSize(UnitConverter::lengthFromAngstroms(vec3(systemSize, systemSize, systemSize)));
+    system.createFCCLattice(numberOfFCCLattices, UnitConverter::lengthFromAngstroms(
+
+    if (oldeForceCalculation) {
+    } else {
+    }
 }

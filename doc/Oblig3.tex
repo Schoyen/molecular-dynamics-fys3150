@@ -2,7 +2,6 @@
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage[norsk]{babel}
 \usepackage{amsmath, amssymb, amsfonts, amsthm}
 \usepackage{bbm}
 \usepackage{graphicx}
@@ -17,15 +16,9 @@
 
 \newcommand{\vb}{\mathbf}
 
-\addto\captionsnorsk{
-  \renewcommand{\contentsname}
-    {Innhald}
-}
+\renewcommand{\contentsname}{Innhald}
 
-\addto\captionsnorsk{
-  \renewcommand{\abstractname}
-    {Samandrag}
-}
+\renewcommand{\abstractname}{Samandrag}
 
 \begin{document}
 
@@ -35,16 +28,39 @@
   \vspace{10mm}
   \huge Oblig 3\\
   \vspace{10mm}
-  \normalsize{\bf Variational Monte Carlo på quantum dots.}}
+  \normalsize{\bf Molekylær dynamikk.}}
 
-  \author{Øyvind Sigmundson Schøyen}
+  \author{Fyll inn kandidatnummer.}
 
 \end{titlepage}
 
 \maketitle
 
 \begin{abstract}
-  Noko!
+  Me må ha ei trippel-løkke for alle indeksane til ei celle og ei indre trippel løkke for alle nabocellene ((i-1, i, i+1), (j-1, j, j+1), (k-1, k, k+1)). 
+  Hugs å sjekke med boundary conditions.
+  Når me konstruerar kvar celle vil me lagre dei ved indeks
+  \begin{align*}
+    void \ index(int i, int j, int k) \{ \\
+      posisjon = i * n_y * n_z + j * n_z * k; \\
+    \}
+  \end{align*}
+  kor $n_x$, $n_y$ og $n_z$ er storleiken på kvar celle i $x$, $y$ og $z$-retning.
+  Storleiken bestemmer me ved
+  \begin{align*}
+    int \ n_x = \left( \frac{L_x}{r_{cut}} \right),
+  \end{align*}
+  kor $L_x$ er storleiken på systemet i $x$-retning.
+  Metoden for å legge til eit atom tek imot ein atom peikar og sjekkar om atomet ligg i cella.
+  \begin{align*}
+    void \ addAtom(Atom *atom) \{ \\
+      if (atom->position.x() / (systemSize.x()) * cell->position.x()) \{ \\
+        add the atom; \\
+      \} \\
+    \}
+  \end{align*}
+  Ekstra oppgåve: Prøv å lagre cellene med indeks. Oppdater deretter indeksane på kvart atom i kvar celle slik at me kan bruke N3L for å rekne ut krafta kun ei gong. Viss ikkje 
+  må me køyre testar på kvart atom to gonger frå to celler for å hindre at me rekner ut krafta to gonger.
 \end{abstract}
 
 \end{document}

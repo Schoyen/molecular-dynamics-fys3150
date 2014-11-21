@@ -12,7 +12,7 @@ class Cell {
 
     public:
         vec3 position; // Position of Cell.
-        bool calculatedLocally = false;
+        bool calculatedLocally = false; // Avoid computing the forces inside a cell several times.
 
         Cell();
         ~Cell();

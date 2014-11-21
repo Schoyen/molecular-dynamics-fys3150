@@ -19,6 +19,10 @@ void Cell::addAtom(Atom *atom) {
     m_atomsClose.push_back(atom);
 }
 
+/*
+ * This method is not "optimal".
+ * Figure out a way to check whether or not an atom is inside a cell.
+ */
 bool Cell::isInCell(vec3 pos, double rcut)
 {
     if (position.x() <= pos.x() && pos.x() < position.x() + rcut &&
@@ -28,7 +32,10 @@ bool Cell::isInCell(vec3 pos, double rcut)
     } else {return false;}
 }
 
-// Return the potential energy.
+/*
+ * Method used to compute the forces between all atoms inside a cell locally.
+ * Perhaps this method should be inline? It has been added here for readability reasons.
+ */
 double Cell::calculateLocally(double sigma, double epsilon, double rcut)
 {
     vec3 distance;
@@ -55,6 +62,5 @@ double Cell::calculateLocally(double sigma, double epsilon, double rcut)
         }
     }
     calculatedLocally = true;
-    // TODO: Return the potential energy.
     return potentialEnergy;
 }

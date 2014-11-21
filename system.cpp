@@ -63,6 +63,9 @@ void System::applyPeriodicBoundaryConditions() {
     m_celllist->calculateCellAtoms();
 }
 
+/*
+ * Check this method, the momentum is zero to begin with.
+ */
 void System::removeMomentum() {
     // Initially, when the atoms are given random velocities, there is a non-zero net momentum. We don't want any drift in the system, so we need to remove it.
     
@@ -120,6 +123,7 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
     double initialTemperature = iT; // Dimensionless temperature.
 
     // Creating the center of each unit cell.
+    // Is this necessary? Should the centers be placed from zero to system size length?
     if (numberOfUnitCellsEachDimension % 2 == 0) {
         int nOUCEDHALF = numberOfUnitCellsEachDimension / 2;
         for (int i = -nOUCEDHALF; i < nOUCEDHALF; i++) {
@@ -142,13 +146,14 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
         }
     }
 
+    // This corresponds to the creation the unit cells.
     int startingValueX = (int) m_systemSize.x()/(2 * cellSize);
     int startingValueY = (int) m_systemSize.y()/(2 * cellSize);
     int startingValueZ = (int) m_systemSize.z()/(2 * cellSize);
     for (int i = -startingValueX; i <= startingValueX; i++) {
         for (int j = -startingValueY; j <= startingValueY; j ++) {
             for (int k = -startingValueZ; k <= startingValueZ; k++) {
-                temp = vec3(i * cellSize, j * cellSize, k * cellSize);
+                temp = UnitConverter::lengthFromAngstroms(vec3(i * cellSize, j * cellSize, k * cellSize));
                 m_celllist->createCell(temp);
             }
         }
@@ -156,7 +161,6 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
 
     // These methods create cells and unit cells from 0 to the system width.
     /*
-    // TODO: Fix cells.
     for (int i = 0; i < numberOfUnitCellsEachDimension; i++) {
         for (int j = 0; j < numberOfUnitCellsEachDimension; j++) {
             for (int k = 0; k < numberOfUnitCellsEachDimension; k++) {
@@ -165,9 +169,7 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
             }
         }
     }
-    */
 
-    /*
     int startingValueX = (int) m_systemSize.x()/(cellSize);
     int startingValueY = (int) m_systemSize.y()/(cellSize);
     int startingValueZ = (int) m_systemSize.z()/(cellSize);
@@ -181,6 +183,7 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
     }
     */
 
+    // Creating atoms in unit cell formations.
     for (int n = 0; n < totalNumberOfUnitCells; n++) {
         Atom *atom1 = new Atom(UnitConverter::massFromSI(6.63352088e-26));
         atom1->resetVelocityMaxwellian(initialTemperature);
@@ -203,11 +206,6 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
         m_atoms.push_back(atom4);
     }
     m_celllist->calculateCellAtoms();
-    /*
-    for (int i = 0; i < (int) m_celllist->listOfCells().size(); i++) {
-        std::cout << m_celllist->listOfCells()[i]->atomsClose().size() << std::endl;
-    }
-    */
 }
 
 void System::calculateForces() {

@@ -56,5 +56,8 @@ build/INTEGRATORS/velocityverlet.o: integrators/velocityverlet.cpp $(DEPS)
 build/OLDMAINCPP: oldmain.cpp $(DEPS) $(COMP) | build
 	$(CXX) $(CPPFLAGS) $(COMP) $< -o $@
 
+build/MAINCPP: main.cpp $(DEPS) $(COMP) | build
+	$(CXX) $(CPPFLAGS) $(COMP) $< -o $@
+
 clean:
 	$(RM) build movie.xyz
