@@ -25,11 +25,7 @@ void Cell::addAtom(Atom *atom) {
  */
 bool Cell::isInCell(vec3 pos, double rcut)
 {
-    if (position.x() <= pos.x() && pos.x() < position.x() + rcut &&
-        position.y() <= pos.y() && pos.y() < position.y() + rcut &&
-        position.z() <= pos.z() && pos.z() < position.z() + rcut) {
-        return true;
-    } else {return false;}
+    // This one needs to change.
 }
 
 /*

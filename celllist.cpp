@@ -16,11 +16,11 @@ CellList::~CellList()
 /*
  * Method used by system upon creation of the fcc lattices.
  */
-void CellList::createCell(vec3 pos)
+void CellList::createCell(vec3 index, int nx, int ny, int nz)
 {
     Cell *cell = new Cell();
-    cell->setSize(m_rcut);
-    cell->position = pos;
+    cell->setSize(nx, ny, nz);
+    cell->index = index.x() * ny * nz + index.y() * ny + index.z();
     m_listOfCells.push_back(cell);
 }
 

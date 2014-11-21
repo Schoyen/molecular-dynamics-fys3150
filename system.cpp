@@ -102,11 +102,6 @@ void System::resetForcesOnAllAtoms() {
             m_celllist->listOfCells()[i]->calculatedLocally = false;
         }
     }
-    /*
-    for (int n = 0; n < (int) m_atoms.size(); n++) {
-        m_atoms[n]->resetForce();
-    }
-    */
 }
 
 void System::createFCCLattice(int numberOfUnitCellsEachDimension, double latticeConstant, double iT, double cellSize) {
@@ -147,6 +142,9 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
     }
 
     // This corresponds to the creation the unit cells.
+    int nx = int(m_systemSize.x() / m_rcut);
+    int ny = int(m_systemSize.y() / m_rcut);
+    int nz = int(m_systemSize.z() / m_rcut);
     int startingValueX = (int) m_systemSize.x()/(2 * cellSize);
     int startingValueY = (int) m_systemSize.y()/(2 * cellSize);
     int startingValueZ = (int) m_systemSize.z()/(2 * cellSize);
@@ -154,7 +152,7 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
         for (int j = -startingValueY; j <= startingValueY; j ++) {
             for (int k = -startingValueZ; k <= startingValueZ; k++) {
                 temp = UnitConverter::lengthFromAngstroms(vec3(i * cellSize, j * cellSize, k * cellSize));
-                m_celllist->createCell(temp);
+                m_celllist->createCell(temp, nx, ny, nz);
             }
         }
     }

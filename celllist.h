@@ -16,7 +16,7 @@ class CellList {
     public:
         CellList();
         ~CellList();
-        void createCell(vec3 position);
+        void createCell(vec3 index, int nx, int ny, int nz);
         void calculateCellAtoms();
         void emptyCells();
         double getrcut() {return m_rcut;}
