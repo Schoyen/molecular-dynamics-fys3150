@@ -14,7 +14,7 @@ class Cell {
         int nx;
         int ny;
         int nz;
-        vec3 position;
+        int positionInList;
         int cellIndex;
         bool calculatedLocally = false; // Avoid computing the forces inside a cell several times.
 

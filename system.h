@@ -24,10 +24,14 @@ private:
     CellList *m_celllist;
 
 public:
+    int numberOfCellsX;
+    int numberOfCellsY;
+    int numberOfCellsZ;
+
     System();
     ~System();
     void resetForcesOnAllAtoms();
-    void createFCCLattice(int numberOfUnitCellsEachDimension, double latticeConstant, double iT, double cellSize);
+    void createFCCLattice(int numberOfUnitCellsEachDimension, double latticeConstant, double iT);
     void applyPeriodicBoundaryConditions();
     vec3 minimumImageCriterion(vec3 pos);
     void removeMomentum();

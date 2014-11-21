@@ -12,11 +12,16 @@ class CellList {
         vector<Cell *> m_listOfCells;
         System *m_system;
         double m_rcut;
+        int numberOfCellsX;
+        int numberOfCellsY;
+        int numberOfCellsZ;
 
     public:
         CellList();
         ~CellList();
-        void createCell(vec3 pos, int ind, int nx, int ny, int nz);
+        // Storing cells by index.
+        void createCell(int i, int j, int k, int ind, int nx, int ny, int nz);
+        Cell *getCell(int i, int j, int k);
         void calculateCellAtoms();
         void emptyCells();
         double getrcut() {return m_rcut;}

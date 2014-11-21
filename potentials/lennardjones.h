@@ -10,4 +10,5 @@ public:
     LennardJones(double sigma, double epsilon, BerendsenThermostat *berendsen);
     ~LennardJones() {}
     virtual void calculateForces(System *system);
+    virtual void calculateForcesOld(System *system);
 };

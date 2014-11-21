@@ -104,7 +104,7 @@ void System::resetForcesOnAllAtoms() {
     }
 }
 
-void System::createFCCLattice(int numberOfUnitCellsEachDimension, double latticeConstant, double iT, double cellSize) {
+void System::createFCCLattice(int numberOfUnitCellsEachDimension, double latticeConstant, double iT) {
     int totalNumberOfUnitCells = numberOfUnitCellsEachDimension * numberOfUnitCellsEachDimension * numberOfUnitCellsEachDimension;
     vec3 r1 = vec3(0.0, 0.0, 0.0);
     vec3 r2 = vec3(latticeConstant/2.0, latticeConstant/2.0, 0.0);
@@ -141,47 +141,18 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
         }
     }
 
-    // Creating cell sides of length nx, ny and nz.
-    int nx = int(m_systemSize.x() / m_rcut);
-    int ny = int(m_systemSize.y() / m_rcut);
-    int nz = int(m_systemSize.z() / m_rcut);
-    int startingValueX = (int) m_systemSize.x()/(2 * cellSize);
-    int startingValueY = (int) m_systemSize.y()/(2 * cellSize);
-    int startingValueZ = (int) m_systemSize.z()/(2 * cellSize);
+    numberOfCellsX = int(m_systemSize.x() / m_rcut);
+    int numberOfCellsY = int(m_systemSize.y() / m_rcut);
+    int numberOfCellsZ = int(m_systemSize.z() / m_rcut);
     int counter = 0;
-    for (int i = -startingValueX; i <= startingValueX; i++) {
-        for (int j = -startingValueY; j <= startingValueY; j ++) {
-            for (int k = -startingValueZ; k <= startingValueZ; k++) {
+    for (int i = 0; i < numberOfCellsX; i++) {
+        for (int j = 0; j < numberOfCellsY; j ++) {
+            for (int k = 0; k < numberOfCellsZ; k++) {
                 counter++;
-                temp = UnitConverter::lengthFromAngstroms(vec3(i * cellSize, j * cellSize, k * cellSize));
-                m_celllist->createCell(temp, counter, nx, ny, nz);
+                m_celllist->createCell(i, j, k, counter, numberOfCellsX, numberOfCellsY, numberOfCellsZ);
             }
         }
     }
-
-    // These methods create cells and unit cells from 0 to the system width.
-    /*
-    for (int i = 0; i < numberOfUnitCellsEachDimension; i++) {
-        for (int j = 0; j < numberOfUnitCellsEachDimension; j++) {
-            for (int k = 0; k < numberOfUnitCellsEachDimension; k++) {
-                temp = vec3(i * latticeConstant, j * latticeConstant, k * latticeConstant);
-                R.push_back(temp);
-            }
-        }
-    }
-
-    int startingValueX = (int) m_systemSize.x()/(cellSize);
-    int startingValueY = (int) m_systemSize.y()/(cellSize);
-    int startingValueZ = (int) m_systemSize.z()/(cellSize);
-    for (int i = 0; i < startingValueX; i++) {
-        for (int j = 0; j < startingValueY; j ++) {
-            for (int k = 0; k < startingValueZ; k++) {
-                temp = vec3(i * cellSize, j * cellSize, k * cellSize);
-                m_celllist->createCell(temp);
-            }
-        }
-    }
-    */
 
     // Creating atoms in unit cell formations.
     for (int n = 0; n < totalNumberOfUnitCells; n++) {

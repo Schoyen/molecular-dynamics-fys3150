@@ -16,13 +16,31 @@ CellList::~CellList()
 /*
  * Method used by system upon creation of the fcc lattices.
  */
-void CellList::createCell(vec3 pos, int ind, int nx, int ny, int nz)
+void CellList::createCell(int i, int j, int k, int ind, int nx, int ny, int nz)
 {
     Cell *cell = new Cell();
+
+    // The size might not be relevant.
+    // nx, ny and nz determines the number of cells, not the size.
     cell->setSize(nx, ny, nz);
-    cell->position = vec3(pos.x() * ny * nz, pos.y() * ny, pos.z());
+    
+    // Method determining index of cell in cell list.
+    cell->positionInList = i * ny * nz + j * nz + k;
+    numberOfCellsX = nx;
+    numberOfCellsY = ny;
+    numberOfCellsZ = nz;
+    
+    // Value used to determine indices of atoms.
+    // This will then again be used to avoid calculating forces between
+    // atoms in cells twice. We will then use N3L.
     cell->index = ind;
+
     m_listOfCells.push_back(cell);
+}
+
+Cell *CellList::getCell(int i, int j, int k)
+{
+    return m_listOfCells[i * numberOfCellsY * numberOfCellsZ + j * numberOfCellsZ + k];
 }
 
 /*
