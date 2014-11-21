@@ -141,18 +141,20 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
         }
     }
 
-    // This corresponds to the creation the unit cells.
+    // Creating cell sides of length nx, ny and nz.
     int nx = int(m_systemSize.x() / m_rcut);
     int ny = int(m_systemSize.y() / m_rcut);
     int nz = int(m_systemSize.z() / m_rcut);
     int startingValueX = (int) m_systemSize.x()/(2 * cellSize);
     int startingValueY = (int) m_systemSize.y()/(2 * cellSize);
     int startingValueZ = (int) m_systemSize.z()/(2 * cellSize);
+    int counter = 0;
     for (int i = -startingValueX; i <= startingValueX; i++) {
         for (int j = -startingValueY; j <= startingValueY; j ++) {
             for (int k = -startingValueZ; k <= startingValueZ; k++) {
+                counter++;
                 temp = UnitConverter::lengthFromAngstroms(vec3(i * cellSize, j * cellSize, k * cellSize));
-                m_celllist->createCell(temp, nx, ny, nz);
+                m_celllist->createCell(temp, counter, nx, ny, nz);
             }
         }
     }
