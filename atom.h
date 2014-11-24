@@ -10,6 +10,7 @@ public:
     vec3 position;
     vec3 velocity;
     vec3 force;
+    int index;
 
     Atom(double mass);
     ~Atom();

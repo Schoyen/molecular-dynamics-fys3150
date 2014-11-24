@@ -16,15 +16,14 @@ class Cell {
         int nz;
         int positionInList;
         int cellIndex;
-        bool calculatedLocally = false; // Avoid computing the forces inside a cell several times.
 
         Cell();
         ~Cell();
         void addAtom(Atom *atom);
+        void addIndicesOnAtoms();
         void clearList();
         bool isInCell(vec3 pos, double rcut);
         void setSize(int nx, int ny, int nz) {m_size = vec3(nx, ny, nz);}
-        double calculateLocally(double sigma, double epsilon, double rcut);
         vec3 getSize() {return m_size;}
         vector<Atom *> atomsClose() {return m_atomsClose;}
 };
