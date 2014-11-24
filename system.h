@@ -31,7 +31,7 @@ public:
     System();
     ~System();
     void resetForcesOnAllAtoms();
-    void createFCCLattice(int numberOfUnitCellsEachDimension, double latticeConstant, double iT);
+    void createFCCLattice(int numberOfUnitCellsEachDimension, double latticeConstant, double iT, double rcut);
     void applyPeriodicBoundaryConditions();
     vec3 minimumImageCriterion(vec3 pos);
     void removeMomentum();

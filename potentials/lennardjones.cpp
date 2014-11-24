@@ -57,15 +57,15 @@ void LennardJones::calculateForces(System *system)
                             if (counter == 0) {
                                 // Calulating force locally in a cell.
 
-                                for (int k = 0; i < cell1->atomsClose().size(); i++) {
-                                    for (int m = k + 1; m < cell1->atomsClose().size(); m++) {
+                                for (int k = 0; i < (int) cell1->atomsClose().size(); i++) {
+                                    for (int m = k + 1; m < (int) cell1->atomsClose().size(); m++) {
                                         distance = cell1->atomsClose()[k]->position - cell1->atomsClose()[m]->position;
                                         distanceBetweenAtoms = distance.length();
                                         divisionOfSigmaAndDistance = m_sigma / distanceBetweenAtoms;
 
                                         m_potentialEnergy += 4 * m_epsilon * (pow(divisionOfSigmaAndDistance, 12) - pow(divisionOfSigmaAndDistance, 6));
                                         divisionOfSigmaAndDistance = m_sigma / celllist->getrcut();
-                                        potentialEnergy -= 4 * m_epsilon * (pow(divisionOfSigmaAndDistance, 12) - pow(divisionOfSigmaAndDistance, 6));
+                                        m_potentialEnergy -= 4 * m_epsilon * (pow(divisionOfSigmaAndDistance, 12) - pow(divisionOfSigmaAndDistance, 6));
 
                                         expressionOfForce = 4 * m_epsilon * (12 * pow(m_sigma, 12) / pow(distanceBetweenAtoms, 14) - 6 * pow(m_sigma, 6) / pow(distanceBetweenAtoms, 8));
                                         tempForce = distance * expressionOfForce;
@@ -74,17 +74,17 @@ void LennardJones::calculateForces(System *system)
                                         m_pressure += tempForce.dot(distance);
 
                                         tempForce = tempForce * (-1); // N3L
-                                        cell1->atomsClose()[m]->force.add(temptForce);
+                                        cell1->atomsClose()[m]->force.add(tempForce);
                                     }
-                                    m_kineticEnergy += 0.5 * cell1->atomsClose()[m]->mass() * cell1->atomsClose()[m]->velocity.lengthSquared();
+                                    m_kineticEnergy += 0.5 * cell1->atomsClose()[k]->mass() * cell1->atomsClose()[k]->velocity.lengthSquared();
                                 }
                             }
                             else {
                                 // Calculate between cells.
                                 cell2 = celllist->getCell(dx, dy, dz); // Neighbouring cell.
                                 
-                                for (int m = 0; m < cell1->atomsClose().size(); m++) {
-                                    for (int k = 0; k < cell2->atomsClose().size(); k++) {
+                                for (int m = 0; m < (int) cell1->atomsClose().size(); m++) {
+                                    for (int k = 0; k < (int) cell2->atomsClose().size(); k++) {
                                         distance = cell1->atomsClose()[m]->position - cell2->atomsClose()[k]->position;
                                         distance = system->minimumImageCriterion(distance);
 
@@ -111,7 +111,7 @@ void LennardJones::calculateForces(System *system)
         }
     }
     m_temperature = (2.0/3.0) * (m_kineticEnergy / ((double) system->atoms().size() * 1));
-    m_pressure = 1.0 / (3.0 * system->systemSize().x() * system->systemSize().y() * system->systemSize().z() * (m_pressure / ((double) system->atoms().size())) + m_numberDensity * 1 * m_temperature;
+    m_pressure = 1.0 / (3.0 * system->systemSize().x() * system->systemSize().y() * system->systemSize().z() * (m_pressure / ((double) system->atoms().size()))) + m_numberDensity * 1 * m_temperature;
 }
 
 

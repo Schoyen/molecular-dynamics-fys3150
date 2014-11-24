@@ -18,14 +18,15 @@ using namespace std;
  * int timestepStartThermostat
  * int timestepEndThermostat
  * double latticeConstant
+ * double rcut
  * bool oldForceCalculation
  */
 int main(int argc, char* argv[])
 {
-    if (argc < 13) {
+    if (argc < 14) {
         cout << "\n==================================" << endl;
         cout << "Not enough command line arguments." << endl;
-        cout << "Usage: " << argv[0] << " 1 2 3 4 5 6 7 8 9 10 11 12\n"
+        cout << "Usage: " << argv[0] << " 1 2 3 4 5 6 7 8 9 10 11 12 13\n"
              << "1: double dt\n"
              << "2: int system size (only quadratic cubes)\n"
              << "3: int number of FCC lattices\n"
@@ -36,7 +37,9 @@ int main(int argc, char* argv[])
              << "8: int number of timesteps\n"
              << "9: int number of timesteps before turning on the thermostat\n"
              << "10: int number of timesteps before turning off the thermostat\n"
-             << "11: bool 1='true' for old force calculation and 0 (or anything) ='false' for cell lists"
+             << "11: double latticConstant\n"
+             << "12: double rcut\n"
+             << "13: bool 1='true' for old force calculation and 0 (or anything) ='false' for cell lists"
              << endl;
         cout << "==================================\n" << endl;
         exit(1);
@@ -52,14 +55,16 @@ int main(int argc, char* argv[])
     int timestep = atoi(argv[8]);
     int timestepStartThermostat = atoi(argv[9]);
     int timestepEndThermostat = atoi(argv[10]);
+    double latticeConstant = atof(argv[11]);
+    double rcut = atof(argv[12]);
     bool oldForceCalculation;
-    if (atoi(argv[11]) == 1) oldForceCalculation = true;
+    if (atoi(argv[13]) == 1) oldForceCalculation = true;
     else oldForceCalculation = false;
 
     IO *movie = new IO();
     System system;
     system.setSystemSize(UnitConverter::lengthFromAngstroms(vec3(systemSize, systemSize, systemSize)));
-    system.createFCCLattice(numberOfFCCLattices, UnitConverter::lengthFromAngstroms(
+    system.createFCCLattice(numberOfFCCLattices, UnitConverter::lengthFromAngstroms(latticeConstant), initialTemperature, rcut);
 
     if (oldeForceCalculation) {
     } else {

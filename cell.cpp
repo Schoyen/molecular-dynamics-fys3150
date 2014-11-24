@@ -1,14 +1,15 @@
 #include "cell.h"
 #include <cmath>
 
-Cell::Cell()
+Cell::Cell() :
+    m_atomsClose(0)
 {
 
 }
 
 Cell::~Cell() 
 {
-
+    m_atomsClose.clear();
 }
 
 void Cell::clearList() {
