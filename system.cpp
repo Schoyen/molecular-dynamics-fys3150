@@ -118,6 +118,7 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
 
     // Creating the center of each unit cell.
     // Is this necessary? Should the centers be placed from zero to system size length?
+    /*
     if (numberOfUnitCellsEachDimension % 2 == 0) {
         int nOUCEDHALF = numberOfUnitCellsEachDimension / 2;
         for (int i = -nOUCEDHALF; i < nOUCEDHALF; i++) {
@@ -136,6 +137,16 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
                     temp = vec3(i * latticeConstant, j * latticeConstant, k * latticeConstant);
                     R.push_back(temp);
                 }
+            }
+        }
+    }
+    */
+
+    for (int i = 0; i < numberOfUnitCellsEachDimension; i++) {
+        for (int j = 0; j < numberOfUnitCellsEachDimension; j++) {
+            for (int k = 0; k < numberOfUnitCellsEachDimension; k++) {
+                temp = vec3(i * latticeConstant, j * latticeConstant, k * latticeConstant);
+                R.push_back(temp);
             }
         }
     }

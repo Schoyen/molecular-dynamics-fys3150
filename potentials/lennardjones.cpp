@@ -23,6 +23,7 @@ void LennardJones::calculateForces(System *system)
     vec3 distance;
     double expressionOfForce;
     int counter;
+    int cx, cy, cz;
 
     //TODO: "Add the statistical property calculations to the cell lists";
     CellList *celllist = system->celllist();
@@ -41,20 +42,25 @@ void LennardJones::calculateForces(System *system)
                 // Due to the minimum image criterion this should work.
                 for (int dx = i; dx <= i + 1; dx++) {
 
-                    if (dx == system->numberOfCellsX) dx = 0;
-                    else if (dx == -1) dx = system->numberOfCellsX - 1;
+                    cx = dx;
+                    if (cx == system->numberOfCellsX) cx = 0;
+                    // This one should only be necessary if we calculate for all cells.
+                    //else if (cx == -1) cx = system->numberOfCellsX - 1;
 
                     for (int dy = j; dy <= j + 1; dy++) {
 
-                        if (dy == system->numberOfCellsY) dy = 0;
-                        else if (dy == -1) dy = system->numberOfCellsY - 1;
+                        cy = dy;
+                        if (cy == system->numberOfCellsY) cy = 0;
+                        //else if (cy == -1) cy = system->numberOfCellsY - 1;
 
                         for (int dz = k; dz <= k + 1; dz++) {
 
-                            if (dz == system->numberOfCellsZ) dz = 0;
-                            else if (dz == -1) dz = system->numberOfCellsZ - 1;
+                            cz = dz;
+                            if (cz == system->numberOfCellsZ) cz = 0;
+                            //else if (cz == -1) cz = system->numberOfCellsZ - 1;
 
                             if (counter == 0) {
+                                std::cout << i << "\t" << j << "\t" << k << "\n" << std::endl;
                                 // Calulating force locally in a cell.
 
                                 for (int k = 0; i < (int) cell1->atomsClose().size(); i++) {
@@ -81,7 +87,8 @@ void LennardJones::calculateForces(System *system)
                             }
                             else {
                                 // Calculate between cells.
-                                cell2 = celllist->getCell(dx, dy, dz); // Neighbouring cell.
+                                cell2 = celllist->getCell(cx, cy, cz); // Neighbouring cell.
+                                std::cout << cx << "\t" << cy << "\t" << cz << std::endl;
                                 
                                 for (int m = 0; m < (int) cell1->atomsClose().size(); m++) {
                                     for (int k = 0; k < (int) cell2->atomsClose().size(); k++) {
