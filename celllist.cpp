@@ -61,6 +61,8 @@ void CellList::calculateCellAtoms()
         cx = int(m_system->atoms()[i]->position.x() / m_system->systemSize().x() * numberOfCellsX);
         cy = int(m_system->atoms()[i]->position.y() / m_system->systemSize().y() * numberOfCellsY);
         cz = int(m_system->atoms()[i]->position.z() / m_system->systemSize().z() * numberOfCellsZ);
+        // You where here.
+        std::cout << cx << "\t" << cy << "\t" << cz << std::endl;
         c = getCell(cx, cy, cz);
         c->addAtom(m_system->atoms()[i]);
     }

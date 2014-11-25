@@ -154,8 +154,39 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
     numberOfCellsX = int(m_systemSize.x() / m_celllist->getrcut());
     numberOfCellsY = int(m_systemSize.y() / m_celllist->getrcut());
     numberOfCellsZ = int(m_systemSize.z() / m_celllist->getrcut());
+    int nxHalf, nyHalf, nzHalf;
+    
+    if (numberOfCellsX % 2 == 0) nxHalf = numberOfCellsX / 2;
+    else nxHalf = (numberOfCellsX - 1) / 2;
+    if (numberOfCellsY % 2 == 0) nyHalf = numberOfCellsY / 2;
+    else nyHalf = (numberOfCellsY - 1) / 2;
+    if (numberOfCellsZ % 2 == 0) nzHalf = numberOfCellsZ / 2;
+    else nzHalf = (numberOfCellsZ - 1) / 2;
+
     int counter = 0;
-    // Try to run the loops for -numberOfCellsXHalf to numberOfCellsXHalf.
+
+    for (int i = -nxHalf; i < nxHalf; i++) {
+        for (int j = -nyHalf; j < nyHalf; j++) {
+            for (int k = -nzHalf; k < nzHalf; k++) {
+                counter++;
+                m_celllist->createCell(i, j, k, counter, numberOfCellsX, numberOfCellsY, numberOfCellsZ);
+            }
+        }
+    }
+
+    int tempX = -1;
+    int tempY = -1;
+    int tempZ = -1;
+    if (numberOfCellsX % 2 == 1) tempX = nxHalf;
+    if (numberOfCellsY % 2 == 1) tempY = nyHalf;
+    if (numberOfCellsZ % 2 == 1) tempZ = nzHalf;
+
+    if (tempX != -1 && tempY != -1 && tempZ != -1) {
+        counter++;
+        m_celllist->createCell(tempX, tempY, tempZ, counter, numberOfCellsX, numberOfCellsY, numberOfCellsZ);
+    }
+    
+    /*
     for (int i = 0; i < numberOfCellsX; i++) {
         for (int j = 0; j < numberOfCellsY; j ++) {
             for (int k = 0; k < numberOfCellsZ; k++) {
@@ -164,6 +195,7 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
             }
         }
     }
+    */
 
     // Creating atoms in unit cell formations.
     for (int n = 0; n < totalNumberOfUnitCells; n++) {
