@@ -31,13 +31,13 @@ int main()
     // For more than 2 x 2 x 2 FCCLattice we need a bigger system size.
     system.setSystemSize(UnitConverter::lengthFromAngstroms(vec3(28, 28, 28)));
     int numberOfFCCLattices = 5;
-    double cellSize = 7;
+    double cellSize = 2.5 * 3.405; // rcut
     int numberOfAtoms = 4 * numberOfFCCLattices * numberOfFCCLattices * numberOfFCCLattices;
     double initialTemperature = 100.0; // In Kelvin.
     system.createFCCLattice(numberOfFCCLattices, UnitConverter::lengthFromAngstroms(5.26), UnitConverter::temperatureFromSI(initialTemperature), cellSize);
     double tbath = 100;
     double relaxationTime = 0.01; // Figure this one out.
-    system.setPotential(new LennardJones(3.405, 1.0, new BerendsenThermostat(UnitConverter::temperatureFromSI(tbath), relaxationTime))); // You must insert correct parameters here
+    system.setPotential(new LennardJones(3.405, 1.0, new BerendsenThermostat(UnitConverter::temperatureFromSI(tbath), relaxationTime)));
     system.setIntegrator(new VelocityVerlet());
     system.removeMomentum();
 
@@ -49,18 +49,20 @@ int main()
     string filename;
     //filename = "test.txt";
     //system.load(filename);
-    for(int timestep=0; timestep<300; timestep++) {
-        if (timestep < 100) {
-            system.step(dt, false);
-        } else {
-            system.step(dt, true);
+    for(int timestep=0; timestep<100; timestep++) {
+        //if (timestep < 100) {
+        system.step(dt, false);
+        //} else {
+            //system.step(dt, true);
             //system.save("test.txt");
             //break;
-        }
+        //}
+
         statisticsSampler->sample(&system, timestep);
+        std::cout << UnitConverter::energyToEv(statisticsSampler->totalEnergy()) << std::endl;
 
         movie->saveState(&system);
-        cout << timestep << endl;
+        //cout << timestep << endl;
     }
     auto finish = high_resolution_clock::now();
     filename = "build/DATA/calculationTime" + to_string(numberOfAtoms) + ".txt";

@@ -12,7 +12,7 @@ class ForceCalculation:
     def calculateForce(self):
         self.force = zeros(self.n)
         for i in range(self.n):
-            self.force[i] = self.distance[i] * (4 * self.epsilon * ((self.sigma**12/float(self.distance[i]**14)) - (self.sigma**6/float(self.distance[i]**8))))
+            self.force[i] = self.distance[i] * (4 * self.epsilon * (12 * (self.sigma**12/float(self.distance[i]**14)) - 6 * (self.sigma**6/float(self.distance[i]**8))))
 
     def plotForce(self, TITLE):
         plot(self.distance, self.force)

@@ -25,7 +25,6 @@ void CellList::createCell(int i, int j, int k, int ind, int nx, int ny, int nz)
     cell->setSize(m_system->systemSize().x() / nx, m_system->systemSize().y() / ny, m_system->systemSize().z() / nz);
     
     // Method determining index of cell in cell list.
-    cell->positionInList = i * ny * nz + j * nz + k;
     numberOfCellsX = nx;
     numberOfCellsY = ny;
     numberOfCellsZ = nz;
@@ -35,12 +34,12 @@ void CellList::createCell(int i, int j, int k, int ind, int nx, int ny, int nz)
     // atoms in cells twice. We will then use N3L.
     cell->cellIndex = ind;
 
+    // The cells "should" be stored by the index = i * ny * nz + j * nz + k;
     m_listOfCells.push_back(cell);
 }
 
 Cell *CellList::getCell(int i, int j, int k)
 {
-    std::cout << m_listOfCells[i * numberOfCellsY * numberOfCellsZ + j * numberOfCellsZ + k]->positionInList << std::endl;
     return m_listOfCells[i * numberOfCellsY * numberOfCellsZ + j * numberOfCellsZ + k];
 }
 
@@ -62,9 +61,6 @@ void CellList::calculateCellAtoms()
         cx = int(m_system->atoms()[i]->position.x() / m_system->systemSize().x() * numberOfCellsX);
         cy = int(m_system->atoms()[i]->position.y() / m_system->systemSize().y() * numberOfCellsY);
         cz = int(m_system->atoms()[i]->position.z() / m_system->systemSize().z() * numberOfCellsZ);
-        // You where here.
-        std::cout << cx << "\t" << cy << "\t" << cz << std::endl;
-        std::cout << cx * numberOfCellsY * numberOfCellsZ + cy * numberOfCellsZ + cz << std::endl;
         c = getCell(cx, cy, cz);
         c->addAtom(m_system->atoms()[i]);
     }

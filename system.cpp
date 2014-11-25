@@ -128,6 +128,7 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
     numberOfCellsX = int(m_systemSize.x() / m_celllist->getrcut());
     numberOfCellsY = int(m_systemSize.y() / m_celllist->getrcut());
     numberOfCellsZ = int(m_systemSize.z() / m_celllist->getrcut());
+    int counter = 0;
     for (int i = 0; i < numberOfCellsX; i++) {
         for (int j = 0; j < numberOfCellsY; j ++) {
             for (int k = 0; k < numberOfCellsZ; k++) {
@@ -164,7 +165,7 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
 
 void System::calculateForces() {
     resetForcesOnAllAtoms();
-    m_potential->calculateForces(this);
+    m_potential->calculateForcesOld(this);
 }
 
 void System::step(double dt, bool thermostatOn) {

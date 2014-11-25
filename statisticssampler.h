@@ -36,4 +36,5 @@ public:
     void sampleTemperature(System *system);
     void sampleNumberDensity(System *system);
     void samplePressure(System *system);
+    double totalEnergy() {return m_kineticEnergy + m_potentialEnergy;}
 };

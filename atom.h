@@ -11,6 +11,7 @@ public:
     vec3 velocity;
     vec3 force;
     int index;
+    static int nextAtomIndex;
 
     Atom(double mass);
     ~Atom();

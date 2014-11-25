@@ -2,10 +2,12 @@
 #include "atom.h"
 #include "math/random.h"
 
+int Atom::nextAtomIndex = 0;
+
 Atom::Atom(double mass) :
     m_mass(mass)
 {
-    
+    index = nextAtomIndex++;
 }
 
 Atom::~Atom()

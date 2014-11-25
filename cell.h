@@ -11,10 +11,6 @@ class Cell {
         vector<Atom *> m_atomsClose;
 
     public:
-        int nx;
-        int ny;
-        int nz;
-        int positionInList;
         int cellIndex;
 
         Cell();
@@ -23,7 +19,7 @@ class Cell {
         void addIndicesOnAtoms();
         void clearList();
         bool isInCell(vec3 pos, double rcut);
-        void setSize(int nx, int ny, int nz) {m_size = vec3(nx, ny, nz);}
+        void setSize(int x, int y, int z) {m_size = vec3(x, y, z);}
         vec3 getSize() {return m_size;}
         vector<Atom *> atomsClose() {return m_atomsClose;}
 };

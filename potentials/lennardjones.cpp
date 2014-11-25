@@ -32,38 +32,38 @@ void LennardJones::calculateForces(System *system)
 
     // And here we declare the winner of Big O.
     for (int i = 0; i < system->numberOfCellsX; i++) {
+        //std::cout << "balle" << i << std::endl;
         for (int j = 0; j < system->numberOfCellsY; j++) {
             for (int k = 0; k < system->numberOfCellsZ; k++) {
                 cell1 = celllist->getCell(i, j, k); // Current cell.
                 counter = 0;
 
-                // An attempt to improve speed.
-                // We are only calculating neigbour cells in front of us.
-                // Due to the minimum image criterion this should work.
-                for (int dx = i; dx <= i + 1; dx++) {
+                for (int dx = i - 1; dx <= i + 1; dx++) {
 
                     cx = dx;
                     if (cx == system->numberOfCellsX) cx = 0;
-                    // This one should only be necessary if we calculate for all cells.
-                    //else if (cx == -1) cx = system->numberOfCellsX - 1;
+                    else if (cx == -1) cx = system->numberOfCellsX - 1;
 
-                    for (int dy = j; dy <= j + 1; dy++) {
+                    for (int dy = j - 1; dy <= j + 1; dy++) {
 
                         cy = dy;
                         if (cy == system->numberOfCellsY) cy = 0;
-                        //else if (cy == -1) cy = system->numberOfCellsY - 1;
+                        else if (cy == -1) cy = system->numberOfCellsY - 1;
 
-                        for (int dz = k; dz <= k + 1; dz++) {
+                        for (int dz = k - 1; dz <= k + 1; dz++) {
 
                             cz = dz;
                             if (cz == system->numberOfCellsZ) cz = 0;
-                            //else if (cz == -1) cz = system->numberOfCellsZ - 1;
+                            else if (cz == -1) cz = system->numberOfCellsZ - 1;
 
-                            if (counter == 0) {
-                                std::cout << i << "\t" << j << "\t" << k << "\n" << std::endl;
+                            cell2 = celllist->getCell(cx, cy, cz);
+
+                            if (cell1 == cell2) {
+                                //std::cout << "Calculating locally" << std::endl;
+                                //std::cout << i << "\t" << j << "\t" << k << "\n" << std::endl;
                                 // Calulating force locally in a cell.
 
-                                for (int k = 0; i < (int) cell1->atomsClose().size(); i++) {
+                                for (int k = 0; k < (int) cell1->atomsClose().size(); k++) {
                                     for (int m = k + 1; m < (int) cell1->atomsClose().size(); m++) {
                                         distance = cell1->atomsClose()[k]->position - cell1->atomsClose()[m]->position;
                                         distanceBetweenAtoms = distance.length();
@@ -87,12 +87,15 @@ void LennardJones::calculateForces(System *system)
                             }
                             else {
                                 // Calculate between cells.
-                                cell2 = celllist->getCell(cx, cy, cz); // Neighbouring cell.
-                                std::cout << cx << "\t" << cy << "\t" << cz << std::endl;
+                                //cell2 = celllist->getCell(cx, cy, cz); // Neighbouring cell.
                                 
                                 for (int m = 0; m < (int) cell1->atomsClose().size(); m++) {
                                     for (int k = 0; k < (int) cell2->atomsClose().size(); k++) {
+                                        if (cell1->atomsClose()[m]->index >= cell2->atomsClose()[k]->index) {continue;}
+                                        //std::cout << cell1->cellIndex << "\tcell 1" << std::endl;
+                                        //std::cout << cell2->nx << "\tcell 2" << std::endl;
                                         distance = cell1->atomsClose()[m]->position - cell2->atomsClose()[k]->position;
+                                        //std::cout << "below distance" << std::endl;
                                         distance = system->minimumImageCriterion(distance);
 
                                         distanceBetweenAtoms = distance.length();
@@ -135,11 +138,14 @@ void LennardJones::calculateForcesOld(System *system)
     vec3 tempForce = vec3(0.0, 0.0, 0.0);
     vec3 distance;
     double expressionOfForce;
+    CellList *celllist = system->celllist();
 
     for (int i = 0; i < (int) system->atoms().size(); i++) {
         for (int j = i + 1; j < (int) system->atoms().size(); j++) {
             distance = system->atoms()[i]->position - system->atoms()[j]->position;
             distance = system->minimumImageCriterion(distance);
+            // Check this.
+            if (distance.lengthSquared() > celllist->getrcut() * celllist->getrcut()) {continue;}
 
             distanceBetweenAtoms = distance.length();
             divisionOfSigmaAndDistance = m_sigma/distanceBetweenAtoms;
@@ -153,6 +159,7 @@ void LennardJones::calculateForcesOld(System *system)
             tempForce = tempForce * (-1);
             system->atoms()[j]->force.add(tempForce);
         }
+        // Calculate in statisticssampler.
         m_kineticEnergy += 0.5 * system->atoms()[i]->mass() * system->atoms()[i]->velocity.lengthSquared();
     }
     m_temperature = (2.0/3.0) * (m_kineticEnergy/((double) system->atoms().size() * 1));

@@ -1,5 +1,7 @@
 #include "statisticssampler.h"
 
+// Calculate kinetic energy, pressure, temperature and density in here.
+
 using namespace std;
 
 StatisticsSampler::StatisticsSampler()
@@ -62,8 +64,8 @@ void StatisticsSampler::sample(System *system, int timestep)
     }
 
     double temperatureInSI = UnitConverter::temperatureToSI(m_temperature);
-    double kineticEnergyInSI = UnitConverter::energyToSI(m_kineticEnergy);
-    double potentialEnergyInSI = UnitConverter::energyToSI(m_potentialEnergy);
+    double kineticEnergyInSI = UnitConverter::energyToEv(m_kineticEnergy);
+    double potentialEnergyInSI = UnitConverter::energyToEv(m_potentialEnergy);
     double pressureInSI = UnitConverter::pressureToSI(m_pressure);
 
     if (!m_kineticEnergyFile.is_open()) {

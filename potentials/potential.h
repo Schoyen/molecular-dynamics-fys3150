@@ -18,6 +18,7 @@ public:
     Potential();
     virtual ~Potential() {}
     virtual void calculateForces(System *system) = 0;
+    virtual void calculateForcesOld(System *system) = 0;
     void addThermostat(BerendsenThermostat *berendsen);
     double potentialEnergy();
     double kineticEnergy();
