@@ -118,7 +118,6 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
 
     // Creating the center of each unit cell.
     // Is this necessary? Should the centers be placed from zero to system size length?
-    /*
     if (numberOfUnitCellsEachDimension % 2 == 0) {
         int nOUCEDHALF = numberOfUnitCellsEachDimension / 2;
         for (int i = -nOUCEDHALF; i < nOUCEDHALF; i++) {
@@ -140,8 +139,8 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
             }
         }
     }
-    */
 
+    /*
     for (int i = 0; i < numberOfUnitCellsEachDimension; i++) {
         for (int j = 0; j < numberOfUnitCellsEachDimension; j++) {
             for (int k = 0; k < numberOfUnitCellsEachDimension; k++) {
@@ -150,11 +149,13 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
             }
         }
     }
+    */
 
     numberOfCellsX = int(m_systemSize.x() / m_celllist->getrcut());
     numberOfCellsY = int(m_systemSize.y() / m_celllist->getrcut());
     numberOfCellsZ = int(m_systemSize.z() / m_celllist->getrcut());
     int counter = 0;
+    // Try to run the loops for -numberOfCellsXHalf to numberOfCellsXHalf.
     for (int i = 0; i < numberOfCellsX; i++) {
         for (int j = 0; j < numberOfCellsY; j ++) {
             for (int k = 0; k < numberOfCellsZ; k++) {
