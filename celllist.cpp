@@ -40,6 +40,7 @@ void CellList::createCell(int i, int j, int k, int ind, int nx, int ny, int nz)
 
 Cell *CellList::getCell(int i, int j, int k)
 {
+    std::cout << m_listOfCells[i * numberOfCellsY * numberOfCellsZ + j * numberOfCellsZ + k]->positionInList << std::endl;
     return m_listOfCells[i * numberOfCellsY * numberOfCellsZ + j * numberOfCellsZ + k];
 }
 
@@ -63,6 +64,7 @@ void CellList::calculateCellAtoms()
         cz = int(m_system->atoms()[i]->position.z() / m_system->systemSize().z() * numberOfCellsZ);
         // You where here.
         std::cout << cx << "\t" << cy << "\t" << cz << std::endl;
+        std::cout << cx * numberOfCellsY * numberOfCellsZ + cy * numberOfCellsZ + cz << std::endl;
         c = getCell(cx, cy, cz);
         c->addAtom(m_system->atoms()[i]);
     }

@@ -50,12 +50,12 @@ void System::applyPeriodicBoundaryConditions() {
         x = m_atoms[n]->position.x();
         y = m_atoms[n]->position.y();
         z = m_atoms[n]->position.z();
-        if (x < -xlen * 0.5) x += xlen;
-        else if (x >= xlen * 0.5) x -= xlen;
-        if (y < -ylen * 0.5) y += ylen;
-        else if (y >= ylen * 0.5) y -= ylen;
-        if (z < -zlen * 0.5) z += zlen;
-        else if (z >= zlen * 0.5) z -= zlen;
+        if (x < 0) x += xlen;
+        else if (x >= xlen) x -= xlen;
+        if (y < 0) y += ylen;
+        else if (y >= ylen) y -= ylen;
+        if (z < 0) z += zlen;
+        else if (z >= zlen) z -= zlen;
         m_atoms[n]->position = vec3(x, y, z);
     }
     // Make sure the right atoms are put in correct cells.
@@ -116,31 +116,6 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
     m_celllist->setSystem(this);
     double initialTemperature = iT; // Dimensionless temperature.
 
-    // Creating the center of each unit cell.
-    // Is this necessary? Should the centers be placed from zero to system size length?
-    if (numberOfUnitCellsEachDimension % 2 == 0) {
-        int nOUCEDHALF = numberOfUnitCellsEachDimension / 2;
-        for (int i = -nOUCEDHALF; i < nOUCEDHALF; i++) {
-            for (int j = -nOUCEDHALF; j < nOUCEDHALF; j++) {
-                for (int k = -nOUCEDHALF; k < nOUCEDHALF; k++) {
-                    temp = vec3(i * latticeConstant, j * latticeConstant, k * latticeConstant);
-                    R.push_back(temp);
-                }
-            }
-        }
-    } else {
-        int nOUCEDHALF = (numberOfUnitCellsEachDimension - 1) / 2;
-        for (int i = -nOUCEDHALF; i <= nOUCEDHALF; i++) {
-            for (int j = -nOUCEDHALF; j <= nOUCEDHALF; j++) {
-                for (int k = -nOUCEDHALF; k <= nOUCEDHALF; k++) {
-                    temp = vec3(i * latticeConstant, j * latticeConstant, k * latticeConstant);
-                    R.push_back(temp);
-                }
-            }
-        }
-    }
-
-    /*
     for (int i = 0; i < numberOfUnitCellsEachDimension; i++) {
         for (int j = 0; j < numberOfUnitCellsEachDimension; j++) {
             for (int k = 0; k < numberOfUnitCellsEachDimension; k++) {
@@ -149,44 +124,10 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
             }
         }
     }
-    */
 
     numberOfCellsX = int(m_systemSize.x() / m_celllist->getrcut());
     numberOfCellsY = int(m_systemSize.y() / m_celllist->getrcut());
     numberOfCellsZ = int(m_systemSize.z() / m_celllist->getrcut());
-    int nxHalf, nyHalf, nzHalf;
-    
-    if (numberOfCellsX % 2 == 0) nxHalf = numberOfCellsX / 2;
-    else nxHalf = (numberOfCellsX - 1) / 2;
-    if (numberOfCellsY % 2 == 0) nyHalf = numberOfCellsY / 2;
-    else nyHalf = (numberOfCellsY - 1) / 2;
-    if (numberOfCellsZ % 2 == 0) nzHalf = numberOfCellsZ / 2;
-    else nzHalf = (numberOfCellsZ - 1) / 2;
-
-    int counter = 0;
-
-    for (int i = -nxHalf; i < nxHalf; i++) {
-        for (int j = -nyHalf; j < nyHalf; j++) {
-            for (int k = -nzHalf; k < nzHalf; k++) {
-                counter++;
-                m_celllist->createCell(i, j, k, counter, numberOfCellsX, numberOfCellsY, numberOfCellsZ);
-            }
-        }
-    }
-
-    int tempX = -1;
-    int tempY = -1;
-    int tempZ = -1;
-    if (numberOfCellsX % 2 == 1) tempX = nxHalf;
-    if (numberOfCellsY % 2 == 1) tempY = nyHalf;
-    if (numberOfCellsZ % 2 == 1) tempZ = nzHalf;
-
-    if (tempX != -1 && tempY != -1 && tempZ != -1) {
-        counter++;
-        m_celllist->createCell(tempX, tempY, tempZ, counter, numberOfCellsX, numberOfCellsY, numberOfCellsZ);
-    }
-    
-    /*
     for (int i = 0; i < numberOfCellsX; i++) {
         for (int j = 0; j < numberOfCellsY; j ++) {
             for (int k = 0; k < numberOfCellsZ; k++) {
@@ -195,7 +136,6 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
             }
         }
     }
-    */
 
     // Creating atoms in unit cell formations.
     for (int n = 0; n < totalNumberOfUnitCells; n++) {
