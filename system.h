@@ -34,7 +34,7 @@ public:
     void resetForcesOnAllAtoms();
     void createFCCLattice(int numberOfUnitCellsEachDimension, double latticeConstant, double iT, double rcut);
     void applyPeriodicBoundaryConditions();
-    vec3 minimumImageCriterion(vec3 pos);
+    void minimumImageCriterion(vec3 &pos);
     void removeMomentum();
     void calculateForces();
     void step(double dt, bool thermostatOn, bool oldForce);

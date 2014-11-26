@@ -20,6 +20,7 @@ void StatisticsSampler::createFiles()
 {
     m_kineticEnergyFile.open("build/DATA/kineticEnergy.txt");
     m_potentialEnergyFile.open("build/DATA/potentialEnergy.txt");
+    m_totalEnergyFile.open("build/DATA/totalEnergy.txt");
     m_temperatureFile.open("build/DATA/temperature.txt");
     m_netMomentumFile.open("build/DATA/netMomentum.txt");
     m_numberDensityFile.open("build/DATA/numberDensity.txt");
@@ -34,6 +35,7 @@ void StatisticsSampler::closeFiles()
 {
     m_kineticEnergyFile.close();
     m_potentialEnergyFile.close();
+    m_totalEnergyFile.close();
     m_temperatureFile.close();
     m_netMomentumFile.close();
     m_numberDensityFile.close();
@@ -48,6 +50,7 @@ void StatisticsSampler::sample(System *system, int timestep)
 {
     sampleKineticEnergy(system);
     samplePotentialEnergy(system);
+    sampleTotalEnergy(system);
     sampleTemperature(system);
     samplePressure(system);
     if (!m_sampledNetMomentum) {
@@ -76,8 +79,9 @@ void StatisticsSampler::sample(System *system, int timestep)
 
 
     double temperatureInSI = UnitConverter::temperatureToSI(m_temperature);
-    double kineticEnergyInSI = UnitConverter::energyToEv(m_kineticEnergy);
-    double potentialEnergyInSI = UnitConverter::energyToEv(m_potentialEnergy);
+    double kineticEnergyInEv = UnitConverter::energyToEv(m_kineticEnergy);
+    double potentialEnergyInEv = UnitConverter::energyToEv(m_potentialEnergy);
+    double totalEnergyInEv = UnitConverter::energyToEv(m_totalEnergy);
     double pressureInSI = UnitConverter::pressureToSI(m_pressure);
 
     if (!m_kineticEnergyFile.is_open()) {
@@ -85,14 +89,21 @@ void StatisticsSampler::sample(System *system, int timestep)
         exit(1);
     }
     
-    m_kineticEnergyFile << kineticEnergyInSI << "\n";
+    m_kineticEnergyFile << kineticEnergyInEv << "\n";
 
     if (!m_potentialEnergyFile.is_open()) {
         cerr << "Unable to write to build/DATA/potentialEnergy.txt" << endl;
         exit(1);
     }
     
-    m_potentialEnergyFile << potentialEnergyInSI << "\n";
+    m_potentialEnergyFile << potentialEnergyInEv << "\n";
+
+    if (!m_totalEnergyFile.is_open()) {
+        cerr << "Unable to write to build/DATA/totalEnergy.txt" << endl;
+        exit(1);
+    }
+    
+    m_totalEnergyFile << totalEnergyInEv << "\n";
 
     if (!m_temperatureFile.is_open()) {
         cerr << "Unable to write to build/DATA/temperature.txt" << endl;
@@ -123,6 +134,11 @@ void StatisticsSampler::sampleKineticEnergy(System *system)
 void StatisticsSampler::samplePotentialEnergy(System *system)
 {
     m_potentialEnergy = system->potential()->potentialEnergy();
+}
+
+void StatisticsSampler::sampleTotalEnergy(System *system)
+{
+    m_totalEnergy = m_kineticEnergy + m_potentialEnergy;
 }
 
 void StatisticsSampler::sampleNetMomentum(System *system)

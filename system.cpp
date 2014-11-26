@@ -24,20 +24,14 @@ System::~System()
     m_atoms.clear();
 }
 
-vec3 System::minimumImageCriterion(vec3 pos)
+void System::minimumImageCriterion(vec3 &pos)
 {
-    double x = pos.x();
-    double y = pos.y();
-    double z = pos.z();
-
-    if (x > m_systemSize.x() * 0.5) x = x - m_systemSize.x();
-    else if (x <= -m_systemSize.x() * 0.5) x = x + m_systemSize.x();
-    if (y > m_systemSize.y() * 0.5) y = y - m_systemSize.y();
-    else if (y <= -m_systemSize.y() * 0.5) y = y + m_systemSize.y();
-    if (z > m_systemSize.z() * 0.5) z = z - m_systemSize.z();
-    else if (z <= -m_systemSize.z() * 0.5) z = z + m_systemSize.z();
-
-    return vec3(x, y, z);
+    if (pos.x() > m_systemSize.x() * 0.5) pos[0] = pos[0] - m_systemSize.x();
+    else if (pos.x() <= -m_systemSize.x() * 0.5) pos[0] = pos[0] + m_systemSize.x();
+    if (pos.y() > m_systemSize.y() * 0.5) pos[1] = pos[1] - m_systemSize.y();
+    else if (pos.y() <= -m_systemSize.y() * 0.5) pos[1] = pos[1] + m_systemSize.y();
+    if (pos.z() > m_systemSize.z() * 0.5) pos[2] = pos[2] - m_systemSize.z();
+    else if (pos.z() <= -m_systemSize.z() * 0.5) pos[2] = pos[2] + m_systemSize.z();
 }
 
 void System::applyPeriodicBoundaryConditions() {
@@ -105,6 +99,7 @@ void System::resetForcesOnAllAtoms() {
 
 void System::createFCCLattice(int numberOfUnitCellsEachDimension, double latticeConstant, double iT, double rcut) {
     int totalNumberOfUnitCells = numberOfUnitCellsEachDimension * numberOfUnitCellsEachDimension * numberOfUnitCellsEachDimension;
+    m_systemSize = vec3(latticeConstant * numberOfUnitCellsEachDimension, latticeConstant * numberOfUnitCellsEachDimension, latticeConstant * numberOfUnitCellsEachDimension);
     vec3 r1 = vec3(0.0, 0.0, 0.0);
     vec3 r2 = vec3(latticeConstant/2.0, latticeConstant/2.0, 0.0);
     vec3 r3 = vec3(0, latticeConstant/2.0, latticeConstant/2.0);

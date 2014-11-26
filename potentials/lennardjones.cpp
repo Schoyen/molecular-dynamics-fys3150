@@ -94,7 +94,7 @@ void LennardJones::calculateForces(System *system)
                                         else {
                                             distance = cell1->atomsClose()[m]->position - cell2->atomsClose()[k]->position;
                                             // Write the minimumImageCriterion as a reference.
-                                            distance = system->minimumImageCriterion(distance);
+                                            system->minimumImageCriterion(distance);
 
                                             distanceBetweenAtoms = distance.length();
                                             divisionOfSigmaAndDistance = m_sigma / distanceBetweenAtoms;
@@ -126,11 +126,11 @@ void LennardJones::calculateForces(System *system)
 
 void LennardJones::calculateForcesOld(System *system)
 {
-    m_potentialEnergy = 0; // Remember to compute this in the loop
+    m_potentialEnergy = 0;
     m_pressure = 0;
     double distanceBetweenAtoms = 0;
     double divisionOfSigmaAndDistance = 0;
-    vec3 tempForce = vec3(0.0, 0.0, 0.0);
+    vec3 tempForce;
     vec3 distance;
     double expressionOfForce;
     CellList *celllist = system->celllist();
@@ -138,8 +138,7 @@ void LennardJones::calculateForcesOld(System *system)
     for (int i = 0; i < (int) system->atoms().size(); i++) {
         for (int j = i + 1; j < (int) system->atoms().size(); j++) {
             distance = system->atoms()[i]->position - system->atoms()[j]->position;
-            distance = system->minimumImageCriterion(distance);
-            // Check this.
+            system->minimumImageCriterion(distance);
             if (distance.lengthSquared() > celllist->getrcut() * celllist->getrcut()) {
                 continue;
             } else {

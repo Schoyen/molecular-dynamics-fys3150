@@ -12,11 +12,13 @@ private:
     double m_netMomentumAfter;
     double m_kineticEnergy;
     double m_potentialEnergy;
+    double m_totalEnergy;
     double m_temperature;
     double m_numberDensity;
     double m_pressure;
     ofstream m_kineticEnergyFile;
     ofstream m_potentialEnergyFile;
+    ofstream m_totalEnergyFile;
     ofstream m_netMomentumFile;
     ofstream m_temperatureFile;
     ofstream m_numberDensityFile;
@@ -37,6 +39,7 @@ public:
     void sampleTemperature(System *system);
     void sampleNumberDensity(System *system);
     void samplePressure(System *system);
+    void sampleTotalEnergy(System *system);
     double temperature() {return m_temperature;}
-    double totalEnergy() {return m_kineticEnergy + m_potentialEnergy;}
+    double totalEnergy() {return m_totalEnergy;}
 };

@@ -29,7 +29,6 @@ int main()
     auto start = high_resolution_clock::now();
     System system;
     // For more than 2 x 2 x 2 FCCLattice we need a bigger system size.
-    system.setSystemSize(UnitConverter::lengthFromAngstroms(vec3(28, 28, 28)));
     int numberOfFCCLattices = 5;
     double cellSize = 2.5 * 3.405; // rcut
     int numberOfAtoms = 4 * numberOfFCCLattices * numberOfFCCLattices * numberOfFCCLattices;
@@ -61,7 +60,7 @@ int main()
         statisticsSampler->sample(&system, timestep);
         //std::cout << UnitConverter::energyToEv(statisticsSampler->totalEnergy()) << std::endl;
 
-        //cout << timestep << endl;
+        cout << timestep << endl;
     }
     movie->saveState(&system);
 
