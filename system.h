@@ -22,6 +22,7 @@ private:
     vec3 velocityOfCM;
     vec3 velocityOfCMAfter;
     CellList *m_celllist;
+    bool m_oldForce;
 
 public:
     int numberOfCellsX;
@@ -36,7 +37,7 @@ public:
     vec3 minimumImageCriterion(vec3 pos);
     void removeMomentum();
     void calculateForces();
-    void step(double dt, bool thermostatOn);
+    void step(double dt, bool thermostatOn, bool oldForce);
     void save(string filename);
     void load(string filename);
 

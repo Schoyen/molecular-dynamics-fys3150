@@ -37,11 +37,11 @@ int main()
     system.createFCCLattice(numberOfFCCLattices, UnitConverter::lengthFromAngstroms(5.26), UnitConverter::temperatureFromSI(initialTemperature), cellSize);
     double tbath = 100;
     double relaxationTime = 0.01; // Figure this one out.
-    system.setPotential(new LennardJones(3.405, 1.0, new BerendsenThermostat(UnitConverter::temperatureFromSI(tbath), relaxationTime)));
+    StatisticsSampler *statisticsSampler = new StatisticsSampler();
+    system.setPotential(new LennardJones(3.405, 1.0, new BerendsenThermostat(UnitConverter::temperatureFromSI(tbath), relaxationTime, statisticsSampler)));
     system.setIntegrator(new VelocityVerlet());
     system.removeMomentum();
 
-    StatisticsSampler *statisticsSampler = new StatisticsSampler(); //
     IO *movie = new IO(); // To write the state to file
     movie->open("movie.xyz");
 
@@ -49,21 +49,22 @@ int main()
     string filename;
     //filename = "test.txt";
     //system.load(filename);
-    for(int timestep=0; timestep<100; timestep++) {
-        //if (timestep < 100) {
-        system.step(dt, false);
-        //} else {
-            //system.step(dt, true);
-            //system.save("test.txt");
-            //break;
-        //}
+    for(int timestep=0; timestep<1000; timestep++) {
+        movie->saveState(&system);
+        if (timestep < 300) {
+            system.step(dt, false, true);
+        } else {
+            system.step(dt, false, true);
+            //system.step(dt, true, true);
+        }
 
         statisticsSampler->sample(&system, timestep);
-        std::cout << UnitConverter::energyToEv(statisticsSampler->totalEnergy()) << std::endl;
+        //std::cout << UnitConverter::energyToEv(statisticsSampler->totalEnergy()) << std::endl;
 
-        movie->saveState(&system);
         //cout << timestep << endl;
     }
+    movie->saveState(&system);
+
     auto finish = high_resolution_clock::now();
     filename = "build/DATA/calculationTime" + to_string(numberOfAtoms) + ".txt";
     ofstream file(filename);

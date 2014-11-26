@@ -9,10 +9,7 @@ class Potential
 {
 protected:
     double m_potentialEnergy;
-    double m_kineticEnergy;
-    double m_temperature;
-    double m_numberDensity;
-    double m_pressure;
+    double m_pressure; // Sum of all forces.
     BerendsenThermostat *m_berendsen;
 public:
     Potential();
@@ -21,9 +18,6 @@ public:
     virtual void calculateForcesOld(System *system) = 0;
     void addThermostat(BerendsenThermostat *berendsen);
     double potentialEnergy();
-    double kineticEnergy();
-    double temperature();
-    double numberDensity();
     double pressure();
     BerendsenThermostat *berendsen() {return m_berendsen;}
 };

@@ -7,6 +7,7 @@ using namespace std;
 StatisticsSampler::StatisticsSampler()
 {
     m_sampledNetMomentum = false;
+    m_sampledNumberDensity = false;
 }
 
 StatisticsSampler::~StatisticsSampler()
@@ -48,7 +49,6 @@ void StatisticsSampler::sample(System *system, int timestep)
     sampleKineticEnergy(system);
     samplePotentialEnergy(system);
     sampleTemperature(system);
-    sampleNumberDensity(system);
     samplePressure(system);
     if (!m_sampledNetMomentum) {
         sampleNetMomentum(system);
@@ -62,6 +62,18 @@ void StatisticsSampler::sample(System *system, int timestep)
         m_netMomentumFile << "Net momentum before removal: " << to_string(netMomentumInSI) << "\n";
         m_netMomentumFile << "Net momentum after removal: " << to_string(netMomentumAfterInSI);
     }
+
+    if (!m_sampledNumberDensity) {
+        sampleNumberDensity(system);
+        m_sampledNumberDensity = true;
+        if (!m_numberDensityFile.is_open()) {
+            cerr << "Unable to write to build/DATA/numberDensity.txt" << endl;
+            exit(1);
+        }
+
+        m_numberDensityFile << m_numberDensity << "\n";
+    }
+
 
     double temperatureInSI = UnitConverter::temperatureToSI(m_temperature);
     double kineticEnergyInSI = UnitConverter::energyToEv(m_kineticEnergy);
@@ -89,26 +101,23 @@ void StatisticsSampler::sample(System *system, int timestep)
     
     m_temperatureFile << temperatureInSI << "\n";
 
-    if (!m_numberDensityFile.is_open()) {
-        cerr << "Unable to write to build/DATA/numberDensity.txt" << endl;
-        exit(1);
-    }
-
-    m_numberDensityFile << m_numberDensity << endl;
 
     if (!m_pressureFile.is_open()) {
         cerr << "Unable to write to build/DATA/pressure.txt" << endl;
         exit(1);
     }
 
-    m_pressureFile << pressureInSI << endl;
+    m_pressureFile << pressureInSI << "\n";
 
     // Add the extra conversions for the rest of the files.
 }
 
 void StatisticsSampler::sampleKineticEnergy(System *system)
 {
-    m_kineticEnergy = system->potential()->kineticEnergy();
+    m_kineticEnergy = 0;
+    for (int i = 0; i < (int) system->atoms().size(); i++) {
+        m_kineticEnergy += 0.5 * system->atoms()[i]->mass() * system->atoms()[i]->velocity.lengthSquared();
+    }
 }
 
 void StatisticsSampler::samplePotentialEnergy(System *system)
@@ -126,19 +135,16 @@ void StatisticsSampler::sampleNetMomentum(System *system)
 
 void StatisticsSampler::sampleTemperature(System *system)
 {
-    m_temperature = system->potential()->temperature();
+    m_temperature = (2.0/3.0) * (m_kineticEnergy / (system->atoms().size() * 1.0));
 }
 
 void StatisticsSampler::sampleNumberDensity(System *system)
 {
-    m_numberDensity = system->potential()->numberDensity();
-    // Consider using dimensionless variables due to large numbers.
-    // m_numberDensity = system->atoms().size() / UnitConverter::lengthToSI(system->systemSize().x() * system->systemSize().y() * system->systemSize().z());
-    // The number density needs to be computed in the force calculation.
-    // m_numberDensity = system->atoms().size() / (system->systemSize().x() * system->systemSize().y() * system->systemSize().z());
+    m_numberDensity = system->atoms().size() / ((double) system->systemSize().x() * system->systemSize().y() * system->systemSize().z());
 }
 
 void StatisticsSampler::samplePressure(System *system)
 {
     m_pressure = system->potential()->pressure();
+    m_pressure = 1.0 / (3.0 * system->systemSize().x() * system->systemSize().y() * system->systemSize().z()) * (m_pressure / ((double) system->atoms().size())) + m_numberDensity * 1.0 * m_temperature;
 }

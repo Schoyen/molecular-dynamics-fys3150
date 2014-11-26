@@ -2,8 +2,6 @@
 
 Potential::Potential() :
     m_potentialEnergy(0),
-    m_kineticEnergy(0),
-    m_temperature(0),
     m_berendsen(0)
 {
 
@@ -17,21 +15,6 @@ void Potential::addThermostat(BerendsenThermostat *berendsen)
 double Potential::potentialEnergy()
 {
     return m_potentialEnergy;
-}
-
-double Potential::kineticEnergy()
-{
-    return m_kineticEnergy;
-}
-
-double Potential::temperature()
-{
-    return m_temperature;
-}
-
-double Potential::numberDensity()
-{
-    return m_numberDensity;
 }
 
 double Potential::pressure()

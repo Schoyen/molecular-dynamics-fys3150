@@ -1,10 +1,11 @@
 #include "berendsen.h"
 #include <cmath>
 
-BerendsenThermostat::BerendsenThermostat(double tbath, double relaxationTime)
+BerendsenThermostat::BerendsenThermostat(double tbath, double relaxationTime, StatisticsSampler *statistics)
 {
     m_tbath = tbath;
     m_relaxationTime = relaxationTime;
+    m_statistics = statistics;
 }
 
 BerendsenThermostat::~BerendsenThermostat()
@@ -12,7 +13,7 @@ BerendsenThermostat::~BerendsenThermostat()
 
 }
 
-double BerendsenThermostat::scalingFactor(double temperature, double dt)
+void BerendsenThermostat::scalingFactor(Atom *atom, double dt)
 {
-    return sqrt(1.0 + dt / m_relaxationTime * (m_tbath / temperature - 1));
+    atom->velocity * sqrt(1.0 + dt / m_relaxationTime * (m_tbath / m_statistics->temperature() - 1));
 }

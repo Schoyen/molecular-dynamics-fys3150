@@ -31,11 +31,11 @@ vec3 System::minimumImageCriterion(vec3 pos)
     double z = pos.z();
 
     if (x > m_systemSize.x() * 0.5) x = x - m_systemSize.x();
-    else if (x < -m_systemSize.x() * 0.5) x = x + m_systemSize.x();
+    else if (x <= -m_systemSize.x() * 0.5) x = x + m_systemSize.x();
     if (y > m_systemSize.y() * 0.5) y = y - m_systemSize.y();
-    else if (y < -m_systemSize.y() * 0.5) y = y + m_systemSize.y();
+    else if (y <= -m_systemSize.y() * 0.5) y = y + m_systemSize.y();
     if (z > m_systemSize.z() * 0.5) z = z - m_systemSize.z();
-    else if (z < -m_systemSize.z() * 0.5) z = z + m_systemSize.z();
+    else if (z <= -m_systemSize.z() * 0.5) z = z + m_systemSize.z();
 
     return vec3(x, y, z);
 }
@@ -78,21 +78,21 @@ void System::removeMomentum() {
     double totalMass = 0;
     for (int n = 0; n < (int) m_atoms.size(); n++) {
         temp = m_atoms[n]->velocity * (m_atoms[n]->mass());
-        velocityOfCM += temp;
+        velocityOfCM.add(temp);
         totalMass += m_atoms[n]->mass();
     }
 
-    velocityOfCM /=totalMass;
+    velocityOfCM = velocityOfCM / totalMass;
     for (int n = 0; n < (int) m_atoms.size(); n++) {
         m_atoms[n]->velocity = m_atoms[n]->velocity - velocityOfCM;
     }
 
     for (int n = 0; n < (int) m_atoms.size(); n++) {
         temp = m_atoms[n]->velocity * (m_atoms[n]->mass());
-        velocityOfCMAfter += temp;
+        velocityOfCMAfter.add(temp);
     }
 
-    velocityOfCMAfter /= totalMass;
+    velocityOfCMAfter = velocityOfCMAfter / totalMass;
 }
 
 void System::resetForcesOnAllAtoms() {
@@ -165,12 +165,13 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
 
 void System::calculateForces() {
     resetForcesOnAllAtoms();
-    // Write test to check for which force calculation to use.
-    m_potential->calculateForces(this);
-    //m_potential->calculateForcesOld(this);
+    if (m_oldForce) m_potential->calculateForcesOld(this);
+    else m_potential->calculateForces(this);
 }
 
-void System::step(double dt, bool thermostatOn) {
+void System::step(double dt, bool thermostatOn, bool oldForce)
+{
+    m_oldForce = oldForce;
     m_integrator->integrate(this, dt, thermostatOn);
     m_steps++;
     m_currentTime += dt;

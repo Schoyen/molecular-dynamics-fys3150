@@ -24,6 +24,7 @@ private:
     ofstream m_heatCapacityFile;
     // Add optional pressure minus heat capacity.
     bool m_sampledNetMomentum;
+    bool m_sampledNumberDensity;
 public:
     StatisticsSampler();
     ~StatisticsSampler();
@@ -36,5 +37,6 @@ public:
     void sampleTemperature(System *system);
     void sampleNumberDensity(System *system);
     void samplePressure(System *system);
+    double temperature() {return m_temperature;}
     double totalEnergy() {return m_kineticEnergy + m_potentialEnergy;}
 };
