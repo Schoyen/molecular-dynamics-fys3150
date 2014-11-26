@@ -63,9 +63,9 @@ void LennardJones::calculateForces(System *system)
                                 //std::cout << i << "\t" << j << "\t" << k << "\n" << std::endl;
                                 // Calulating force locally in a cell.
 
-                                for (int k = 0; k < (int) cell1->atomsClose().size(); k++) {
-                                    for (int m = k + 1; m < (int) cell1->atomsClose().size(); m++) {
-                                        distance = cell1->atomsClose()[k]->position - cell1->atomsClose()[m]->position;
+                                for (int m = 0; m < (int) cell1->atomsClose().size(); m++) {
+                                    for (int n = m + 1; n < (int) cell1->atomsClose().size(); n++) {
+                                        distance = cell1->atomsClose()[m]->position - cell1->atomsClose()[n]->position;
                                         distanceBetweenAtoms = distance.length();
                                         divisionOfSigmaAndDistance = m_sigma / distanceBetweenAtoms;
 
@@ -75,14 +75,15 @@ void LennardJones::calculateForces(System *system)
 
                                         expressionOfForce = 4 * m_epsilon * (12 * pow(m_sigma, 12) / pow(distanceBetweenAtoms, 14) - 6 * pow(m_sigma, 6) / pow(distanceBetweenAtoms, 8));
                                         tempForce = distance * expressionOfForce;
-                                        cell1->atomsClose()[k]->force.add(tempForce);
+                                        cell1->atomsClose()[m]->force.add(tempForce);
 
                                         m_pressure += tempForce.dot(distance);
 
                                         tempForce = tempForce * (-1); // N3L
-                                        cell1->atomsClose()[m]->force.add(tempForce);
+                                        cell1->atomsClose()[n]->force.add(tempForce);
                                     }
-                                    m_kineticEnergy += 0.5 * cell1->atomsClose()[k]->mass() * cell1->atomsClose()[k]->velocity.lengthSquared();
+                                    // Calculate this in statisticssampler.
+                                    m_kineticEnergy += 0.5 * cell1->atomsClose()[m]->mass() * cell1->atomsClose()[m]->velocity.lengthSquared();
                                 }
                             }
                             else {
@@ -90,25 +91,25 @@ void LennardJones::calculateForces(System *system)
                                 //cell2 = celllist->getCell(cx, cy, cz); // Neighbouring cell.
                                 
                                 for (int m = 0; m < (int) cell1->atomsClose().size(); m++) {
-                                    for (int k = 0; k < (int) cell2->atomsClose().size(); k++) {
-                                        if (cell1->atomsClose()[m]->index >= cell2->atomsClose()[k]->index) {continue;}
-                                        //std::cout << cell1->cellIndex << "\tcell 1" << std::endl;
-                                        //std::cout << cell2->nx << "\tcell 2" << std::endl;
-                                        distance = cell1->atomsClose()[m]->position - cell2->atomsClose()[k]->position;
-                                        //std::cout << "below distance" << std::endl;
-                                        distance = system->minimumImageCriterion(distance);
+                                    for (int n = 0; n < (int) cell2->atomsClose().size(); n++) {
+                                        if (cell1->atomsClose()[m]->index >= cell2->atomsClose()[n]->index) {continue;}
+                                        else {
+                                            distance = cell1->atomsClose()[m]->position - cell2->atomsClose()[k]->position;
+                                            // Write the minimumImageCriterion as a reference.
+                                            distance = system->minimumImageCriterion(distance);
 
-                                        distanceBetweenAtoms = distance.length();
-                                        divisionOfSigmaAndDistance = m_sigma / distanceBetweenAtoms;
-                                        m_potentialEnergy += 4 * m_epsilon * (pow(divisionOfSigmaAndDistance, 12) - pow(divisionOfSigmaAndDistance, 6));
-                                        expressionOfForce = 4 * m_epsilon * (12 * pow(m_sigma, 12) / pow(distanceBetweenAtoms, 14) - 6 * pow(m_sigma, 6) / pow(distanceBetweenAtoms, 8));
-                                        tempForce = distance * expressionOfForce;
-                                        cell1->atomsClose()[m]->force.add(tempForce);
+                                            distanceBetweenAtoms = distance.length();
+                                            divisionOfSigmaAndDistance = m_sigma / distanceBetweenAtoms;
+                                            m_potentialEnergy += 4 * m_epsilon * (pow(divisionOfSigmaAndDistance, 12) - pow(divisionOfSigmaAndDistance, 6));
+                                            expressionOfForce = 4 * m_epsilon * (12 * pow(m_sigma, 12) / pow(distanceBetweenAtoms, 14) - 6 * pow(m_sigma, 6) / pow(distanceBetweenAtoms, 8));
+                                            tempForce = distance * expressionOfForce;
+                                            cell1->atomsClose()[m]->force.add(tempForce);
 
-                                        m_pressure += tempForce.dot(distance);
+                                            m_pressure += tempForce.dot(distance);
 
-                                        tempForce = tempForce * (-1); // N3L
-                                        cell2->atomsClose()[k]->force.add(tempForce);
+                                            tempForce = tempForce * (-1); // N3L
+                                            cell2->atomsClose()[n]->force.add(tempForce);
+                                        }
                                     }
                                     m_kineticEnergy += 0.5 * cell1->atomsClose()[m]->mass() * cell1->atomsClose()[m]->velocity.lengthSquared();
                                 }

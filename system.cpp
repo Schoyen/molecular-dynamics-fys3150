@@ -165,7 +165,9 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
 
 void System::calculateForces() {
     resetForcesOnAllAtoms();
-    m_potential->calculateForcesOld(this);
+    // Write test to check for which force calculation to use.
+    m_potential->calculateForces(this);
+    //m_potential->calculateForcesOld(this);
 }
 
 void System::step(double dt, bool thermostatOn) {
