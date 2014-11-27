@@ -5,11 +5,11 @@
 #include "../celllist.h"
 #include "../cell.h"
 
-LennardJones::LennardJones(double sigma, double epsilon, BerendsenThermostat *berendsen) :
+LennardJones::LennardJones(double sigma, double epsilon) :
     m_sigma(sigma),
     m_epsilon(epsilon)
 {
-    m_berendsen = berendsen;
+
 }
 
 void LennardJones::calculateForces(System *system)
@@ -21,7 +21,6 @@ void LennardJones::calculateForces(System *system)
     vec3 tempForce;
     vec3 distance;
     double expressionOfForce;
-    int counter;
     int cx, cy, cz;
 
     //TODO: "Add the statistical property calculations to the cell lists";
@@ -35,7 +34,6 @@ void LennardJones::calculateForces(System *system)
         for (int j = 0; j < system->numberOfCellsY; j++) {
             for (int k = 0; k < system->numberOfCellsZ; k++) {
                 cell1 = celllist->getCell(i, j, k); // Current cell.
-                counter = 0;
 
                 for (int dx = i - 1; dx <= i + 1; dx++) {
 
@@ -69,7 +67,7 @@ void LennardJones::calculateForces(System *system)
                                         divisionOfSigmaAndDistance = m_sigma / distanceBetweenAtoms;
 
                                         m_potentialEnergy += 4 * m_epsilon * (pow(divisionOfSigmaAndDistance, 12) - pow(divisionOfSigmaAndDistance, 6));
-                                        divisionOfSigmaAndDistance = m_sigma / celllist->getrcut();
+                                        divisionOfSigmaAndDistance = m_sigma / system->rcut();
                                         m_potentialEnergy -= 4 * m_epsilon * (pow(divisionOfSigmaAndDistance, 12) - pow(divisionOfSigmaAndDistance, 6));
 
                                         expressionOfForce = 4 * m_epsilon * (12 * pow(m_sigma, 12) / pow(distanceBetweenAtoms, 14) - 6 * pow(m_sigma, 6) / pow(distanceBetweenAtoms, 8));
@@ -111,7 +109,6 @@ void LennardJones::calculateForces(System *system)
                                     }
                                 }
                             }
-                            counter++;
                         }
                     }
                 }
@@ -133,13 +130,12 @@ void LennardJones::calculateForcesOld(System *system)
     vec3 tempForce;
     vec3 distance;
     double expressionOfForce;
-    CellList *celllist = system->celllist();
 
     for (int i = 0; i < (int) system->atoms().size(); i++) {
         for (int j = i + 1; j < (int) system->atoms().size(); j++) {
             distance = system->atoms()[i]->position - system->atoms()[j]->position;
             system->minimumImageCriterion(distance);
-            if (distance.lengthSquared() > celllist->getrcut() * celllist->getrcut()) {
+            if (distance.lengthSquared() > system->rcut() * system->rcut()) {
                 continue;
             } else {
                 distanceBetweenAtoms = distance.length();

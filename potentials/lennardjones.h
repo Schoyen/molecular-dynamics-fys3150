@@ -7,7 +7,7 @@ private:
     double m_sigma;
     double m_epsilon;
 public:
-    LennardJones(double sigma, double epsilon, BerendsenThermostat *berendsen);
+    LennardJones(double sigma, double epsilon);
     ~LennardJones() {}
     virtual void calculateForces(System *system);
     virtual void calculateForcesOld(System *system);

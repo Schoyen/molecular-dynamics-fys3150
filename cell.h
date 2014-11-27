@@ -18,7 +18,6 @@ class Cell {
         void addAtom(Atom *atom);
         void addIndicesOnAtoms();
         void clearList();
-        bool isInCell(vec3 pos, double rcut);
         void setSize(int x, int y, int z) {m_size = vec3(x, y, z);}
         vec3 getSize() {return m_size;}
         vector<Atom *> atomsClose() {return m_atomsClose;}

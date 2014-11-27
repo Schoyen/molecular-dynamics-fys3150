@@ -1,4 +1,5 @@
 #include "berendsen.h"
+#include "statisticssampler.h"
 #include <cmath>
 
 BerendsenThermostat::BerendsenThermostat(double tbath, double relaxationTime, StatisticsSampler *statistics)
@@ -10,7 +11,7 @@ BerendsenThermostat::BerendsenThermostat(double tbath, double relaxationTime, St
 
 BerendsenThermostat::~BerendsenThermostat()
 {
-
+    delete m_statistics;
 }
 
 void BerendsenThermostat::scalingFactor(Atom *atom, double dt)

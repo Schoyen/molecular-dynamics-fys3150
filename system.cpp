@@ -10,7 +10,9 @@ System::System() :
     m_potential(0),
     m_integrator(0),
     m_currentTime(0),
+    m_rcut(0),
     m_steps(0),
+    m_thermostat(0),
     m_celllist(0)
 {
 
@@ -21,6 +23,7 @@ System::~System()
     delete m_potential;
     delete m_integrator;
     delete m_celllist;
+    delete m_thermostat;
     m_atoms.clear();
 }
 
@@ -100,6 +103,7 @@ void System::resetForcesOnAllAtoms() {
 void System::createFCCLattice(int numberOfUnitCellsEachDimension, double latticeConstant, double iT, double rcut) {
     int totalNumberOfUnitCells = numberOfUnitCellsEachDimension * numberOfUnitCellsEachDimension * numberOfUnitCellsEachDimension;
     m_systemSize = vec3(latticeConstant * numberOfUnitCellsEachDimension, latticeConstant * numberOfUnitCellsEachDimension, latticeConstant * numberOfUnitCellsEachDimension);
+    m_rcut = rcut;
     vec3 r1 = vec3(0.0, 0.0, 0.0);
     vec3 r2 = vec3(latticeConstant/2.0, latticeConstant/2.0, 0.0);
     vec3 r3 = vec3(0, latticeConstant/2.0, latticeConstant/2.0);
@@ -107,7 +111,6 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
     vector<vec3> R;
     vec3 temp;
     m_celllist = new CellList();
-    m_celllist->setrcut(rcut);
     m_celllist->setSystem(this);
     double initialTemperature = iT; // Dimensionless temperature.
 
@@ -120,9 +123,9 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
         }
     }
 
-    numberOfCellsX = int(m_systemSize.x() / m_celllist->getrcut());
-    numberOfCellsY = int(m_systemSize.y() / m_celllist->getrcut());
-    numberOfCellsZ = int(m_systemSize.z() / m_celllist->getrcut());
+    numberOfCellsX = int(m_systemSize.x() / m_rcut);
+    numberOfCellsY = int(m_systemSize.y() / m_rcut);
+    numberOfCellsZ = int(m_systemSize.z() / m_rcut);
     int counter = 0;
     for (int i = 0; i < numberOfCellsX; i++) {
         for (int j = 0; j < numberOfCellsY; j ++) {

@@ -11,7 +11,6 @@ class CellList {
     private:
         vector<Cell *> m_listOfCells;
         System *m_system;
-        double m_rcut;
         int numberOfCellsX;
         int numberOfCellsY;
         int numberOfCellsZ;
@@ -24,8 +23,6 @@ class CellList {
         Cell *getCell(int i, int j, int k);
         void calculateCellAtoms();
         void emptyCells();
-        double getrcut() {return m_rcut;}
         void setSystem(System *system) {m_system = system;}
-        void setrcut(double val) {m_rcut = val;}
         vector<Cell *> listOfCells() {return m_listOfCells;}
 };

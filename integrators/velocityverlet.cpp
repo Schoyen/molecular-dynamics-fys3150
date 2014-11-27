@@ -27,7 +27,7 @@ void VelocityVerlet::halfKick(System *system, double dt, bool thermostatOn)
             Atom *atom = system->atoms()[n];
             double timestepDividedByTwoTimesMass = 0.5 * dt / atom->mass();
             atom->velocity.addAndMultiply(atom->force, timestepDividedByTwoTimesMass); // v += F/(2*m)*dt
-            system->potential()->berendsen()->scalingFactor(atom, dt);
+            system->berendsen()->scalingFactor(atom, dt);
         }
     } else {
         for (int n = 0; n < (int) system->atoms().size(); n++) {

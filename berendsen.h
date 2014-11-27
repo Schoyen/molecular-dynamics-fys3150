@@ -1,7 +1,6 @@
 #pragma once
-#include "statisticssampler.h"
 
-class Atom;
+class Atom; class StatisticsSampler;
 
 class BerendsenThermostat
 {

@@ -37,8 +37,9 @@ int main()
     double tbath = 100;
     double relaxationTime = 0.01; // Figure this one out.
     StatisticsSampler *statisticsSampler = new StatisticsSampler();
-    system.setPotential(new LennardJones(3.405, 1.0, new BerendsenThermostat(UnitConverter::temperatureFromSI(tbath), relaxationTime, statisticsSampler)));
+    system.setPotential(new LennardJones(3.405, 1.0));
     system.setIntegrator(new VelocityVerlet());
+    system.setThermostat(new BerendsenThermostat(UnitConverter::temperatureFromSI(tbath), relaxationTime, statisticsSampler));
     system.removeMomentum();
 
     IO *movie = new IO(); // To write the state to file

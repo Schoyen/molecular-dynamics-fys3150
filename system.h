@@ -4,8 +4,9 @@
 #include "math/vec3.h"
 #include "potentials/potential.h"
 #include "celllist.h"
+#include "berendsen.h"
 
-class Potential; class Integrator; class CellList;
+class Integrator; class Potential; class CellList;
 using std::vector;
 using CompPhys::vec3;
 using namespace std;
@@ -23,6 +24,7 @@ private:
     vec3 velocityOfCM;
     vec3 velocityOfCMAfter;
     CellList *m_celllist;
+    BerendsenThermostat *m_thermostat;
     bool m_oldForce;
 
 public:
@@ -49,6 +51,7 @@ public:
     Potential *potential() { return m_potential; }
     void setPotential(Potential *potential) { m_potential = potential; }
     double currentTime() { return m_currentTime; }
+    double rcut() {return m_rcut;}
     void setCurrentTime(double currentTime) { m_currentTime = currentTime; }
     Integrator *integrator() { return m_integrator; }
     void setIntegrator(Integrator *integrator) { m_integrator = integrator; }
@@ -57,4 +60,6 @@ public:
     vec3 getVelocityOfCM() { return velocityOfCM; }
     vec3 getVelocityOfCMAfter() { return velocityOfCMAfter; }
     CellList *celllist() { return m_celllist; }
+    void setThermostat(BerendsenThermostat *thermostat) {m_thermostat = thermostat;}
+    BerendsenThermostat *berendsen() {return m_thermostat;}
 };
