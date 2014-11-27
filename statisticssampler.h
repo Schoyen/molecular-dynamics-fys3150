@@ -1,6 +1,6 @@
 #pragma once
-#include "system.h"
 #include "unitconverter.h"
+#include "system.h"
 #include <fstream>
 
 using namespace std;
@@ -41,5 +41,4 @@ public:
     void samplePressure(System *system);
     void sampleTotalEnergy(System *system);
     double temperature() {return m_temperature;}
-    double totalEnergy() {return m_totalEnergy;}
 };

@@ -3,8 +3,8 @@
 #include "atom.h"
 #include "math/vec3.h"
 #include "potentials/potential.h"
-#include "celllist.h"
 #include "berendsen.h"
+#include "celllist.h"
 
 class Integrator; class Potential; class CellList;
 using std::vector;
@@ -26,11 +26,13 @@ private:
     CellList *m_celllist;
     BerendsenThermostat *m_thermostat;
     bool m_oldForce;
+    bool m_thermostatOn;
 
 public:
     int numberOfCellsX;
     int numberOfCellsY;
     int numberOfCellsZ;
+    double temperature;
 
     System();
     ~System();
@@ -40,7 +42,7 @@ public:
     void minimumImageCriterion(vec3 &pos);
     void removeMomentum();
     void calculateForces();
-    void step(double dt, bool thermostatOn, bool oldForce);
+    void step(double dt);
     void save(string filename);
     void load(string filename);
 
@@ -48,6 +50,8 @@ public:
     vector<Atom *> &atoms() { return m_atoms; }
     vec3 systemSize() { return m_systemSize; }
     void setSystemSize(vec3 systemSize) { m_systemSize = systemSize; }
+    void setForceCalculation(bool oldForce) {m_oldForce = oldForce;}
+    void setThermostatOn(bool thermostatOn) {m_thermostatOn = thermostatOn;}
     Potential *potential() { return m_potential; }
     void setPotential(Potential *potential) { m_potential = potential; }
     double currentTime() { return m_currentTime; }

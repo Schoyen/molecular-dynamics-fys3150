@@ -16,7 +16,7 @@ CellList::~CellList()
 /*
  * Method used by system upon creation of the fcc lattices.
  */
-void CellList::createCell(int i, int j, int k, int ind, int nx, int ny, int nz)
+void CellList::createCell(int ind, int nx, int ny, int nz)
 {
     Cell *cell = new Cell();
 

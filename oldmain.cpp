@@ -39,8 +39,10 @@ int main()
     StatisticsSampler *statisticsSampler = new StatisticsSampler();
     system.setPotential(new LennardJones(3.405, 1.0));
     system.setIntegrator(new VelocityVerlet());
-    system.setThermostat(new BerendsenThermostat(UnitConverter::temperatureFromSI(tbath), relaxationTime, statisticsSampler));
+    system.setThermostat(new BerendsenThermostat(UnitConverter::temperatureFromSI(tbath), relaxationTime));
     system.removeMomentum();
+    system.setForceCalculation(false);
+    system.setThermostatOn(false);
 
     IO *movie = new IO(); // To write the state to file
     movie->open("movie.xyz");
@@ -51,14 +53,15 @@ int main()
     //system.load(filename);
     for(int timestep=0; timestep<100; timestep++) {
         movie->saveState(&system);
+        statisticsSampler->sample(&system, timestep);
+        system.temperature = statisticsSampler->temperature();
         if (timestep < 300) {
-            system.step(dt, false, false);
+            system.step(dt);
         } else {
-            system.step(dt, false, false);
-            //system.step(dt, true, true);
+            system.setThermostatOn(true); // Figure out something smarter.
+            system.step(dt);
         }
 
-        statisticsSampler->sample(&system, timestep);
         //std::cout << UnitConverter::energyToEv(statisticsSampler->totalEnergy()) << std::endl;
 
         cout << timestep << endl;

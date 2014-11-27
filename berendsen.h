@@ -1,16 +1,14 @@
 #pragma once
-
-class Atom; class StatisticsSampler;
+#include "atom.h"
 
 class BerendsenThermostat
 {
 private:
     double m_tbath;
     double m_relaxationTime;
-    StatisticsSampler *m_statistics;
 
 public:
-    BerendsenThermostat(double tbath, double relaxationTime, StatisticsSampler *statistics);
+    BerendsenThermostat(double tbath, double relaxationTime);
     ~BerendsenThermostat();
-    void scalingFactor(Atom *atom, double dt);
+    void scalingFactor(Atom *atom, double temperature, double dt);
 };

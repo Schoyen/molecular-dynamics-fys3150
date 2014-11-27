@@ -1,7 +1,7 @@
 #include "system.h"
 #include "integrators/integrator.h"
-#include "potentials/potential.h"
 #include "unitconverter.h"
+#include "berendsen.h"
 #include <fstream>
 
 using namespace std;
@@ -12,7 +12,7 @@ System::System() :
     m_currentTime(0),
     m_rcut(0),
     m_steps(0),
-    m_thermostat(0),
+    //m_thermostat(0),
     m_celllist(0)
 {
 
@@ -23,7 +23,7 @@ System::~System()
     delete m_potential;
     delete m_integrator;
     delete m_celllist;
-    delete m_thermostat;
+    //delete m_thermostat;
     m_atoms.clear();
 }
 
@@ -84,6 +84,7 @@ void System::removeMomentum() {
         m_atoms[n]->velocity = m_atoms[n]->velocity - velocityOfCM;
     }
 
+    // Comparing the the velocity of the center of mass before and after removal.
     for (int n = 0; n < (int) m_atoms.size(); n++) {
         temp = m_atoms[n]->velocity * (m_atoms[n]->mass());
         velocityOfCMAfter.add(temp);
@@ -131,7 +132,7 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
         for (int j = 0; j < numberOfCellsY; j ++) {
             for (int k = 0; k < numberOfCellsZ; k++) {
                 counter++;
-                m_celllist->createCell(i, j, k, counter, numberOfCellsX, numberOfCellsY, numberOfCellsZ);
+                m_celllist->createCell(counter, numberOfCellsX, numberOfCellsY, numberOfCellsZ);
             }
         }
     }
@@ -167,10 +168,9 @@ void System::calculateForces() {
     else m_potential->calculateForces(this);
 }
 
-void System::step(double dt, bool thermostatOn, bool oldForce)
+void System::step(double dt)
 {
-    m_oldForce = oldForce;
-    m_integrator->integrate(this, dt, thermostatOn);
+    m_integrator->integrate(this, dt, m_thermostatOn);
     m_steps++;
     m_currentTime += dt;
 }

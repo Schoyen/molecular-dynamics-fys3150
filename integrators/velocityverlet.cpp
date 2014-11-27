@@ -13,21 +13,21 @@ VelocityVerlet::~VelocityVerlet()
 
 }
 
-void VelocityVerlet::firstKick(System *system, double dt, bool thermostatOn)
+void VelocityVerlet::firstKick(System *system, double dt)
 {
     m_firstStep = false;
     system->calculateForces();
-    halfKick(system, dt, thermostatOn);
+    halfKick(system, dt);
 }
 
-void VelocityVerlet::halfKick(System *system, double dt, bool thermostatOn)
+void VelocityVerlet::halfKick(System *system, double dt)
 {
-    if (thermostatOn) {
+    if (m_thermostat) {
         for (int n = 0; n < (int) system->atoms().size(); n++) {
             Atom *atom = system->atoms()[n];
             double timestepDividedByTwoTimesMass = 0.5 * dt / atom->mass();
             atom->velocity.addAndMultiply(atom->force, timestepDividedByTwoTimesMass); // v += F/(2*m)*dt
-            system->berendsen()->scalingFactor(atom, dt);
+            system->berendsen()->scalingFactor(atom, system->temperature, dt);
         }
     } else {
         for (int n = 0; n < (int) system->atoms().size(); n++) {
@@ -48,10 +48,11 @@ void VelocityVerlet::move(System *system, double dt)
 
 void VelocityVerlet::integrate(System *system, double dt, bool thermostatOn)
 {
-    if(m_firstStep) firstKick(system, dt, thermostatOn);
-    else halfKick(system, dt, thermostatOn);
+    m_thermostat = thermostatOn;
+    if(m_firstStep) firstKick(system, dt);
+    else halfKick(system, dt);
     move(system, dt);
     system->applyPeriodicBoundaryConditions();
     system->calculateForces();
-    halfKick(system, dt, thermostatOn);
+    halfKick(system, dt);
 }
