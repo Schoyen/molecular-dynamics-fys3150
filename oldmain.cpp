@@ -48,12 +48,12 @@ int main()
     string filename;
     //filename = "test.txt";
     //system.load(filename);
-    for(int timestep=0; timestep<1000; timestep++) {
+    for(int timestep=0; timestep<100; timestep++) {
         movie->saveState(&system);
         if (timestep < 300) {
-            system.step(dt, false, true);
+            system.step(dt, false, false);
         } else {
-            system.step(dt, false, true);
+            system.step(dt, false, false);
             //system.step(dt, true, true);
         }
 

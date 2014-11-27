@@ -18,6 +18,7 @@ private:
     Potential *m_potential;
     Integrator *m_integrator;
     double m_currentTime;
+    double m_rcut;
     int m_steps;
     vec3 velocityOfCM;
     vec3 velocityOfCMAfter;
