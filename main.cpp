@@ -5,7 +5,7 @@
 #include "statisticssampler.h"
 #include "unitconverter.h"
 #include "berendsen.h"
-#include "potential/lennardjones.h"
+#include "potentials/lennardjones.h"
 #include "integrators/velocityverlet.h"
 
 using namespace std;
@@ -65,6 +65,7 @@ int main(int argc, char* argv[])
     double epsilon = 1.0;
 
     IO *movie = new IO();
+    movie->open("movie.xyz");
     StatisticsSampler *statisticsSampler = new StatisticsSampler();
     System system;
     system.createFCCLattice(numberOfFCCLattices, UnitConverter::lengthFromAngstroms(latticeConstant),
@@ -79,6 +80,9 @@ int main(int argc, char* argv[])
     statisticsSampler->createFiles();
 
     for (int i = 0; i < timestep; i++) {
+        movie->saveState(&system);
+        system.temperature = statisticsSampler->temperature();
+
         // timestepStartThermostat == -1 if the thermostat should be off for all calculations.
         if (i == timestepStartThermostat) system.setThermostatOn(true);
         if (i == timestepEndThermostat) system.setThermostatOn(false);
@@ -90,7 +94,7 @@ int main(int argc, char* argv[])
 
     movie->saveState(&system);
     statisticsSampler->closeFiles();
-    movie->vlose();
+    movie->close();
 
     return 0;
 }
