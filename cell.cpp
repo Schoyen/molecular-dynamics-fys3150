@@ -1,10 +1,12 @@
 #include "cell.h"
 #include <cmath>
 
+int Cell::nextCellIndex = 0;
+
 Cell::Cell() :
     m_atomsClose(0)
 {
-
+    index = nextCellIndex++;
 }
 
 Cell::~Cell() 

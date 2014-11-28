@@ -10,10 +10,12 @@ class Cell {
         vector<Atom *> m_atomsClose;
 
     public:
+        int index;
+        static int nextCellIndex;
 
         Cell();
         ~Cell();
         void addAtom(Atom *atom);
         void clearList();
-        vector<Atom *> atomsClose() {return m_atomsClose;}
+        vector<Atom *> &atomsClose() {return m_atomsClose;}
 };

@@ -25,5 +25,5 @@ class CellList {
         void calculateCellAtoms();
         void emptyCells();
         void setSystem(System *system) {m_system = system;}
-        vector<Cell *> listOfCells() {return m_listOfCells;}
+        vector<Cell *> &listOfCells() {return m_listOfCells;}
 };

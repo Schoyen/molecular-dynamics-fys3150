@@ -29,7 +29,7 @@ int main()
     auto start = high_resolution_clock::now();
     System system;
     // For more than 2 x 2 x 2 FCCLattice we need a bigger system size.
-    int numberOfFCCLattices = 5;
+    int numberOfFCCLattices = 10;
     double cellSize = 2.5 * 3.405; // rcut
     int numberOfAtoms = 4 * numberOfFCCLattices * numberOfFCCLattices * numberOfFCCLattices;
     double initialTemperature = 100.0; // In Kelvin.
@@ -64,7 +64,7 @@ int main()
 
         //std::cout << UnitConverter::energyToEv(statisticsSampler->totalEnergy()) << std::endl;
 
-        cout << timestep << endl;
+//        cout << timestep << endl;
     }
     movie->saveState(&system);
 

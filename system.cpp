@@ -40,11 +40,11 @@ void System::minimumImageCriterion(vec3 &pos)
 void System::applyPeriodicBoundaryConditions() {
     // Read here: http://en.wikipedia.org/wiki/Periodic_boundary_conditions#Practical_implementation:_continuity_and_the_minimum_image_convention
     for (int n = 0; n < (int) m_atoms.size(); n++) {
-        if (m_atoms[n]->position.x() < 0) m_atoms[n]->position[0] += m_systemSize.x();
+        if (m_atoms[n]->position.x() < -0.2) m_atoms[n]->position[0] += m_systemSize.x();
         else if (m_atoms[n]->position.x() >= m_systemSize.x()) m_atoms[n]->position[0] -= m_systemSize.x();
-        if (m_atoms[n]->position.y() < 0) m_atoms[n]->position[1] += m_systemSize.y();
+        if (m_atoms[n]->position.y() < -0.2) m_atoms[n]->position[1] += m_systemSize.y();
         else if (m_atoms[n]->position.y() >= m_systemSize.y()) m_atoms[n]->position[1] -= m_systemSize.y();
-        if (m_atoms[n]->position.z() < 0) m_atoms[n]->position[2] += m_systemSize.z();
+        if (m_atoms[n]->position.z() < -0.2) m_atoms[n]->position[2] += m_systemSize.z();
         else if (m_atoms[n]->position.z() >= m_systemSize.z()) m_atoms[n]->position[2] -= m_systemSize.z();
     }
     // Make sure the right atoms are put in correct cells.
