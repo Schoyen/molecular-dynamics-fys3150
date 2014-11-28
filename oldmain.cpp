@@ -53,7 +53,6 @@ int main()
     //system.load(filename);
     for(int timestep=0; timestep<100; timestep++) {
         movie->saveState(&system);
-        statisticsSampler->sample(&system, timestep);
         system.temperature = statisticsSampler->temperature();
         if (timestep < 300) {
             system.step(dt);
@@ -61,6 +60,7 @@ int main()
             system.setThermostatOn(true); // Figure out something smarter.
             system.step(dt);
         }
+        statisticsSampler->sample(&system, timestep);
 
         //std::cout << UnitConverter::energyToEv(statisticsSampler->totalEnergy()) << std::endl;
 

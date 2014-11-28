@@ -13,26 +13,24 @@ CellList::~CellList()
     m_listOfCells.clear();
 }
 
+void CellList::setNumberOfCells(int nx, int ny, int nz)
+{
+    numberOfCellsX = nx;
+    numberOfCellsY = ny;
+    numberOfCellsZ = nz;
+}
 /*
  * Method used by system upon creation of the fcc lattices.
  */
-void CellList::createCell(int ind, int nx, int ny, int nz)
+void CellList::createCell()
 {
     Cell *cell = new Cell();
 
     // The size might not be relevant.
     // nx, ny and nz determines the number of cells, not the size.
-    cell->setSize(m_system->systemSize().x() / nx, m_system->systemSize().y() / ny, m_system->systemSize().z() / nz);
+    //cell->setSize(m_system->systemSize().x() / nx, m_system->systemSize().y() / ny, m_system->systemSize().z() / nz);
     
-    // Method determining index of cell in cell list.
-    numberOfCellsX = nx;
-    numberOfCellsY = ny;
-    numberOfCellsZ = nz;
-    
-    // Value used to determine indices of atoms.
-    // This will then again be used to avoid calculating forces between
-    // atoms in cells twice. We will then use N3L.
-    cell->cellIndex = ind;
+    //cell->cellIndex = ind;
 
     // The cells "should" be stored by the index = i * ny * nz + j * nz + k;
     m_listOfCells.push_back(cell);
@@ -55,13 +53,11 @@ void CellList::emptyCells()
 
 void CellList::calculateCellAtoms()
 {
-    int cx, cy, cz; // Cell index in x, y and z direction.
-    Cell *c;
     for (int i = 0; i < (int) m_system->atoms().size(); i++) {
-        cx = int(m_system->atoms()[i]->position.x() / m_system->systemSize().x() * numberOfCellsX);
-        cy = int(m_system->atoms()[i]->position.y() / m_system->systemSize().y() * numberOfCellsY);
-        cz = int(m_system->atoms()[i]->position.z() / m_system->systemSize().z() * numberOfCellsZ);
-        c = getCell(cx, cy, cz);
+        int cx = int(m_system->atoms()[i]->position.x() / m_system->systemSize().x() * numberOfCellsX);
+        int cy = int(m_system->atoms()[i]->position.y() / m_system->systemSize().y() * numberOfCellsY);
+        int cz = int(m_system->atoms()[i]->position.z() / m_system->systemSize().z() * numberOfCellsZ);
+        Cell *c = getCell(cx, cy, cz);
         c->addAtom(m_system->atoms()[i]);
     }
 }

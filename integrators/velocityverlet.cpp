@@ -42,26 +42,10 @@ void VelocityVerlet::move(System *system, double dt)
 {
 
     // This does not seem to speed things up...
-    std::cout << "YAY2" << std::endl;
     for (int n = 0; n < (int) system->atoms().size(); n++) {
         Atom *atom = system->atoms()[n];
         atom->position.addAndMultiply(atom->velocity, dt);
-
-        // Idiotic boundary conditions.
-        if (atom->position.x() < 0) atom->position[0] += system->systemSize().x();
-        else if (atom->position.x() >= system->systemSize().x()) atom->position[0] -= system->systemSize().x();
-        if (atom->position.y() < 0) atom->position[1] += system->systemSize().y();
-        else if (atom->position.y() >= system->systemSize().y()) atom->position[1] -= system->systemSize().y();
-        if (atom->position.z() < 0) atom->position[2] += system->systemSize().z();
-        else if (atom->position.z() >= system->systemSize().z()) atom->position[2] -= system->systemSize().z();
-
-        // Putting atoms in correct cells.
-        int cx = int(atom->position.x() / system->systemSize().x() * system->numberOfCellsX);
-        int cy = int(atom->position.y() / system->systemSize().y() * system->numberOfCellsY);
-        int cz = int(atom->position.z() / system->systemSize().z() * system->numberOfCellsZ);
-        system->celllist()->listOfCells()[cx * system->numberOfCellsY * system->numberOfCellsZ + cy * system->numberOfCellsZ + cz]->addAtom(atom);
     }
-    std::cout << "YAY2" << std::endl;
 }
 
 void VelocityVerlet::integrate(System *system, double dt, bool thermostatOn)
@@ -70,8 +54,7 @@ void VelocityVerlet::integrate(System *system, double dt, bool thermostatOn)
     if(m_firstStep) firstKick(system, dt);
     else halfKick(system, dt);
     move(system, dt);
-    // Attempting to use periodic boundary conditions and the calculation of cell position of atoms inside the move method.
-    //system->applyPeriodicBoundaryConditions();
+    system->applyPeriodicBoundaryConditions();
     system->calculateForces();
     halfKick(system, dt);
 }

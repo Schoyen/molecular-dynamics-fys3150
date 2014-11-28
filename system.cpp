@@ -39,21 +39,13 @@ void System::minimumImageCriterion(vec3 &pos)
 
 void System::applyPeriodicBoundaryConditions() {
     // Read here: http://en.wikipedia.org/wiki/Periodic_boundary_conditions#Practical_implementation:_continuity_and_the_minimum_image_convention
-    double x, y, z;
-    double xlen = m_systemSize.x();
-    double ylen = m_systemSize.y();
-    double zlen = m_systemSize.z();
     for (int n = 0; n < (int) m_atoms.size(); n++) {
-        x = m_atoms[n]->position.x();
-        y = m_atoms[n]->position.y();
-        z = m_atoms[n]->position.z();
-        if (x < 0) x += xlen;
-        else if (x >= xlen) x -= xlen;
-        if (y < 0) y += ylen;
-        else if (y >= ylen) y -= ylen;
-        if (z < 0) z += zlen;
-        else if (z >= zlen) z -= zlen;
-        m_atoms[n]->position = vec3(x, y, z);
+        if (m_atoms[n]->position.x() < 0) m_atoms[n]->position[0] += m_systemSize.x();
+        else if (m_atoms[n]->position.x() >= m_systemSize.x()) m_atoms[n]->position[0] -= m_systemSize.x();
+        if (m_atoms[n]->position.y() < 0) m_atoms[n]->position[1] += m_systemSize.y();
+        else if (m_atoms[n]->position.y() >= m_systemSize.y()) m_atoms[n]->position[1] -= m_systemSize.y();
+        if (m_atoms[n]->position.z() < 0) m_atoms[n]->position[2] += m_systemSize.z();
+        else if (m_atoms[n]->position.z() >= m_systemSize.z()) m_atoms[n]->position[2] -= m_systemSize.z();
     }
     // Make sure the right atoms are put in correct cells.
     m_celllist->emptyCells();
@@ -113,6 +105,7 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
     vec3 temp;
     m_celllist = new CellList();
     m_celllist->setSystem(this);
+    
     double initialTemperature = iT; // Dimensionless temperature.
 
     for (int i = 0; i < numberOfUnitCellsEachDimension; i++) {
@@ -127,12 +120,11 @@ void System::createFCCLattice(int numberOfUnitCellsEachDimension, double lattice
     numberOfCellsX = int(m_systemSize.x() / m_rcut);
     numberOfCellsY = int(m_systemSize.y() / m_rcut);
     numberOfCellsZ = int(m_systemSize.z() / m_rcut);
-    int counter = 0;
+    m_celllist->setNumberOfCells(numberOfCellsX, numberOfCellsY, numberOfCellsZ);
     for (int i = 0; i < numberOfCellsX; i++) {
         for (int j = 0; j < numberOfCellsY; j ++) {
             for (int k = 0; k < numberOfCellsZ; k++) {
-                counter++;
-                m_celllist->createCell(counter, numberOfCellsX, numberOfCellsY, numberOfCellsZ);
+                m_celllist->createCell();
             }
         }
     }

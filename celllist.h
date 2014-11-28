@@ -19,7 +19,8 @@ class CellList {
         CellList();
         ~CellList();
         // Storing cells by index.
-        void createCell(int ind, int nx, int ny, int nz);
+        void setNumberOfCells(int nx, int ny, int nz);
+        void createCell();
         Cell *getCell(int i, int j, int k);
         void calculateCellAtoms();
         void emptyCells();
