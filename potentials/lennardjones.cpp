@@ -45,28 +45,26 @@ void LennardJones::calculateForces(System *system)
                                     system->minimumImageCriterion(distance);
                                     double distanceBetweenAtoms = distance.lengthSquared(); // ||distance||^2
                                     if (distanceBetweenAtoms > system->rcut() * system->rcut()) continue;
-                                    else {
-                                        double distanceBetweenAtoms6 = distanceBetweenAtoms * distanceBetweenAtoms * distanceBetweenAtoms; // ||distance||^6
-                                        double sigma6 = m_sigma * m_sigma; // m_sigma^2
-                                        sigma6 = sigma6 * sigma6 * sigma6; // m_sigma^6
-                                        double divisionOfSigmaAndDistance6 = sigma6 / distanceBetweenAtoms6; // m_sigma^6 / ||distance||^6
-                                        m_potentialEnergy += 4 * m_epsilon * (divisionOfSigmaAndDistance6 * divisionOfSigmaAndDistance6 - divisionOfSigmaAndDistance6);
-                                        double rcut = system->rcut();
-                                        rcut = rcut * rcut; // rcut^2
-                                        rcut = rcut * rcut * rcut; // rcut^6
-                                        divisionOfSigmaAndDistance6 = sigma6 / rcut;
-                                        m_potentialEnergy -= 4 * m_epsilon * (divisionOfSigmaAndDistance6 * divisionOfSigmaAndDistance6 - divisionOfSigmaAndDistance6);
-                                        double expressionOfForce = 4 * m_epsilon * (12 * (sigma6 * sigma6) /
-                                                                   (distanceBetweenAtoms6 * distanceBetweenAtoms6 * distanceBetweenAtoms)
-                                                                   - 6 * sigma6 / (distanceBetweenAtoms6 * distanceBetweenAtoms));
-                                        vec3 tempForce = distance * expressionOfForce;
-                                        cell1->atomsClose()[m]->force.add(tempForce);
+                                    double distanceBetweenAtoms6 = distanceBetweenAtoms * distanceBetweenAtoms * distanceBetweenAtoms; // ||distance||^6
+                                    double sigma6 = m_sigma * m_sigma; // m_sigma^2
+                                    sigma6 = sigma6 * sigma6 * sigma6; // m_sigma^6
+                                    double divisionOfSigmaAndDistance6 = sigma6 / distanceBetweenAtoms6; // m_sigma^6 / ||distance||^6
+                                    m_potentialEnergy += 4 * m_epsilon * (divisionOfSigmaAndDistance6 * divisionOfSigmaAndDistance6 - divisionOfSigmaAndDistance6);
+                                    double rcut = system->rcut();
+                                    rcut = rcut * rcut; // rcut^2
+                                    rcut = rcut * rcut * rcut; // rcut^6
+                                    divisionOfSigmaAndDistance6 = sigma6 / rcut;
+                                    m_potentialEnergy -= 4 * m_epsilon * (divisionOfSigmaAndDistance6 * divisionOfSigmaAndDistance6 - divisionOfSigmaAndDistance6);
+                                    double expressionOfForce = 4 * m_epsilon * (12 * (sigma6 * sigma6) /
+                                                               (distanceBetweenAtoms6 * distanceBetweenAtoms6 * distanceBetweenAtoms)
+                                                               - 6 * sigma6 / (distanceBetweenAtoms6 * distanceBetweenAtoms));
+                                    vec3 tempForce = distance * expressionOfForce;
+                                    cell1->atomsClose()[m]->force.add(tempForce);
 
-                                        m_pressure += tempForce.dot(distance);
+                                    m_pressure += tempForce.dot(distance);
 
-                                        tempForce.multiply(-1); // N3L
-                                        cell2->atomsClose()[n]->force.add(tempForce);
-                                    } //endif
+                                    tempForce.multiply(-1); // N3L
+                                    cell2->atomsClose()[n]->force.add(tempForce);
                                 } //endfor
                             } //endfor
                         } //endfor
@@ -93,28 +91,26 @@ void LennardJones::calculateForcesOld(System *system)
             system->minimumImageCriterion(distance);
             double distanceBetweenAtoms = distance.lengthSquared(); // ||distance||^2
             if (distanceBetweenAtoms > system->rcut() * system->rcut()) continue;
-            else {
-                double distanceBetweenAtoms6 = distanceBetweenAtoms * distanceBetweenAtoms * distanceBetweenAtoms; // ||distance||^6
-                double sigma6 = m_sigma * m_sigma; // m_sigma^2
-                sigma6 = sigma6 * sigma6 * sigma6; // m_sigma^6
-                double divisionOfSigmaAndDistance6 = sigma6 / distanceBetweenAtoms6;
-                m_potentialEnergy += 4 * m_epsilon * (divisionOfSigmaAndDistance6 * divisionOfSigmaAndDistance6 - divisionOfSigmaAndDistance6);
-                double rcut = system->rcut();
-                rcut = rcut * rcut; // rcut^2
-                rcut = rcut * rcut * rcut; // rcut^6
-                divisionOfSigmaAndDistance6 = sigma6 / rcut;
-                m_potentialEnergy -= 4 * m_epsilon * (divisionOfSigmaAndDistance6 * divisionOfSigmaAndDistance6 - divisionOfSigmaAndDistance6);
-                double expressionOfForce = 4 * m_epsilon * (12 * (sigma6 * sigma6) /
-                                           (distanceBetweenAtoms6 * distanceBetweenAtoms6 * distanceBetweenAtoms)
-                                           - 6 * sigma6 / (distanceBetweenAtoms6 * distanceBetweenAtoms));
-                vec3 tempForce = distance * expressionOfForce;
-                system->atoms()[i]->force.add(tempForce);
+            double distanceBetweenAtoms6 = distanceBetweenAtoms * distanceBetweenAtoms * distanceBetweenAtoms; // ||distance||^6
+            double sigma6 = m_sigma * m_sigma; // m_sigma^2
+            sigma6 = sigma6 * sigma6 * sigma6; // m_sigma^6
+            double divisionOfSigmaAndDistance6 = sigma6 / distanceBetweenAtoms6;
+            m_potentialEnergy += 4 * m_epsilon * (divisionOfSigmaAndDistance6 * divisionOfSigmaAndDistance6 - divisionOfSigmaAndDistance6);
+            double rcut = system->rcut();
+            rcut = rcut * rcut; // rcut^2
+            rcut = rcut * rcut * rcut; // rcut^6
+            divisionOfSigmaAndDistance6 = sigma6 / rcut;
+            m_potentialEnergy -= 4 * m_epsilon * (divisionOfSigmaAndDistance6 * divisionOfSigmaAndDistance6 - divisionOfSigmaAndDistance6);
+            double expressionOfForce = 4 * m_epsilon * (12 * (sigma6 * sigma6) /
+                                       (distanceBetweenAtoms6 * distanceBetweenAtoms6 * distanceBetweenAtoms)
+                                       - 6 * sigma6 / (distanceBetweenAtoms6 * distanceBetweenAtoms));
+            vec3 tempForce = distance * expressionOfForce;
+            system->atoms()[i]->force.add(tempForce);
 
-                m_pressure += tempForce.dot(distance);
+            m_pressure += tempForce.dot(distance);
 
-                tempForce.multiply(-1);
-                system->atoms()[j]->force.add(tempForce);
-            }
+            tempForce.multiply(-1);
+            system->atoms()[j]->force.add(tempForce);
         }
     }
 }

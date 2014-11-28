@@ -6,7 +6,7 @@ TESTFLAGS = -lgtest
 COMP = build/atom.o build/io.o build/statisticssampler.o build/system.o build/unitconverter.o build/POTENTIALS/lennardjones.o build/POTENTIALS/potential.o build/MATH/random.o build/MATH/vec3.o build/INTEGRATORS/eulercromer.o build/INTEGRATORS/integrator.o build/INTEGRATORS/velocityverlet.o build/celllist.o build/cell.o build/berendsen.o
 
 build:
-	mkdir -p build/MATH build/INTEGRATORS build/POTENTIALS build/DATA
+	mkdir -p build/MATH build/INTEGRATORS build/POTENTIALS build/DATA build/STATE
 
 build/atom.o: atom.cpp $(DEPS)
 	$(CXX) $(CPPFLAGS) $< -c -o $@
