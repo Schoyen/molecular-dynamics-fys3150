@@ -21,18 +21,31 @@ class MDFramework:
 
     def compile_MD(self):
         if not path.exists("build"):
-            print ("Compiling program.")
+            print ("""
+==============================
+Compiling program.
+==============================
+""")
             system("make")
             system("make build/MAINCPP")
 
     def clean_MD(self):
-        print ("Removing build.")
+        print ("""
+==============================
+Removing build.
+==============================
+""")
         if path.exists("build"):
             system("make clean")
 
     def create_article(self):
+        # Use a script to put the documents in the right locations.
         # Let all files needed be created and let pdflatex run its course before cleaning.
-        print ("Creating article and removing build.")
+        print ("""
+==============================
+Creating article and removing build.
+==============================
+""")
 
     def run_MD_simulation(self):
         if self.old_force_calculation == 1:

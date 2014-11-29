@@ -10,5 +10,5 @@ private:
 public:
     BerendsenThermostat(double tbath, double relaxationTime);
     ~BerendsenThermostat();
-    void scalingFactor(Atom *atom, double temperature, double dt);
+    double scalingFactor(double temperature, double dt);
 };

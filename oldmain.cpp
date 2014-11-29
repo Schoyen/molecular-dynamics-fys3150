@@ -32,9 +32,9 @@ int main()
     int numberOfFCCLattices = 10;
     double cellSize = 2.5 * 3.405; // rcut
     int numberOfAtoms = 4 * numberOfFCCLattices * numberOfFCCLattices * numberOfFCCLattices;
-    double initialTemperature = 1000.0; // In Kelvin.
+    double initialTemperature = 100.0; // In Kelvin.
     system.createFCCLattice(numberOfFCCLattices, UnitConverter::lengthFromAngstroms(5.26), UnitConverter::temperatureFromSI(initialTemperature), cellSize);
-    double tbath = 100;
+    double tbath = 1000;
     double relaxationTime = 0.01; // Figure this one out.
     StatisticsSampler *statisticsSampler = new StatisticsSampler();
     system.setPotential(new LennardJones(3.405, 1.0));

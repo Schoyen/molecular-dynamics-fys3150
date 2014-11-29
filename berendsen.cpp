@@ -12,7 +12,7 @@ BerendsenThermostat::~BerendsenThermostat()
 
 }
 
-void BerendsenThermostat::scalingFactor(Atom *atom, double temperature, double dt)
+double BerendsenThermostat::scalingFactor(double temperature, double dt)
 {
-    atom->velocity * sqrt(1.0 + dt / m_relaxationTime * (m_tbath / temperature - 1));
+    return sqrt(1.0 + dt / m_relaxationTime * (m_tbath / temperature - 1));
 }

@@ -16,6 +16,7 @@ private:
     double m_temperature;
     double m_numberDensity;
     double m_pressure;
+    double m_time;
     ofstream m_kineticEnergyFile;
     ofstream m_potentialEnergyFile;
     ofstream m_totalEnergyFile;
@@ -24,6 +25,7 @@ private:
     ofstream m_numberDensityFile;
     ofstream m_pressureFile;
     ofstream m_heatCapacityFile;
+    ofstream m_timeFile;
     // Add optional pressure minus heat capacity.
     bool m_sampledNetMomentum;
     bool m_sampledNumberDensity;
@@ -40,5 +42,6 @@ public:
     void sampleNumberDensity(System *system);
     void samplePressure(System *system);
     void sampleTotalEnergy(System *system);
+    void sampleTime(System *system);
     double temperature() {return m_temperature;}
 };

@@ -26,7 +26,7 @@ using namespace std;
  *
  * The program should save the state of the system after it has been completed and automatically check if there is an existing loaded state.
  */
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
     if (argc < 12) {
         cout << "\n==================================" << endl;
@@ -48,7 +48,7 @@ int main(int argc, char* argv[])
         exit(1);
     }
 
-    double dt = atof(argv[1]);
+    double dt = UnitConverter::timeFromSI(atof(argv[1]));
     int numberOfFCCLattices = atoi(argv[2]);
     double initialTemperature = atof(argv[3]);
     double tbath = atof(argv[4]);

@@ -28,6 +28,7 @@ void StatisticsSampler::createFiles()
     // Consider calculating this in a python program when plotting.
     // Check whether or not you are supposed to use energy divided by temperature or some other way.
     m_heatCapacityFile.open("build/DATA/heatCapacity.txt");
+    m_timeFile.open("build/DATA/time.txt");
 }
 
 
@@ -41,6 +42,7 @@ void StatisticsSampler::closeFiles()
     m_numberDensityFile.close();
     m_pressureFile.close();
     m_heatCapacityFile.close();
+    m_timeFile.close();
 }
 
 /*
@@ -53,6 +55,7 @@ void StatisticsSampler::sample(System *system, int timestep)
     sampleTotalEnergy(system);
     sampleTemperature(system);
     samplePressure(system);
+    sampleTime(system);
     if (!m_sampledNetMomentum) {
         sampleNetMomentum(system);
         m_sampledNetMomentum = true;
@@ -83,6 +86,7 @@ void StatisticsSampler::sample(System *system, int timestep)
     double potentialEnergyInEv = UnitConverter::energyToEv(m_potentialEnergy);
     double totalEnergyInEv = UnitConverter::energyToEv(m_totalEnergy);
     double pressureInSI = UnitConverter::pressureToSI(m_pressure);
+    double timeInSI = UnitConverter::timeToSI(m_time);
 
     if (!m_kineticEnergyFile.is_open()) {
         cerr << "Unable to write to build/DATA/kineticEnergy.txt" << endl;
@@ -119,6 +123,13 @@ void StatisticsSampler::sample(System *system, int timestep)
     }
 
     m_pressureFile << pressureInSI << "\n";
+
+    if (!m_timeFile.is_open()) {
+        cerr << "Unable to write to build/DATA/time.txt" << endl;
+        exit(1);
+    }
+
+    m_timeFile << timeInSI << "\n";
 
     // Add the extra conversions for the rest of the files.
 }
@@ -163,4 +174,9 @@ void StatisticsSampler::samplePressure(System *system)
 {
     m_pressure = system->potential()->pressure();
     m_pressure = 1.0 / (3.0 * system->systemSize().x() * system->systemSize().y() * system->systemSize().z()) * (m_pressure / ((double) system->atoms().size())) + m_numberDensity * 1.0 * m_temperature;
+}
+
+void StatisticsSampler::sampleTime(System *system)
+{
+    m_time = system->currentTime();
 }

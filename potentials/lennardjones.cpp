@@ -55,6 +55,7 @@ void LennardJones::calculateForces(System *system)
                                     rcut = rcut * rcut * rcut; // rcut^6
                                     divisionOfSigmaAndDistance6 = sigma6 / rcut;
                                     m_potentialEnergy -= 4 * m_epsilon * (divisionOfSigmaAndDistance6 * divisionOfSigmaAndDistance6 - divisionOfSigmaAndDistance6);
+                                    // The force does not need to have the negative sign in front as we are using N3L.
                                     double expressionOfForce = 4 * m_epsilon * (12 * (sigma6 * sigma6) /
                                                                (distanceBetweenAtoms6 * distanceBetweenAtoms6 * distanceBetweenAtoms)
                                                                - 6 * sigma6 / (distanceBetweenAtoms6 * distanceBetweenAtoms));
@@ -65,12 +66,12 @@ void LennardJones::calculateForces(System *system)
 
                                     tempForce.multiply(-1); // N3L
                                     cell2->atomsClose()[n]->force.add(tempForce);
-                                } //endfor
-                            } //endfor
-                        } //endfor
-                    } //endfor
-                } //endfor
-            } //endfor
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         } 
     } 
 }
