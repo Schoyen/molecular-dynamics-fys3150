@@ -17,6 +17,7 @@ private:
     double m_numberDensity;
     double m_pressure;
     double m_time;
+    double m_heatCapacity;
     ofstream m_kineticEnergyFile;
     ofstream m_potentialEnergyFile;
     ofstream m_totalEnergyFile;
@@ -30,6 +31,8 @@ private:
     bool m_sampledNetMomentum;
     bool m_sampledNumberDensity;
 public:
+    static double m_kineticEnergySquared;
+    static double m_totalKineticEnergy;
     StatisticsSampler();
     ~StatisticsSampler();
     void createFiles();
@@ -43,5 +46,8 @@ public:
     void samplePressure(System *system);
     void sampleTotalEnergy(System *system);
     void sampleTime(System *system);
+    void sampleKineticEnergySquared(System *system);
+    void sampleTotalKineticEnergy(System *system);
+    void sampleHeatCapacity(System *system);
     double temperature() {return m_temperature;}
 };

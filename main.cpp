@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
     double initialTemperature = atof(argv[3]);
     double tbath = atof(argv[4]);
     double relaxationTime = atof(argv[5]);
-    int timestep = atoi(argv[6]);
+    int timesteps = atoi(argv[6]);
     int timestepStartThermostat = atoi(argv[7]);
     int timestepEndThermostat = atoi(argv[8]);
     double latticeConstant = atof(argv[9]);
@@ -79,18 +79,22 @@ int main(int argc, char *argv[])
     system.setThermostatOn(false);
     statisticsSampler->createFiles();
 
-    for (int i = 0; i < timestep; i++) {
+    for (int i = 0; i < timesteps; i++) {
         movie->saveState(&system);
         system.temperature = statisticsSampler->temperature();
 
         // timestepStartThermostat == -1 if the thermostat should be off for all calculations.
-        if (i == timestepStartThermostat) system.setThermostatOn(true);
-        if (i == timestepEndThermostat) system.setThermostatOn(false);
+        // These are not working properly.
+        //if (i == timestepStartThermostat) system.setThermostatOn(true);
+        //if (i == timestepEndThermostat) system.setThermostatOn(false);
         system.step(dt);
+        statisticsSampler->sampleKineticEnergySquared(&system);
+        statisticsSampler->sampleTotalKineticEnergy(&system);
 
         // Sampling every 100'th step.
         if (i % 100 == 0) statisticsSampler->sample(&system, i);
     }
+    statisticsSampler->sampleHeatCapacity(&system);
 
     movie->saveState(&system);
     statisticsSampler->closeFiles();

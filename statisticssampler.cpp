@@ -4,6 +4,9 @@
 
 using namespace std;
 
+double StatisticsSampler::m_kineticEnergySquared = 0;
+double StatisticsSampler::m_totalKineticEnergy = 0;
+
 StatisticsSampler::StatisticsSampler()
 {
     m_sampledNetMomentum = false;
@@ -179,4 +182,35 @@ void StatisticsSampler::samplePressure(System *system)
 void StatisticsSampler::sampleTime(System *system)
 {
     m_time = system->currentTime();
+}
+
+void StatisticsSampler::sampleKineticEnergySquared(System *system)
+{
+    for (int i = 0; i < (int) system->atoms().size(); i++)
+    {
+        m_kineticEnergySquared += 0.25 * system->atoms()[i]->mass() * system->atoms()[i]->mass() * system->atoms()[i]->velocity.lengthSquared() * system->atoms()[i]->velocity.lengthSquared();
+    }
+}
+
+void StatisticsSampler::sampleTotalKineticEnergy(System *system)
+{
+    for (int i = 0; i < (int) system->atoms().size(); i++)
+    {
+        m_totalKineticEnergy += 0.5 * system->atoms()[i]->mass() * system->atoms()[i]->velocity.lengthSquared();
+    }
+}
+
+void StatisticsSampler::sampleHeatCapacity(System *system)
+{   
+    double meanOfSquaredKineticEnergy = m_kineticEnergySquared / system->atoms().size();
+    double meanOfTotalKineticEnergy = m_totalKineticEnergy / system->atoms().size();
+    m_heatCapacity = - 9 * 1 * 1 * system->temperature * system->temperature / (4 * system->atoms().size() * (meanOfSquaredKineticEnergy - meanOfTotalKineticEnergy) - 6 * 1 * system->temperature * system->temperature);
+
+    if (!m_heatCapacityFile.is_open()) {
+        cerr << "Unable to write to build/DATA/heatCapacity.txt" << endl;
+        exit(1);
+    }
+
+    // Should this be a different unit?
+    m_heatCapacityFile << m_heatCapacity << "\n";
 }
