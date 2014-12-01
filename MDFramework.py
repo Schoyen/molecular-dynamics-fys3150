@@ -48,11 +48,8 @@ Creating article and removing build.
 """)
 
     def run_MD_simulation(self):
-        if self.old_force_calculation == 1:
-            self.time_MD_simulation()
-        else:
-            self.compile_MD()
-            print ("""
+        self.compile_MD()
+        print ("""
 ==============================
 Running program for:
 dt                      = %g
@@ -67,14 +64,14 @@ lattice_constant        = %g
 r_cut                   = %g
 old_force_calculation   = %g
 ==============================
-                   """ % (self.dt, self.fcc_lattice, self.initial_temp,\
-                          self.t_bath, self.relaxation_time, self.timesteps, self.timesteps_before_thermo,\
-                          self.timesteps_after_thermo, self.lattice_constant, self.r_cut,\
-                          self.old_force_calculation)) # *cringe*
-            system("./build/MAINCPP %g %g %g %g %g %g %g %g %g %g %g" % (self.dt,\
-                   self.fcc_lattice, self.initial_temp, self.t_bath, self.relaxation_time,\
-                   self.timesteps, self.timesteps_before_thermo, self.timesteps_after_thermo,\
-                   self.lattice_constant, self.r_cut, self.old_force_calculation))
+               """ % (self.dt, self.fcc_lattice, self.initial_temp,\
+                      self.t_bath, self.relaxation_time, self.timesteps, self.timesteps_before_thermo,\
+                      self.timesteps_after_thermo, self.lattice_constant, self.r_cut,\
+                      self.old_force_calculation)) # *cringe*
+        system("./build/MAINCPP %g %g %g %g %g %g %g %g %g %g %g" % (self.dt,\
+               self.fcc_lattice, self.initial_temp, self.t_bath, self.relaxation_time,\
+               self.timesteps, self.timesteps_before_thermo, self.timesteps_after_thermo,\
+               self.lattice_constant, self.r_cut, self.old_force_calculation))
 
     def time_MD_simulation(self):
         # This method should time the two different force calculation methods and store the values as files.

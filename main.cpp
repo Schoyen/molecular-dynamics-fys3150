@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdlib>
+#include <chrono>
 #include "io.h"
 #include "system.h"
 #include "statisticssampler.h"
@@ -9,6 +10,7 @@
 #include "integrators/velocityverlet.h"
 
 using namespace std;
+using namespace chrono;
 /*
  * List of things that need to be sent to the main-method.
  * double dt
@@ -79,6 +81,8 @@ int main(int argc, char *argv[])
     system.setThermostatOn(false);
     statisticsSampler->createFiles();
 
+    // Starting clock.
+    auto start = high_resolution_clock::now();
     for (int i = 0; i < timesteps; i++) {
         movie->saveState(&system);
         system.temperature = statisticsSampler->temperature();
@@ -95,6 +99,20 @@ int main(int argc, char *argv[])
         if (i % 100 == 0) statisticsSampler->sample(&system, i);
     }
     statisticsSampler->sampleHeatCapacity(&system);
+
+    // Ending clock.
+    auto finish = high_resolution_clock::now();
+    double time = duration_cast<seconds>(finish - start).count();
+    double kiloAtomPerTimestep = 4 * numberOfFCCLattices * numberOfFCCLattices * numberOfFCCLattices * timesteps / time;
+    string filename = "build/DATA/kiloAtomTimestep.txt";
+    ofstream file;
+    file.open(filename);
+    if (!file.is_open()) {
+        cerr << "Unable to write to build/DATA/kiloAtomTimestep.txt" << endl;
+        exit(1);
+    }
+    file << kiloAtomPerTimestep << "\n";
+    file.close();
 
     movie->saveState(&system);
     statisticsSampler->closeFiles();

@@ -23,44 +23,57 @@
 \begin{document}
 
 \begin{titlepage}
+    \begin{center}
+        \vspace*{1cm}
+        
+        \textbf{\huge Molekylær Dynamikk}
 
-  \title{\normalsize FYS3150 Computational Physics\\
-  \vspace{10mm}
-  \huge Oblig 3\\
-  \vspace{10mm}
-  \normalsize{\bf Molekylær dynamikk.}}
+        \vspace{0.5cm}
+        \textbf{Oblig 3}
 
-  \author{Fyll inn kandidatnummer.}
+        \vspace{1.5cm}
+        \textbf{Øyvind Sigmundson Schøyen} \\
+        Kandidatnummer: 30
 
+        \vfill
+
+        Avsluttande prosjekt i FYS3150 \\
+
+        \vspace{0.8cm}
+
+        \includegraphics[width=0.4\textwidth]{\string~/Downloads/UiO_Segl_300dpi.png}
+
+        FYS3150 Computational Physics\\
+        Universitetet i Oslo\\
+        1. desember 2014
+
+    \end{center}
 \end{titlepage}
 
-\maketitle
-
 \begin{abstract}
-  Me må ha ei trippel-løkke for alle indeksane til ei celle og ei indre trippel løkke for alle nabocellene ((i-1, i, i+1), (j-1, j, j+1), (k-1, k, k+1)). 
-  Hugs å sjekke med boundary conditions.
-  Når me konstruerar kvar celle vil me lagre dei ved indeks
-  \begin{align*}
-    void \ index(int i, int j, int k) \{ \\
-      posisjon = i * n_y * n_z + j * n_z * k; \\
-    \}
-  \end{align*}
-  kor $n_x$, $n_y$ og $n_z$ er storleiken på kvar celle i $x$, $y$ og $z$-retning.
-  Storleiken bestemmer me ved
-  \begin{align*}
-    int \ n_x = \left( \frac{L_x}{r_{cut}} \right),
-  \end{align*}
-  kor $L_x$ er storleiken på systemet i $x$-retning.
-  Metoden for å legge til eit atom tek imot ein atom peikar og sjekkar om atomet ligg i cella.
-  \begin{align*}
-    void \ addAtom(Atom *atom) \{ \\
-      if (atom->position.x() / (systemSize.x()) * cell->position.x()) \{ \\
-        add the atom; \\
-      \} \\
-    \}
-  \end{align*}
-  Ekstra oppgåve: Prøv å lagre cellene med indeks. Oppdater deretter indeksane på kvart atom i kvar celle slik at me kan bruke N3L for å rekne ut krafta kun ei gong. Viss ikkje 
-  må me køyre testar på kvart atom to gonger frå to celler for å hindre at me rekner ut krafta to gonger.
+    I dette prosjektet har me tatt for oss modellering av argon på atomært nivå. Me har vore interesserte i å lage eit program som skal lage ein atomstruktur etter eige ynskje.
+    I tillegg har me ville sjå på korleis eit slikt system utvikler seg over tid og måle statistiske eigenskapar ved det. For å modellere eit så realistisk resulatat innenfor
+    det som er mogleg å køyre på ein pc har me utnytta cellelister for å auke hastigheita på programmet. For krafta har me nytta Lennard Jones potensialet og som integrator
+    har me brukt Velocity Verlet-algoritma. Programma våre er objektorienter C++-kode med eit Python rammeverk som skal enklast mogleg køyre programmet vårt for forskjellige 
+    parametrar og plotte verdiar. Me nyttar VMD for å visualisere atoma i rommet. All kjeldekode ligg på github.\\ \\
+    Rett litt på denne\dots \\ \\
+    \texttt{https://github.com/Schoyen/molecular-dynamics-fys3150}
 \end{abstract}
+
+\newpage
+    \tableofcontents
+\newpage
+
+\section*{Introduksjon}
+    \addcontentsline{toc}{section}{Introduksjon}
+    Oppgåva me er gjevne har gått ut på å modellere eit fysisk system samt bruke objektorientert programmering til å holde ein ryddig, oversiktlig, samt effektiv kode. 
+    I byrjinga er me gjeve ein kode som lagar 100 argon atom og gjer dei ein tilfeldig retning og hastighet. Gjeve lang nok tid vil atoma drive vekk. Me vil difor nytte
+    ``periodiske randbetingelsar'' for å halde atoma i nærleiken. Grunna hastigheitar gjevne frå Maxwell-Bolzmann distribusjon vil systemet ha ein ikkje-null
+    rørslemengde som me vil fjerne. Me vil deretter lage ein krystallstruktur kor me startar simuleringa av atoma. I eit slik lukka system vil total energien vere bevart, 
+    men grunna numerisk avrunding er det ikkje alltid dette held mål. Ein stabil alogritme som me vil nytte er ``Velocity Verlet'' som er ein symplektisk integrator. % Forklar dette.
+    Me vil no byrje å måle statistiske eigenskapar som energi og temperatur. For å kunne køyre koden for store system vil me derimot utvikle ein kjappar algoritme når 
+    me rekner ut krafta mellom atompara. Dette løyser me med cellelister. Til slutt, i fyrste del av prosjektet, legg me til ein termostat som let oss kontrollere 
+    temperaturen i systemet. \\ \\
+    % Fyll in for del 2 av prosjektet.
 
 \end{document}
