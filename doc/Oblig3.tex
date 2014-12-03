@@ -1,4 +1,4 @@
-\documentclass[11pt, a4paper]{article}
+\documentclass[12pt, a4paper]{article}
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
@@ -33,18 +33,23 @@
 
         \vspace{1.5cm}
         \textbf{Øyvind Sigmundson Schøyen} \\
-        Kandidatnummer: 30
+        Kandidatnummer: 30 \\
 
-        \vfill
+        \vspace{1.5cm}
 
         Avsluttande prosjekt i FYS3150 \\
 
-        \vspace{0.8cm}
+        \vspace{3.0cm}
 
         \includegraphics[width=0.4\textwidth]{\string~/Downloads/UiO_Segl_300dpi.png}
 
+        \vspace{1.0cm}
+
         FYS3150 Computational Physics\\
         Universitetet i Oslo\\
+
+        \vfill
+
         1. desember 2014
 
     \end{center}
@@ -75,5 +80,93 @@
     me rekner ut krafta mellom atompara. Dette løyser me med cellelister. Til slutt, i fyrste del av prosjektet, legg me til ein termostat som let oss kontrollere 
     temperaturen i systemet. \\ \\
     % Fyll in for del 2 av prosjektet.
+    God lesning!
 
+
+
+\newpage
+
+
+\section*{Fysikken bak molekylær dynamikken}
+    \addcontentsline{toc}{section}{Fysikken bak molekylær dynamikken}
+    I denne delen av rapporten vil me sjå på dei forskjellige eigenskapane me måler i MD-koda vår. Eventuelle måleresultat vil bli vist i resultat-seksjonen.
+
+    \subsection*{Oppsett}
+        \addcontentsline{toc}{subsection}{Oppsett}
+        Systemet med atom me set opp krev nokre tilpassningar for å gje eit realistisk resultat. Det fyrste me vil gjere å plassera atom i ein krystallstruktur. For Argon
+        vil me då nytte ``face-centered cubic lattice'' (FCC). Me plasserer fire og fire atom i ei einingscelle. Posisjonane til kvart atom vil vere gjeve ved
+        \begin{align*}
+            &\vb{r}_1 = 0\vb{i} + 0\vb{j} + 0\vb{k}, \\
+            &\vb{r}_2 = \frac{b}{2}\vb{i} + \frac{b}{2}\vb{j} + 0\vb{k}, \\
+            &\vb{r}_3 = 0\vb{i} + \frac{b}{2}\vb{j} + \frac{b}{2}\vb{k}, \\
+            &\vb{r}_4 = \frac{b}{2}\vb{i} + 0\vb{j} + \frac{b}{2}\vb{k}.
+        \end{align*}
+        Her vil $b$ vere ein konstant, me skal seinare sjå på korleis trykket er avhengig av denne. \\ % Hugs å legg dette ved i resultatet.
+
+        Etter at atoma vert plasserte i einingscellene vil me gje dei ein liten starthastighet kor me nyttar Maxwell-Boltzmann distribusjon. Då vil
+        \begin{align*}
+            \vb{v} \propto \sqrt{T}.
+        \end{align*}
+        Hastigheita til atoma vil bli fordelte tilfeldig i rommet. Resultatet er at systemet har eit ikkje-null fartsmoment. Før me byrjar å rekne ut nye posisjonar vil
+        me fjerne dette fartsmomentet. Me vil då finne den totale hastigheita til systemet og trekke denne frå kvart atom.
+        \begin{align*}
+            &\vb{V} = \frac{1}{M}\sum_i^N m_i\vb{v}_{i}^{\text{før}}, \\
+            &\vb{v}_{i}^{\text{etter}} = \vb{v}_{i}^{\text{før}} - \vb{V}, \qquad \ i \in [1, N],
+        \end{align*}
+        kor $\vb{V}$ er den total hastigheita til systemet, $N$ er antal atom, $M$ er den totale massa til alle atoma summert opp. Dette bidrar til at systemet vårt
+        ikkje har ein total hastigheit, men heller står i ro. \\
+        Av mangel på moglegheit til å simulere eit uendeleg stort system for å få energibevaring, implementerer me periodiske randbetingelsar. Viss eit atom har ein 
+        posisjon som ligg utanfor storleiken på systemet vårt vil me flytte atomet slik at det kjem inn frå den andre sida av systemet. For eit stort system kan dette 
+        vere ei god tilnærming då det heile tida forsvinn atom ut frå eit lite område, men samstundes kjem det inn nye atom slik at tettheten er jamn. Dette vil og vere med
+        på å gje oss bevaring av total energi då det ikkje går noko tap til vegger og liknande. Me er no klare til å sjå på nokre eigenskapar ved systemet etter som tida går.
+
+    \subsection*{Lennard Jones}
+        \addcontentsline{toc}{subsection}{Lennard Jones}
+        For å få ein fysisk effekt på systemet må me byrje å rekne ut krafta mellom atoma. Me nyttar Lennard Jones potensialet for å finne krafta mellom atompara.
+        Lennard Jones har den eigenskapen at potensialet tek med den fråstøytande og den tiltrekkjande krafta mellom para. Potensialet er gjeve ved
+        \begin{align*}
+            U(r_{ij}) = 4\epsilon\left[ \left( \frac{\sigma}{r_{ij}} \right)^{12} - \left( \frac{\sigma}{r_{ij}} \right)^{6} \right],
+        \end{align*}
+        kor $r_{ij}$ er avstanden frå atom $i$ og $j$, $\sigma$ og $\epsilon$ er konstantar som bestemmer kva distanse potensialet er null og kor djup potensialbrønnen skal vere.
+        Me finn krafta ved å ta den negative gradienten til potensialet. Då får me
+        \begin{align*}
+            \vb{F}(\vb{r}_{ij}) &= -\nabla U(r_{ij}) = -\frac{\partial U(r_{ij})}{\partial r_{ij}} \\
+            &= -4\epsilon\left[ 12\left( \frac{\sigma^{12}}{r_{ij}^{14}} \right) - 6\left( \frac{\sigma^6}{r_{ij}^8} \right) \right]\vb{r_{ij}}.
+        \end{align*}
+        Eit plott over $U/\epsilon$ mot $\r_{ij}/\sigma$ vil gje oss ein indikator kva tid krafta vil vere null. % Legg ved plott.
+
+
+
+
+
+        \newpage
+
+
+\section*{Programstruktur}
+    \addcontentsline{toc}{section}{Programstruktur}
+
+
+
+\newpage
+
+
+\section*{Køyrbarheit}
+    \addcontentsline{toc}{section}{Køyrbarheit}
+
+
+
+
+\newpage
+
+
+\section*{Resultat}
+    \addcontentsline{toc}{section}{Resultat}
+
+
+
+\newpage
+
+
+\section*{Feilestimat}
+    \addcontentsline{toc}{section}{Feilestimat}
 \end{document}
