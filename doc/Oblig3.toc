@@ -7,12 +7,16 @@
 \contentsline {subsection}{Statistiske m\IeC {\r a}lingar}{7}
 \contentsline {subsubsection}{Energi}{7}
 \contentsline {subsubsection}{Temperatur}{7}
-\contentsline {section}{Algoritmar}{8}
-\contentsline {subsection}{Simulering av eit uendeleg stort system}{8}
-\contentsline {subsubsection}{Periodiske randbetingelsar}{8}
-\contentsline {subsubsection}{Avstand fr\IeC {\r a} endepunkta}{8}
-\contentsline {subsection}{Velocity Verlet}{9}
-\contentsline {subsection}{Cellelister}{9}
-\contentsline {section}{Struktur}{11}
-\contentsline {section}{Resultat}{12}
-\contentsline {section}{Feilestimat}{13}
+\contentsline {subsubsection}{Tettleik}{8}
+\contentsline {subsubsection}{Trykk}{8}
+\contentsline {subsubsection}{Varmekapasitet}{9}
+\contentsline {subsection}{Berendsen termostat}{9}
+\contentsline {section}{Algoritmar}{10}
+\contentsline {subsection}{Simulering av eit uendeleg stort system}{10}
+\contentsline {subsubsection}{Periodiske randbetingelsar}{10}
+\contentsline {subsubsection}{Avstand fr\IeC {\r a} endepunkta}{10}
+\contentsline {subsection}{Velocity Verlet}{11}
+\contentsline {subsection}{Cellelister}{11}
+\contentsline {section}{Struktur}{13}
+\contentsline {section}{Resultat}{14}
+\contentsline {section}{Feilestimat}{15}

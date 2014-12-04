@@ -41,26 +41,30 @@
         \vspace{0.5cm}
         \textbf{Oblig 3}
 
-        \vspace{1.5cm}
+        \vspace{1cm}
+        av
+
+        \vspace{1cm}
         \textbf{Øyvind Sigmundson Schøyen} \\
         Kandidatnummer: 30 \\
 
-        \vspace{1.5cm}
+        \vspace{2.0cm}
 
         Avsluttande prosjekt i FYS3150 \\
 
-        \vspace{3.0cm}
+        \vspace{1.5cm}
 
         \includegraphics[width=0.4\textwidth]{\string~/Downloads/UiO_Segl_300dpi.png}
 
         \vspace{1.0cm}
 
         FYS3150 Computational Physics\\
+        Det matematisk-naturvitskaplege fakultet\\
         Universitetet i Oslo\\
 
         \vfill
 
-        1. desember 2014
+        Desember 2014
 
     \end{center}
 \end{titlepage}
@@ -206,8 +210,57 @@
             kvart tidssteg. Etterkvart vil me nå eit stabilt likevektspunkt kor temperaturen held seg nokonlunde jamnt.
 
 
-        \subsubsection*{Berendsen termostat}
-            \addcontentsline{toc}{subsubsection}{Berendsen termostat}
+        \subsubsection*{Tettleik}
+            \addcontentsline{toc}{subsubsection}{Tettleik}
+            Me vil måle tettleiken til systemet til å vere antal atomar delt på volumet til heile systemet. Dette vil vere ein konstant, men me vil sjå på korleis denne vil 
+            endre seg som ein funksjon av konstanten $b$ som me nyttar ved konstruksjon av einingscellene til systemet. Storleiken på systemet vil vere gjeve ved
+            \begin{align*}
+                V = S_xS_yS_z,
+            \end{align*}
+            kor $V$ er volumet til systemet og $S_x$, $S_y$ og $S_z$ er lengda til kvar av sidene til systemet. Då finner me tettleiken ved
+            \begin{align*}
+                \rho_N = \frac{N}{V},
+            \end{align*}
+            kor $N$ er antal atomar i systemet.
+
+
+        \subsubsection*{Trykk}
+            \addcontentsline{toc}{subsubsection}{Trykk}
+            Trykket til systemet er gjeve ved formelen 
+            \begin{align*}
+                P = \rho_Nk_BT + \frac{1}{3V}\left \langle \sum_{i = 1}^N \vb{F}_{i}\cdot\vb{r}_{i} \right \rangle,
+            \end{align*}
+            kor $\rho_N$ er tettleiken, $k_B$ er Boltzmann konstanten, $T$ er temperaturen, $V$ er volumet til systemet og $\vb{F}_i$ og $\vb{r}_i$ er henholdsvis krafta
+            og posisjonen til atom $i$. Då me nyttar Newtons tredje lov (N3L) i kraftutrekninga vår vil me kunne forenkle dette uttrykket og istaden rekne ho ut inne i kraftløkka.
+            Då 
+            \begin{align*}
+                \vb{F}_i\cdot\vb{r}_i = \sum_{j = 1, \ j \neq i}^{N}\vb{F}_{ij}\cdot\vb{r}_{ij},
+            \end{align*}
+            kor $\vb{F}_{ij}$ og $\vb{r}_{ij}$ er krafta og avstanden mellom atom $i$ og $j$. Me set dette inn i uttrykket for trykk.
+            \begin{align*}
+                P = \rho_Nk_BT + \frac{1}{3V}\left \langle \sum_{i = 1}^N \sum_{j = 1, \ j \neq i}^{N}\vb{F}_{ij}\cdot\vb{r}_{ij} \right \rangle.
+            \end{align*}
+            No nyttar me N3L til å sjå at det held å rekne ut krafta for kvar $i$ og $j$ ein gong viss me nyttar at $\vb{F}_{ij} = -\vb{F}_{ji}$. Då vil me kunne stryke
+            mange ledd mot einannan då dei vil bli rekna ut to gonger. Istaden skriv me det om til
+            \begin{align*}
+                P = \rho_Nk_BT + \frac{1}{3V}\left \langle \sum_{i > j}^N \vb{F}_{ij}\cdot\vb{r}_{ij} \right \rangle.
+            \end{align*}
+
+
+        \subsubsection*{Varmekapasitet}
+            \addcontentsline{toc}{subsubsection}{Varmekapasitet}
+
+
+    \subsection*{Berendsen termostat}
+        \addcontentsline{toc}{subsection}{Berendsen termostat}
+        Siden temperaturen fluktuerer vil me gjerne ha moglegheit til å styre ho. Me vil implementere ein $\textbf{Berendsen termostat}$. Ho er gjeve ved 
+        \begin{align*}
+            \gamma = \sqrt{1 + \frac{\Delta t}{\tau}\left( \frac{T_{\text{bath}}}{T} - 1 \right)}.
+        \end{align*}
+        Skaleringsfaktoren $\gamma$ vil me gonge med hastigheita $\vb{v}$ til atoma i systemet. Her er $\tau$ ein parameter som avgjer kor kjapt temperaturen skal endrast.
+        $T_{\text{bath}}$ er den ønska temperaturen medan $T$ er den noverande temperaturen. Me kan då sjå at $\gamma = 1$ for $T = T_{\text{bath}}$. Desverre er ikkje dette
+        ein veldig realistisk termostat då temperaturen endrer seg mykje fortare enn det ville skjedd i virkelegheita. Dette gjer blant anna at me ikkje vil måle fysiske eigenskapar
+        så lenge termostaten er på. Me vil difor nytte ho for å nå ei ynskja temperatur for så å la systemet få svinge litt før me byrjar å måle verdiar.
 
 
 \newpage
@@ -343,6 +396,8 @@
     % Hugs å sjå på bevaring av energi for forskjellige val av dt.
     % Legg ved smeltetemperatur og stabilitetstemperatur.
     % Sjå på kvifor temperaturen synker og korleis fluktuasjonar avhenger av antal atom.
+    % Finn ut korleis tettleiken avhenger av b.
+    % Sjekk korleis trykket varierer og plott det mot tetleiken.
 
 
 
