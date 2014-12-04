@@ -55,15 +55,10 @@ void LennardJones::calculateForces(System *system)
                                     rcut = rcut * rcut * rcut; // rcut^6
                                     divisionOfSigmaAndDistance6 = sigma6 / rcut;
                                     m_potentialEnergy -= 4 * m_epsilon * (divisionOfSigmaAndDistance6 * divisionOfSigmaAndDistance6 - divisionOfSigmaAndDistance6);
-                                    // The force does not need to have the negative sign in front as we are using N3L.
-                                    // Perhaps it does... 
-                                    // It depends on the direction we are defining the distance.
-                                    double expressionOfForce = 4 * m_epsilon * (12 * (sigma6 * sigma6) /
+                                    double expressionOfForce = - 4 * m_epsilon * (12 * (sigma6 * sigma6) /
                                                                (distanceBetweenAtoms6 * distanceBetweenAtoms6 * distanceBetweenAtoms)
                                                                - 6 * sigma6 / (distanceBetweenAtoms6 * distanceBetweenAtoms));
-                                    // Test if this works.
-                                    vec3 tempForce.addAndMultiply(distance, expressionOfForce);
-                                    //vec3 tempForce = distance * expressionOfForce;
+                                    vec3 tempForce = distance * expressionOfForce;
                                     cell1->atomsClose()[m]->force.add(tempForce);
 
                                     m_pressure += tempForce.dot(distance);
@@ -106,7 +101,7 @@ void LennardJones::calculateForcesOld(System *system)
             rcut = rcut * rcut * rcut; // rcut^6
             divisionOfSigmaAndDistance6 = sigma6 / rcut;
             m_potentialEnergy -= 4 * m_epsilon * (divisionOfSigmaAndDistance6 * divisionOfSigmaAndDistance6 - divisionOfSigmaAndDistance6);
-            double expressionOfForce = 4 * m_epsilon * (12 * (sigma6 * sigma6) /
+            double expressionOfForce = - 4 * m_epsilon * (12 * (sigma6 * sigma6) /
                                        (distanceBetweenAtoms6 * distanceBetweenAtoms6 * distanceBetweenAtoms)
                                        - 6 * sigma6 / (distanceBetweenAtoms6 * distanceBetweenAtoms));
             vec3 tempForce = distance * expressionOfForce;

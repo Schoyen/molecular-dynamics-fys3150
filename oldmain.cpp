@@ -17,7 +17,7 @@ using namespace chrono;
 
 int main()
 {
-    double dt = UnitConverter::timeFromSI(1e-15); // You should try different values for dt as well.
+    double dt = UnitConverter::timeFromSI(1e-14); // You should try different values for dt as well.
 
     cout << "One unit of length is " << UnitConverter::lengthToSI(1.0) << " meters" << endl;
     cout << "One unit of velocity is " << UnitConverter::velocityToSI(1.0) << " meters/second" << endl;
@@ -64,7 +64,7 @@ int main()
 
         //std::cout << UnitConverter::energyToEv(statisticsSampler->totalEnergy()) << std::endl;
 
-//        cout << timestep << endl;
+        cout << timestep << endl;
     }
     movie->saveState(&system);
 

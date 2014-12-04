@@ -25,13 +25,6 @@ void CellList::setNumberOfCells(int nx, int ny, int nz)
 void CellList::createCell()
 {
     Cell *cell = new Cell();
-
-    // The size might not be relevant.
-    // nx, ny and nz determines the number of cells, not the size.
-    //cell->setSize(m_system->systemSize().x() / nx, m_system->systemSize().y() / ny, m_system->systemSize().z() / nz);
-    
-    //cell->cellIndex = ind;
-
     // The cells "should" be stored by the index = i * ny * nz + j * nz + k;
     m_listOfCells.push_back(cell);
 }

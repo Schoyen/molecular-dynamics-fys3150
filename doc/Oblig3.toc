@@ -1,8 +1,14 @@
 \contentsline {section}{Introduksjon}{3}
 \contentsline {section}{Fysikken bak molekyl\IeC {\ae }r dynamikken}{4}
 \contentsline {subsection}{Oppsett}{4}
-\contentsline {subsection}{Lennard Jones}{5}
-\contentsline {section}{Programstruktur}{6}
-\contentsline {section}{K\IeC {\o }yrbarheit}{7}
-\contentsline {section}{Resultat}{8}
-\contentsline {section}{Feilestimat}{9}
+\contentsline {subsubsection}{Face-Centered Cubic Lattice}{4}
+\contentsline {subsubsection}{Maxwell-Boltzmann og fartsmoment}{4}
+\contentsline {subsubsection}{Lennard Jones}{5}
+\contentsline {subsection}{Statistiske m\IeC {\r a}lingar}{7}
+\contentsline {section}{Algoritmar}{8}
+\contentsline {subsection}{Simulering av eit uendeleg stort system}{8}
+\contentsline {subsubsection}{Periodiske randbetingelsar}{8}
+\contentsline {subsubsection}{Avstand fr\IeC {\r a} endepunkta}{8}
+\contentsline {section}{Struktur}{10}
+\contentsline {section}{Resultat}{11}
+\contentsline {section}{Feilestimat}{12}

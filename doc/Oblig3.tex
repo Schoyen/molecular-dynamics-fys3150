@@ -20,6 +20,8 @@
 
 \renewcommand{\abstractname}{Samandrag}
 
+\renewcommand{\figurename}{Figur}
+
 \begin{document}
 
 \begin{titlepage}
@@ -93,65 +95,135 @@
 
     \subsection*{Oppsett}
         \addcontentsline{toc}{subsection}{Oppsett}
-        Systemet med atom me set opp krev nokre tilpassningar for å gje eit realistisk resultat. Det fyrste me vil gjere å plassera atom i ein krystallstruktur. For Argon
-        vil me då nytte ``face-centered cubic lattice'' (FCC). Me plasserer fire og fire atom i ei einingscelle. Posisjonane til kvart atom vil vere gjeve ved
-        \begin{align*}
-            &\vb{r}_1 = 0\vb{i} + 0\vb{j} + 0\vb{k}, \\
-            &\vb{r}_2 = \frac{b}{2}\vb{i} + \frac{b}{2}\vb{j} + 0\vb{k}, \\
-            &\vb{r}_3 = 0\vb{i} + \frac{b}{2}\vb{j} + \frac{b}{2}\vb{k}, \\
-            &\vb{r}_4 = \frac{b}{2}\vb{i} + 0\vb{j} + \frac{b}{2}\vb{k}.
-        \end{align*}
-        Her vil $b$ vere ein konstant, me skal seinare sjå på korleis trykket er avhengig av denne. \\ % Hugs å legg dette ved i resultatet.
+        Systemet med atom me set opp krev nokre tilpassningar for å gje eit realistisk resultat. 
 
-        Etter at atoma vert plasserte i einingscellene vil me gje dei ein liten starthastighet kor me nyttar Maxwell-Boltzmann distribusjon. Då vil
-        \begin{align*}
-            \vb{v} \propto \sqrt{T}.
-        \end{align*}
-        Hastigheita til atoma vil bli fordelte tilfeldig i rommet. Resultatet er at systemet har eit ikkje-null fartsmoment. Før me byrjar å rekne ut nye posisjonar vil
-        me fjerne dette fartsmomentet. Me vil då finne den totale hastigheita til systemet og trekke denne frå kvart atom.
-        \begin{align*}
-            &\vb{V} = \frac{1}{M}\sum_i^N m_i\vb{v}_{i}^{\text{før}}, \\
-            &\vb{v}_{i}^{\text{etter}} = \vb{v}_{i}^{\text{før}} - \vb{V}, \qquad \ i \in [1, N],
-        \end{align*}
-        kor $\vb{V}$ er den total hastigheita til systemet, $N$ er antal atom, $M$ er den totale massa til alle atoma summert opp. Dette bidrar til at systemet vårt
-        ikkje har ein total hastigheit, men heller står i ro. \\
-        Av mangel på moglegheit til å simulere eit uendeleg stort system for å få energibevaring, implementerer me periodiske randbetingelsar. Viss eit atom har ein 
-        posisjon som ligg utanfor storleiken på systemet vårt vil me flytte atomet slik at det kjem inn frå den andre sida av systemet. For eit stort system kan dette 
-        vere ei god tilnærming då det heile tida forsvinn atom ut frå eit lite område, men samstundes kjem det inn nye atom slik at tettheten er jamn. Dette vil og vere med
-        på å gje oss bevaring av total energi då det ikkje går noko tap til vegger og liknande. Me er no klare til å sjå på nokre eigenskapar ved systemet etter som tida går.
+        \subsubsection*{Face-Centered Cubic Lattice}
+            \addcontentsline{toc}{subsubsection}{Face-Centered Cubic Lattice}
+            Det fyrste me vil gjere å plassera atom i ein krystallstruktur. For Argon
+            vil me då nytte ``face-centered cubic lattice'' (FCC). Me plasserer fire og fire atom i ei einingscelle. Posisjonane til kvart atom vil vere gjeve ved
+            \begin{align*}
+                &\vb{r}_1 = 0\vb{i} + 0\vb{j} + 0\vb{k}, \\
+                &\vb{r}_2 = \frac{b}{2}\vb{i} + \frac{b}{2}\vb{j} + 0\vb{k}, \\
+                &\vb{r}_3 = 0\vb{i} + \frac{b}{2}\vb{j} + \frac{b}{2}\vb{k}, \\
+                &\vb{r}_4 = \frac{b}{2}\vb{i} + 0\vb{j} + \frac{b}{2}\vb{k}.
+            \end{align*}
+            Her vil $b$ vere ein konstant, me skal seinare sjå på korleis trykket er avhengig av denne. \\ % Hugs å legg dette ved i resultatet.
 
-    \subsection*{Lennard Jones}
-        \addcontentsline{toc}{subsection}{Lennard Jones}
-        For å få ein fysisk effekt på systemet må me byrje å rekne ut krafta mellom atoma. Me nyttar Lennard Jones potensialet for å finne krafta mellom atompara.
-        Lennard Jones har den eigenskapen at potensialet tek med den fråstøytande og den tiltrekkjande krafta mellom para. Potensialet er gjeve ved
-        \begin{align*}
-            U(r_{ij}) = 4\epsilon\left[ \left( \frac{\sigma}{r_{ij}} \right)^{12} - \left( \frac{\sigma}{r_{ij}} \right)^{6} \right],
-        \end{align*}
-        kor $r_{ij}$ er avstanden frå atom $i$ og $j$, $\sigma$ og $\epsilon$ er konstantar som bestemmer kva distanse potensialet er null og kor djup potensialbrønnen skal vere.
-        Me finn krafta ved å ta den negative gradienten til potensialet. Då får me
-        \begin{align*}
-            \vb{F}(\vb{r}_{ij}) &= -\nabla U(r_{ij}) = -\frac{\partial U(r_{ij})}{\partial r_{ij}} \\
-            &= -4\epsilon\left[ 12\left( \frac{\sigma^{12}}{r_{ij}^{14}} \right) - 6\left( \frac{\sigma^6}{r_{ij}^8} \right) \right]\vb{r_{ij}}.
-        \end{align*}
-        Eit plott over $U/\epsilon$ mot $\r_{ij}/\sigma$ vil gje oss ein indikator kva tid krafta vil vere null. % Legg ved plott.
+        \subsubsection*{Maxwell-Boltzmann og fartsmoment}
+            \addcontentsline{toc}{subsubsection}{Maxwell-Boltzmann og fartsmoment}
+            Etter at atoma vert plasserte i einingscellene vil me gje dei ein liten starthastighet kor me nyttar Maxwell-Boltzmann distribusjon. Då vil
+            \begin{align*}
+                \vb{v} \propto \sqrt{T}.
+            \end{align*}
+            Hastigheita til atoma vil bli fordelte tilfeldig i rommet. Resultatet er at systemet har eit ikkje-null fartsmoment. Før me byrjar å rekne ut nye posisjonar vil
+            me fjerne dette fartsmomentet. Me vil då finne den totale hastigheita til systemet og trekke denne frå kvart atom.
+            \begin{align*}
+                &\vb{V} = \frac{1}{M}\sum_i^N m_i\vb{v}_{i}^{\text{før}}, \\
+                &\vb{v}_{i}^{\text{etter}} = \vb{v}_{i}^{\text{før}} - \vb{V}, \qquad \ i \in [1, N],
+            \end{align*}
+            kor $\vb{V}$ er den total hastigheita til systemet, $N$ er antal atom, $M$ er den totale massa til alle atoma summert opp. Dette bidrar til at systemet vårt
+            ikkje har ein total hastigheit, men heller står i ro. \\
 
 
 
+        \subsubsection*{Lennard Jones}
+            \addcontentsline{toc}{subsubsection}{Lennard Jones}
+            For å få ein fysisk effekt på systemet må me byrje å rekne ut krafta mellom atoma. Me nyttar Lennard Jones potensialet for å finne krafta mellom atompara.
+            Lennard Jones har den eigenskapen at potensialet tek med den fråstøytande og den tiltrekkande krafta mellom para. Potensialet er gjeve ved
+            \begin{align*}
+                U(r_{ij}) = 4\epsilon\left[ \left( \frac{\sigma}{r_{ij}} \right)^{12} - \left( \frac{\sigma}{r_{ij}} \right)^{6} \right],
+            \end{align*}
+            kor $r_{ij}$ er avstanden frå atom $i$ og $j$, $\sigma$ og $\epsilon$ er konstantar som bestemmer kva distanse potensialet er null og kor djup potensialbrønnen skal vere.
+            Me finn krafta ved å ta den negative gradienten til potensialet. Då får me
+            \begin{align*}
+                \vb{F}(\vb{r}_{ij}) &= -\nabla U(r_{ij}) = -\frac{\partial U(r_{ij})}{\partial r_{ij}} \\
+                &= -4\epsilon\left[ 12\left( \frac{\sigma^{12}}{r_{ij}^{14}} \right) - 6\left( \frac{\sigma^6}{r_{ij}^8} \right) \right]\vb{r_{ij}}.
+            \end{align*}
+            Grunna dei høge potensane kan me sjå at denne krafta vil kjapt gå mot null. Denne eigenskapen gjer at me kan effektivisere koda vår ved berre å rekne ut krafta 
+            mellom atom kor avstanden mellom dei er innenfor ein radius $r_{\text{cut}}$.
+            Eit plott over $U/\epsilon$ mot $r_{ij}/\sigma$ vil gje oss ein indikator kva tid krafta vil vere null.
+            \begin{figure}[H]
+                \centering
+                \includegraphics[width=400px]{potentialPlot.png}
+                \caption{I plottet kan me lett sjå kor dei tiltrekkjande og kor dei fråstøytande kreftene har sine styrker. Då krafta er gjeve som den negative gradienten til
+                        potensialet vil me kunne sjå at i det atoma kjem veldig nære einannan vil det virke ei kraftig fråstøyting ($r_{ij}^{12}$-delen) medan det for større avstand
+                        vil virke ei svakare, men med større rekkevidde, tiltrekkande kraft ($r_{ij}^6$-delen).}
+            \end{figure}
+            Frå figuren les me av 
+            \begin{align*}
+                \frac{r_{\text{cut}}}{\sigma} \approx 2.5 \qquad \Rightarrow \qquad r_{\text{cut}} \approx 2.5\sigma.
+            \end{align*}
+            Utanfor denne radiusen vil me ikkje rekne krafta mellom atompara.
 
 
-        \newpage
+    \newpage
+
+    \subsection*{Statisiske målingar}
+        \addcontentsline{toc}{subsection}{Statistiske målingar}
 
 
-\section*{Programstruktur}
-    \addcontentsline{toc}{section}{Programstruktur}
+
 
 
 
 \newpage
 
 
-\section*{Køyrbarheit}
-    \addcontentsline{toc}{section}{Køyrbarheit}
+\section*{Algoritmar}
+    \addcontentsline{toc}{section}{Algoritmar}
+
+    \subsection*{Simulering av eit uendeleg stort system}
+        \addcontentsline{toc}{subsection}{Simulering av eit uendeleg stort system}
+        \subsubsection*{Periodiske randbetingelsar}
+            \addcontentsline{toc}{subsubsection}{Periodiske randbetingelsar}
+            Av mangel på moglegheit til å simulere eit uendeleg stort system for å få energibevaring, implementerer me periodiske randbetingelsar. Viss eit atom har ein 
+            posisjon som ligg utanfor storleiken på systemet vårt vil me flytte atomet slik at det kjem inn frå den andre sida av systemet. For eit stort system kan dette 
+            vere ei god tilnærming då det heile tida forsvinn atom ut frå eit lite område, men samstundes kjem det inn nye atom slik at tettheten er jamn. Dette vil og vere med
+            på å gje oss bevaring av total energi då det ikkje går noko tap til vegger og liknande. Periodiske randbetingelsar vil vere gjeve ved formelen
+            \begin{align*}
+                \vb{r}_i = x_i\vb{i} + y_i\vb{j} + z_i\vb{k}, \qquad i \in [1, N],
+            \end{align*}
+            kor $N$ er antal atom i systemet. Då vil kvar komponent i $\vb{r}_i$ vere gjeve ved
+            \begin{align*}
+                x = 
+                \begin{cases}
+                    x + S_x, & x < 0 \\
+                    x, & x \in [0, S_x) \\
+                    x - S_x, & x \geq S_x
+                \end{cases},
+            \end{align*}
+            kor $S_x$ er storleiken på systemet i $x$-retning og $x$ er noverande posisjon for atomet. Me gjentek dette for dei to andre retningane og.
+
+
+
+        \subsubsection*{Avstand frå endepunkta}
+            \addcontentsline{toc}{subsubsection}{Avstand frå endepunkta}
+            Frå analogien ved bruk av periodiske randbetingelsar må me ta hensyn til at avstand mellom atompar ikkje nødvendigvis stemmer. Argumentet vårt er at 
+            atoma som ligg heilt i kanten av systemet har ``tvillingar'' som kjem inn frå andre sida på nøyaktig same tid og med dei same parametrane som seg sjølve.
+            Når me då rekner avstand mellom atoma vil me sjekke om eigentleg ligg mykje nærare viss det eine atomet vert flytta over på den andre sida av systemet.
+            Me kjem til å nytte ``Minimum Image Criterion'' for å sjekke om dette er oppfylt. Me definerer
+            \begin{align*}
+                \Delta \vb{R} = \vb{r}_i - \vb{r}_j, \qquad i \neq j, \qquad i, j \in [1, N],
+            \end{align*}
+            som gjer oss avstanden mellom atoma slik det framstår i simuleringa. For å simulere eit uendeleg system vil me difor sjekke om denne oppfyller krava
+            \begin{align*}
+                \Delta \vb{R} = \Delta X\vb{i} + \Delta Y\vb{j} + \Delta Z\vb{k},
+            \end{align*}
+            kor me har skrive $\Delta \vb{R}$ på komponentform. Då får me
+            \begin{align*}
+                \Delta X = 
+                \begin{cases}
+                    \Delta X - S_x, & \Delta X > \frac{S_x}{2} \\
+                    \Delta X, & \Delta X \in \left( -\frac{S_x}{2}, \frac{S_x}{2} \right] \\
+                    \Delta X + S_x, & \Delta X \leq -\frac{S_x}{2}
+                \end{cases}
+            \end{align*}
+
+\newpage
+
+
+\section*{Struktur}
+    \addcontentsline{toc}{section}{Struktur}
 
 
 
