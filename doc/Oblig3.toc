@@ -5,10 +5,14 @@
 \contentsline {subsubsection}{Maxwell-Boltzmann og fartsmoment}{4}
 \contentsline {subsubsection}{Lennard Jones}{5}
 \contentsline {subsection}{Statistiske m\IeC {\r a}lingar}{7}
+\contentsline {subsubsection}{Energi}{7}
+\contentsline {subsubsection}{Temperatur}{7}
 \contentsline {section}{Algoritmar}{8}
 \contentsline {subsection}{Simulering av eit uendeleg stort system}{8}
 \contentsline {subsubsection}{Periodiske randbetingelsar}{8}
 \contentsline {subsubsection}{Avstand fr\IeC {\r a} endepunkta}{8}
-\contentsline {section}{Struktur}{10}
-\contentsline {section}{Resultat}{11}
-\contentsline {section}{Feilestimat}{12}
+\contentsline {subsection}{Velocity Verlet}{9}
+\contentsline {subsection}{Cellelister}{9}
+\contentsline {section}{Struktur}{11}
+\contentsline {section}{Resultat}{12}
+\contentsline {section}{Feilestimat}{13}

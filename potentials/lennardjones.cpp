@@ -55,16 +55,13 @@ void LennardJones::calculateForces(System *system)
                                     rcut = rcut * rcut * rcut; // rcut^6
                                     divisionOfSigmaAndDistance6 = sigma6 / rcut;
                                     m_potentialEnergy -= 4 * m_epsilon * (divisionOfSigmaAndDistance6 * divisionOfSigmaAndDistance6 - divisionOfSigmaAndDistance6);
-                                    double expressionOfForce = - 4 * m_epsilon * (12 * (sigma6 * sigma6) /
+                                    double expressionOfForce = 4 * m_epsilon * (12 * (sigma6 * sigma6) /
                                                                (distanceBetweenAtoms6 * distanceBetweenAtoms6 * distanceBetweenAtoms)
                                                                - 6 * sigma6 / (distanceBetweenAtoms6 * distanceBetweenAtoms));
-                                    vec3 tempForce = distance * expressionOfForce;
-                                    cell1->atomsClose()[m]->force.add(tempForce);
-
-                                    m_pressure += tempForce.dot(distance);
-
-                                    tempForce.multiply(-1); // N3L
-                                    cell2->atomsClose()[n]->force.add(tempForce);
+                                    cell1->atomsClose()[m]->force.addAndMultiply(distance, expressionOfForce);
+                                    cell2->atomsClose()[n]->force.addAndMultiply(distance, -expressionOfForce);
+                                    distance.multiply(expressionOfForce);
+                                    m_pressure += distance.dot(distance);
                                 }
                             }
                         }
@@ -101,16 +98,13 @@ void LennardJones::calculateForcesOld(System *system)
             rcut = rcut * rcut * rcut; // rcut^6
             divisionOfSigmaAndDistance6 = sigma6 / rcut;
             m_potentialEnergy -= 4 * m_epsilon * (divisionOfSigmaAndDistance6 * divisionOfSigmaAndDistance6 - divisionOfSigmaAndDistance6);
-            double expressionOfForce = - 4 * m_epsilon * (12 * (sigma6 * sigma6) /
+            double expressionOfForce = 4 * m_epsilon * (12 * (sigma6 * sigma6) /
                                        (distanceBetweenAtoms6 * distanceBetweenAtoms6 * distanceBetweenAtoms)
                                        - 6 * sigma6 / (distanceBetweenAtoms6 * distanceBetweenAtoms));
-            vec3 tempForce = distance * expressionOfForce;
-            system->atoms()[i]->force.add(tempForce);
-
-            m_pressure += tempForce.dot(distance);
-
-            tempForce.multiply(-1);
-            system->atoms()[j]->force.add(tempForce);
+            system->atoms()[i]->force.addAndMultiply(distance, expressionOfForce);
+            system->atoms()[j]->force.addAndMultiply(distance, -expressionOfForce);
+            distance.multiply(expressionOfForce);
+            m_pressure += distance.dot(distance);
         }
     }
 }

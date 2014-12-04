@@ -10,6 +10,8 @@
 \usepackage{subcaption}
 \usepackage{subfig}
 \usepackage{float}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 
 \theoremstyle{definition}
 \newtheorem*{definition}{Teorem}
@@ -21,6 +23,12 @@
 \renewcommand{\abstractname}{Samandrag}
 
 \renewcommand{\figurename}{Figur}
+
+\makeatletter
+\newcommand{\newalgname}[1]{
+    \renewcommand{\ALG@name}{#1}
+}
+\newalgname{Algoritme}
 
 \begin{document}
 
@@ -160,10 +168,46 @@
 
     \subsection*{Statisiske målingar}
         \addcontentsline{toc}{subsection}{Statistiske målingar}
+        Hensikten med koda vår er for å måle eigenskapar i eit system med atomar.
+
+        \subsubsection*{Energi}
+            \addcontentsline{toc}{subsubsection}{Energi}
+            Det enklaste å måle vil vere energien i systemet. Me har allereie implementert eit uttrykk for den potensielle energien med Lennard Jones. Då finner me
+            den kinetiske energien ved formelen
+            \begin{align*}
+                E_{k} = \sum_{i}^N\frac{1}{2}m_iv_{i}^2,
+            \end{align*}
+            kor $N$ er antal atomar i systemet. Total energien vil då vere gjeve ved
+            \begin{align*}
+                E = E_{k} + U.
+            \end{align*}
+            For eit system av atom med dei randbetingelsane me har satt forventer me energibevaring. Grunna numerisk avrunding vil det alltid oppstå små fluktuasjonar,
+            men desse forventer knapt skal vere synlege. \\
+
+            Då me ikkje reknar krafta mellom atompar utanfor $r_{\text{cut}}$ må me endre litt på Lennard Jones potensialet slik at me har energibevaring. 
+            Potensialet vil nå bli skalert etter likninga
+            \begin{align*}
+                U_{\text{skalert}}(r_{ij}) = 
+                \begin{cases}
+                    U(r_{ij}) - U(r_{\text{cut}}), & r \leq r_{\text{cut}} \\
+                    0, & r > r_{\text{cut}}.
+                \end{cases}
+            \end{align*}
+
+        \subsubsection*{Temperatur}
+            \addcontentsline{toc}{subsubsection}{Temperatur}
+            Temperaturen speler ei stor rolle i systemet vårt. Me er interesserte i å finne ut kva tid strukturen smelter og kor tid ho held seg stabil. Me finn ho 
+            ved ekvipartisjonsteoremet som seier
+            \begin{align*}
+                &\left \langle E_{k} \right \rangle = \frac{3}{2} = Nk_{B}T, \\
+                &\Rightarrow T = \frac{2}{3}\frac{E_{k}}{Nk_{B}},
+            \end{align*}
+            kor $T$ då angjer den momentane temperaturen då me ikkje tek gjennomsnittet av $E_{k}$. Temperaturen vil fluktuere då den kinetiske energien vil endre seg for
+            kvart tidssteg. Etterkvart vil me nå eit stabilt likevektspunkt kor temperaturen held seg nokonlunde jamnt.
 
 
-
-
+        \subsubsection*{Berendsen termostat}
+            \addcontentsline{toc}{subsubsection}{Berendsen termostat}
 
 
 \newpage
@@ -174,9 +218,11 @@
 
     \subsection*{Simulering av eit uendeleg stort system}
         \addcontentsline{toc}{subsection}{Simulering av eit uendeleg stort system}
+        Då me ikkje kan simulere eit uendeleg stort system vil me nytte nokre metodar kor me slepper å sjå at atoma våre forsvinn ut i ingenting.
+
         \subsubsection*{Periodiske randbetingelsar}
             \addcontentsline{toc}{subsubsection}{Periodiske randbetingelsar}
-            Av mangel på moglegheit til å simulere eit uendeleg stort system for å få energibevaring, implementerer me periodiske randbetingelsar. Viss eit atom har ein 
+            Viss eit atom har ein 
             posisjon som ligg utanfor storleiken på systemet vårt vil me flytte atomet slik at det kjem inn frå den andre sida av systemet. For eit stort system kan dette 
             vere ei god tilnærming då det heile tida forsvinn atom ut frå eit lite område, men samstundes kjem det inn nye atom slik at tettheten er jamn. Dette vil og vere med
             på å gje oss bevaring av total energi då det ikkje går noko tap til vegger og liknande. Periodiske randbetingelsar vil vere gjeve ved formelen
@@ -219,9 +265,69 @@
                 \end{cases}
             \end{align*}
 
+
+
+
+    \subsection*{Velocity Verlet}
+        \addcontentsline{toc}{subsection}{Velocity Verlet}
+        Idet systemet vårt er satt opp med ein starthastighet for kvart atom vil me tidsintegrere oss fram i tid for å sjå korleis det utvikler seg. Då systemet vårt er pakka
+        inn med periodiske randbetingelser og biletekriterie vil me nytte ein algoritme som bevarer energien. Velocity Verlet er ein $\textbf{symplektisk integrator}$ som 
+        bevarer total energien (Hamiltonian er bevart, men denne tilsvarer ofte total energien i eit system). Velocity Verlet er i tillegg ein enkel og kompakt algoritme med
+        eit feilledd som går som $\mathcal{O}(\Delta t^2)$. Integrasjonen består av tre ledd
+        \begin{align*}
+            \vb{v}(t + \Delta t/2) &= \vb{v}(t) + \frac{\vb{F}(t)}{m}\frac{\Delta t}{2}, \\
+            \vb{r}(t + \Delta t) &= \vb{r}(t) + \vb{v}(t + \Delta t/2)\Delta t, \\
+            \vb{v}(t + \Delta t) &= \vb{v}(t + \Delta t/2) + \frac{\vb{F}(t + \Delta t)}{m}\frac{\Delta t}{2},
+        \end{align*}
+        kor me må rekne ut krafta ein gong for fyrste ledd før me byrjar å integrere oss fram i tid.
+
+    \subsection*{Cellelister}
+        \addcontentsline{toc}{subsection}{Cellelister}
+        Det som er kostbart ved Velocity Verlet er utrekninga av kraft to gonger per ledd. Viss me rekner ut krafta mellom kvart atom vil me ha ei algoritme som går som
+        $\mathcal{O}(N^2)$, kor $N$ er antal atom. Ved å sette opp cellelister vil me dele opp systemet vårt i mindre celler kor kvar side av cellene har lengde 
+        $r_{\text{cut}}$ runda av til næraste heiltal. Ved å gjere dette slipper me å leite gjennom alle atoma i systemet vårt og rekne ut krafta mellom dei. Me vil 
+        heller rekne ut krafta mellom atoma i ei celle og alle nabocellene til denne cella. Viss me då i tillegg sjekker om atoma i nabocellene ligg utanfor
+        $r_{\text{cut}}$ vil me redusere køyretida til $\mathcal{O}(N)$.
+
+        \begin{algorithm}[H]
+            \caption{Rekn ut krafta ved hjelp av cellelister}
+            \label{Cellelister}
+            \begin{algorithmic}[1]
+                \For {$i \in N_x$}
+                    \For {$j \in N_y$}
+                        \For {$k \in N_z$}
+                            \State $Cell_{1} = CellIndex(i, j, k)$
+                            \For {$cx \in \left[ i - 1, i + 1 \right]$}
+                                \For {$cy \in \left[ j - 1, j + 1 \right]$}
+                                    \For {$cz \in \left[ k - 1, k + 1 \right]$}
+                                        \State $applyPeriodic(cx, cy, cz)$
+                                        \State $Cell_{2} = CellIndex(cx, cy, cz)$
+                                        \For {$m \in Cell_1.getAtoms()$}
+                                            \For {$n \in Cell_2.getAtoms()$}
+                                                \State Rekn ut krafta
+                                            \EndFor
+                                        \EndFor
+                                    \EndFor
+                                \EndFor
+                            \EndFor
+                        \EndFor
+                    \EndFor
+                \EndFor
+            \end{algorithmic}
+        \end{algorithm}
+        Her er $N_x$, $N_y$ og $N_z$ antal celler i henholdsvis $x$-, $y$- og $z$-retning. $cx$, $cy$ og $cz$ viser til koordinatane til nabocellene. Metoden $applyPeriodic()$ 
+        sjekker om cellene i endepunkta har naboar på andre sida av systemet. \\
+        For kvart tidssteg må me legge atom i dei riktige cellene. Me lagrar cellene på indeksar gjeve ved formelen
+        \begin{align*}
+            index = iN_yN_z + jN_z + k,
+        \end{align*}
+        kor $i$, $j$ og $k$ er indeksane me sender inn. Då kan me finne kva celle eit atom høyrer til i ved å nytte formelen
+        \begin{align*}
+            index_x = \left \lfloor \frac{x_{\text{Atom}}}{S_{x}} N_{x}\right \rfloor,
+        \end{align*}
+        og tilsvarande for $y$- og $z$-retning. Då vil $index$-formelen over returnere cella som inneheld det gjeldane atomet.
+
 \newpage
-
-
 \section*{Struktur}
     \addcontentsline{toc}{section}{Struktur}
 
@@ -233,6 +339,10 @@
 
 \section*{Resultat}
     \addcontentsline{toc}{section}{Resultat}
+
+    % Hugs å sjå på bevaring av energi for forskjellige val av dt.
+    % Legg ved smeltetemperatur og stabilitetstemperatur.
+    % Sjå på kvifor temperaturen synker og korleis fluktuasjonar avhenger av antal atom.
 
 
 

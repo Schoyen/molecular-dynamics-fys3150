@@ -40,8 +40,6 @@ void VelocityVerlet::halfKick(System *system, double dt)
 
 void VelocityVerlet::move(System *system, double dt)
 {
-
-    // This does not seem to speed things up...
     for (int n = 0; n < (int) system->atoms().size(); n++) {
         Atom *atom = system->atoms()[n];
         atom->position.addAndMultiply(atom->velocity, dt);
