@@ -75,7 +75,7 @@
     I dette prosjektet har me tatt for oss modellering av argon på atomært nivå. Me har vore interesserte i å lage eit program som skal lage ein atomstruktur etter eige ynskje.
     I tillegg har me ville sjå på korleis eit slikt system utvikler seg over tid og måle statistiske eigenskapar ved det. For å modellere eit så realistisk resulatat innenfor
     det som er mogleg å køyre på ein pc har me utnytta cellelister for å auke hastigheita på programmet. For krafta har me nytta Lennard Jones potensialet og som integrator
-    har me brukt Velocity Verlet-algoritma. Programma våre er objektorienter C++-kode med eit Python rammeverk som skal enklast mogleg køyre programmet vårt for forskjellige 
+    har me brukt Velocity Verlet-algoritma. Programma våre er objektorienter \verb!C++!-kode med eit \verb!Python! rammeverk som skal enklast mogleg køyre programmet vårt for forskjellige 
     parametrar og plotte verdiar. Me nyttar VMD for å visualisere atoma i rommet. All kjeldekode ligg på github.\\ \\
     Rett litt på denne\dots \\ \\
     \texttt{https://github.com/Schoyen/molecular-dynamics-fys3150}
@@ -262,7 +262,15 @@
                 &\Rightarrow \qquad -4NC_V\left( \lla E_k^2 \rra - \lla E_k \rra^2 -\frac{3k_BT^2}{2N}\right) = 9k_B^2T^2, \\
                 &\Rightarrow \qquad C_V = -\frac{9k_B^2T^2}{4N\left( \lla E_k^2 \rra - \lla E_k \rra^2 -\frac{3k_BT^2}{2N}\right)}.
             \end{align*}
-            Me vil måle denne verdien i eininga $\frac{\text{J}}{\text{Kmol}}$.
+            Me vil måle denne verdien i eininga $\frac{\text{J}}{\text{Kmol}}$ for å samanlikne med eksperimentelle verdiar. Boltzmann konstanten er gjeve ved
+            \begin{align*}
+                k_B \sim \frac{\text{m}^2\text{kg}}{\text{s}^2\text{K}} \sim \frac{\text{J}}{\text{K}}.
+            \end{align*}
+            Då ser me at vermakapasiteten vil vere gjeve ved
+            \begin{align*}
+                C_V \sim \frac{\left( \frac{\text{J}}{\text{K}} \right)^2\text{K}^2}{\text{J}^2 - \text{J}^2 - \frac{\text{J}}{K}\text{K}^2}
+            \end{align*}
+            Finn ut av denne\dots
 
 
     \subsection*{Berendsen termostat}
@@ -397,8 +405,22 @@
 \newpage
 \section*{Struktur}
     \addcontentsline{toc}{section}{Struktur}
+    I dette prosjektet har me nytta objektorientering for å halde styr på simuleringa vår. Simuleringane vert køyrde i \verb!C++!. Me har bygd eit rammeverk med 
+    \verb!Python! som tek seg av køyringa i \verb!C++! for å gje eit betre overblikk. Litt diverse \verb!bash!-script rydder og strukturer utskriftar.
 
+    \subsection*{Objektar i C++}
+        \addcontentsline{toc}{subsection}{Objektar i C++}
+        Under fylgjer ein kort oversikt over objekt me nyttar og formålet deira.
 
+        \subsubsection*{Atom}
+            \addcontentsline{toc}{subsubsection}{Atom}
+            Filene $\texttt{atom.h}$ og $\texttt{atom.cpp}$ utgjer ein liten klasse kor me lagrar masse, posisjon, hastighet og krafta til eit atom. I tillegg 
+            gjer me kvart atom ein indeks som gjer det mogleg for oss å nytte Newtons tredje lov kor me kun vil rekne ut krafta mellom para viss atom-objektet me
+            har valgt har ein større indeks enn det andre atom-objektet me har valgt.
+
+        \subsubsection*{Berendsen}
+            \addcontentsline{toc}{subsubsection}{Berendsen}
+            Klassa $\texttt{berendsen.h}$ og $\texttt{berendsen.cpp}$ implementerer Berendsen termostaten beskrevet i seksjonen om fysikken bak molekylær dynamikken.
 
 
 \newpage

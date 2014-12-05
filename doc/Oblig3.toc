@@ -11,12 +11,13 @@
 \contentsline {subsubsection}{Trykk}{8}
 \contentsline {subsubsection}{Varmekapasitet}{9}
 \contentsline {subsection}{Berendsen termostat}{9}
-\contentsline {section}{Algoritmar}{10}
-\contentsline {subsection}{Simulering av eit uendeleg stort system}{10}
-\contentsline {subsubsection}{Periodiske randbetingelsar}{10}
-\contentsline {subsubsection}{Avstand fr\IeC {\r a} endepunkta}{10}
-\contentsline {subsection}{Velocity Verlet}{11}
-\contentsline {subsection}{Cellelister}{11}
-\contentsline {section}{Struktur}{13}
-\contentsline {section}{Resultat}{14}
-\contentsline {section}{Feilestimat}{15}
+\contentsline {section}{Algoritmar}{11}
+\contentsline {subsection}{Simulering av eit uendeleg stort system}{11}
+\contentsline {subsubsection}{Periodiske randbetingelsar}{11}
+\contentsline {subsubsection}{Avstand fr\IeC {\r a} endepunkta}{11}
+\contentsline {subsection}{Velocity Verlet}{12}
+\contentsline {subsection}{Cellelister}{12}
+\contentsline {section}{Struktur}{14}
+\contentsline {subsection}{Objektar i C++}{14}
+\contentsline {section}{Resultat}{15}
+\contentsline {section}{Feilestimat}{16}
