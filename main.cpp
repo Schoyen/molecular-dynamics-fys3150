@@ -98,7 +98,6 @@ int main(int argc, char *argv[])
         // Sampling every 100'th step.
         if (i % 100 == 0) statisticsSampler->sample(&system, i);
     }
-    statisticsSampler->sampleHeatCapacity(&system);
 
     // Ending clock.
     auto finish = high_resolution_clock::now();

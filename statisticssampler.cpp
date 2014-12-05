@@ -59,6 +59,7 @@ void StatisticsSampler::sample(System *system, int timestep)
     sampleTemperature(system);
     samplePressure(system);
     sampleTime(system);
+    sampleHeatCapacity(system);
     if (!m_sampledNetMomentum) {
         sampleNetMomentum(system);
         m_sampledNetMomentum = true;
@@ -204,9 +205,10 @@ void StatisticsSampler::sampleHeatCapacity(System *system)
 {   
     double meanOfSquaredKineticEnergy = UnitConverter::energyToSI(m_kineticEnergySquared) / system->atoms().size();
     double meanOfTotalKineticEnergy = UnitConverter::energyToSI(m_totalKineticEnergy) / system->atoms().size();
+    // Write out in J/(Kmol) units.
     m_heatCapacity = - 9 * UnitConverter::kb * UnitConverter::kb * UnitConverter::temperatureToSI(system->temperature) * UnitConverter::temperatureToSI(system->temperature) 
-        / (4 * system->atoms().size() * (meanOfSquaredKineticEnergy - meanOfTotalKineticEnergy) - 
-                     6 * UnitConverter::kb * UnitConverter::temperatureToSI(system->temperature) * UnitConverter::temperatureToSI(system->temperature));
+        / (4 * system->atoms().size() * (meanOfSquaredKineticEnergy - meanOfTotalKineticEnergy - 
+                     6 * UnitConverter::kb * UnitConverter::temperatureToSI(system->temperature) * UnitConverter::temperatureToSI(system->temperature)));
 
     if (!m_heatCapacityFile.is_open()) {
         cerr << "Unable to write to build/DATA/heatCapacity.txt" << endl;

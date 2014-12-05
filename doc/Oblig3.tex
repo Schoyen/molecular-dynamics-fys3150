@@ -17,6 +17,8 @@
 \newtheorem*{definition}{Teorem}
 
 \newcommand{\vb}{\mathbf}
+\newcommand{\lla}{\left \langle}
+\newcommand{\rra}{\right \rangle}
 
 \renewcommand{\contentsname}{Innhald}
 
@@ -203,8 +205,7 @@
             Temperaturen speler ei stor rolle i systemet vårt. Me er interesserte i å finne ut kva tid strukturen smelter og kor tid ho held seg stabil. Me finn ho 
             ved ekvipartisjonsteoremet som seier
             \begin{align*}
-                &\left \langle E_{k} \right \rangle = \frac{3}{2} = Nk_{B}T, \\
-                &\Rightarrow T = \frac{2}{3}\frac{E_{k}}{Nk_{B}},
+                &\left \langle E_{k} \right \rangle = \frac{3}{2} Nk_{B}T \qquad \Rightarrow \qquad T = \frac{2}{3}\frac{E_{k}}{Nk_{B}},
             \end{align*}
             kor $T$ då angjer den momentane temperaturen då me ikkje tek gjennomsnittet av $E_{k}$. Temperaturen vil fluktuere då den kinetiske energien vil endre seg for
             kvart tidssteg. Etterkvart vil me nå eit stabilt likevektspunkt kor temperaturen held seg nokonlunde jamnt.
@@ -249,6 +250,19 @@
 
         \subsubsection*{Varmekapasitet}
             \addcontentsline{toc}{subsubsection}{Varmekapasitet}
+            Varmekapasiteten er eit mål på kor mykje varme eit materiale kan lagre medan det skjer ei temperaturendring. Me kan rekne ut varmekapasiteten ved å nytte variansen 
+            i kinetisk energi. Me har då eit forhold som seier
+            \begin{align*}
+                \lla E_k^2 \rra - \lla E_k \rra^2 = \frac{3k_BT^2}{2N}\left( 1 - \frac{3k_B}{2C_V} \right),
+            \end{align*}
+            kor $k_B$ er Boltzmann konstanten, $T$ er temperatur og $C_V$ er varmekapasiteten. Me vil omforme denne likninga slik at me får varmekapasiteten for seg sjølv på 
+            venstre sida. Me får då
+            \begin{align*}
+                &\lla E_k^2 \rra - \lla E_k \rra^2 = \frac{3k_BT^2}{2N} - \frac{9k_B^2T^2}{4NC_V}, \\
+                &\Rightarrow \qquad -4NC_V\left( \lla E_k^2 \rra - \lla E_k \rra^2 -\frac{3k_BT^2}{2N}\right) = 9k_B^2T^2, \\
+                &\Rightarrow \qquad C_V = -\frac{9k_B^2T^2}{4N\left( \lla E_k^2 \rra - \lla E_k \rra^2 -\frac{3k_BT^2}{2N}\right)}.
+            \end{align*}
+            Me vil måle denne verdien i eininga $\frac{\text{J}}{\text{Kmol}}$.
 
 
     \subsection*{Berendsen termostat}
