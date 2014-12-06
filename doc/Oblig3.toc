@@ -1,23 +1,38 @@
-\contentsline {section}{Introduksjon}{3}
-\contentsline {section}{Fysikken bak molekyl\IeC {\ae }r dynamikken}{4}
-\contentsline {subsection}{Oppsett}{4}
-\contentsline {subsubsection}{Face-Centered Cubic Lattice}{4}
-\contentsline {subsubsection}{Maxwell-Boltzmann og fartsmoment}{4}
-\contentsline {subsubsection}{Lennard Jones}{5}
-\contentsline {subsection}{Statistiske m\IeC {\r a}lingar}{7}
-\contentsline {subsubsection}{Energi}{7}
-\contentsline {subsubsection}{Temperatur}{7}
-\contentsline {subsubsection}{Tettleik}{8}
-\contentsline {subsubsection}{Trykk}{8}
-\contentsline {subsubsection}{Varmekapasitet}{9}
-\contentsline {subsection}{Berendsen termostat}{9}
-\contentsline {section}{Algoritmar}{11}
-\contentsline {subsection}{Simulering av eit uendeleg stort system}{11}
-\contentsline {subsubsection}{Periodiske randbetingelsar}{11}
-\contentsline {subsubsection}{Avstand fr\IeC {\r a} endepunkta}{11}
-\contentsline {subsection}{Velocity Verlet}{12}
-\contentsline {subsection}{Cellelister}{12}
-\contentsline {section}{Struktur}{14}
-\contentsline {subsection}{Objektar i C++}{14}
-\contentsline {section}{Resultat}{15}
-\contentsline {section}{Feilestimat}{16}
+\contentsline {section}{Introduksjon}{4}
+\contentsline {section}{Fysikken bak molekyl\IeC {\ae }r dynamikken}{5}
+\contentsline {subsection}{Oppsett}{5}
+\contentsline {subsubsection}{Face-Centered Cubic Lattice}{5}
+\contentsline {subsubsection}{Maxwell-Boltzmann og fartsmoment}{5}
+\contentsline {subsubsection}{Lennard Jones}{6}
+\contentsline {subsection}{Statistiske m\IeC {\r a}lingar}{8}
+\contentsline {subsubsection}{Energi}{8}
+\contentsline {subsubsection}{Temperatur}{8}
+\contentsline {subsubsection}{Tettleik}{9}
+\contentsline {subsubsection}{Trykk}{9}
+\contentsline {subsubsection}{Varmekapasitet}{10}
+\contentsline {subsection}{Berendsen termostat}{10}
+\contentsline {section}{Algoritmar}{12}
+\contentsline {subsection}{Simulering av eit uendeleg stort system}{12}
+\contentsline {subsubsection}{Periodiske randbetingelsar}{12}
+\contentsline {subsubsection}{Avstand fr\IeC {\r a} endepunkta}{12}
+\contentsline {subsection}{Velocity Verlet}{13}
+\contentsline {subsection}{Cellelister}{13}
+\contentsline {section}{Struktur}{15}
+\contentsline {subsection}{Objektar i C++}{15}
+\contentsline {subsubsection}{Atom}{15}
+\contentsline {subsubsection}{Berendsen}{15}
+\contentsline {subsubsection}{Cell}{15}
+\contentsline {subsubsection}{Cell List}{15}
+\contentsline {subsubsection}{IO}{15}
+\contentsline {subsubsection}{Statistics Sampler}{16}
+\contentsline {subsubsection}{System}{16}
+\contentsline {subsubsection}{Unit Converter}{16}
+\contentsline {subsubsection}{Integrator}{16}
+\contentsline {subsubsection}{Velocity Verlet}{16}
+\contentsline {subsubsection}{Random}{16}
+\contentsline {subsubsection}{Vec3}{16}
+\contentsline {subsubsection}{Potential}{17}
+\contentsline {subsubsection}{Lennard Jones}{17}
+\contentsline {subsection}{Python-rammeverk}{17}
+\contentsline {section}{Resultat}{18}
+\contentsline {section}{Feilestimat}{19}

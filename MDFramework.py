@@ -48,7 +48,6 @@ Creating article and removing build.
 """)
 
     def run_MD_simulation(self):
-        self.compile_MD()
         print ("""
 ==============================
 Running program for:
@@ -77,4 +76,32 @@ old_force_calculation   = %g
         # This method should time the two different force calculation methods and store the values as files.
         # Run the program for 1000 steps with 500 atoms.
         # Run the build/MAINCPP for different values.
-        pass
+        print("""
+==============================
+Timing program for cell lists
+and calculation of forces
+between all atom pairs.
+
+We will run the program for
+500 and 1000 atoms with 
+100 - 1000 timesteps.
+
+Time will be measured in 
+kiloatom per timestep.
+
+The temperature is irrelevant
+during these calculations.
+We will not use the
+thermostat either.
+==============================
+              """)
+        for i in range(0, 2, 1):
+            for j in range(5, 11, 5):
+                for k in range(100, 1001, 100):
+                    system("./build/MAINCPP %g %g %g %g %g %g %g %g %g %g %g" % (self.dt,\
+                           j, self.initial_temp, self.t_bath, self.relaxation_time,\
+                           k, 0, 0,\
+                           self.lattice_constant, self.r_cut, i))
+                    system("sh sortRunTime.sh")
+                    print("Done calculating %s for %g atoms with %g timesteps" % ("cell lists" if i == 0 else "force between all atom pairs",\
+                                                                                  4 * j**3, k))

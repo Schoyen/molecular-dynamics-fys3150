@@ -420,9 +420,70 @@
 
         \subsubsection*{Berendsen}
             \addcontentsline{toc}{subsubsection}{Berendsen}
-            Klassa $\texttt{berendsen.h}$ og $\texttt{berendsen.cpp}$ implementerer Berendsen termostaten beskrevet i seksjonen om fysikken bak molekylær dynamikken.
+            Programma $\texttt{berendsen.h}$ og $\texttt{berendsen.cpp}$ implementerer Berendsen termostaten beskrevet i seksjonen om fysikken bak molekylær dynamikken.
+            Ho vert nytta av integratoren til å skalere hastigheita viss me vil ha kontroll over temperaturen.
+
+        \subsubsection*{Cell}
+            \addcontentsline{toc}{subsubsection}{Cell}
+            Programma $\texttt{cell.h}$ og $\texttt{cell.cpp}$ vert nytta til å ta vare på atoma som ei einskild celle inneheld. Formålet med klassa er fyrst og fremst
+            å kunne indeksere cellene slik at me kun treng å rekne ut krafta mellom ei og ei celle ein gong. Me slepp då å sjekke for kvart atom to for-løkker djupare.
+
+        \subsubsection*{Cell List}
+            \addcontentsline{toc}{subsubsection}{Cell List}
+            Programma $\texttt{celllist.h}$ og $\texttt{celllist.cpp}$ inneheld ein vektor med Cell-objektar. Ho vil i tillegg lagre antal celler i $x$-, $y$- og $z$-retning.
+            Klassa tek seg og av sorteringa av atom og legg dei inn i riktige celler.
+
+        \subsubsection*{IO}
+            \addcontentsline{toc}{subsubsection}{IO}
+            Programma $\texttt{io.h}$ og $\texttt{io.cpp}$ tek seg av utskrift til fil i \verb!.xyz!-formatet. Dette formatet vert lese av VMD for visualisering av atoma.
+
+        \subsubsection*{Statistics Sampler}
+            \addcontentsline{toc}{subsubsection}{Statistics Sampler}
+            Programma $\texttt{statisticssampler.h}$ og $\texttt{statisticssampler.cpp}$ inneheld metodar som lagrar og skriv ut dei fysiske eigenskapane me vil måle til fil.
+
+        \subsubsection*{System}
+            \addcontentsline{toc}{subsubsection}{System}
+            Programma $\texttt{system.h}$ og $\texttt{system.cpp}$ er sjølve fundamentet blant objekta. Klassa handterer oppsett, køyring og lagrar atom. Ho handterer 
+            sjølve gjennomføringa slik at eit main-program kun treng å køyre nokre få enkle metodar.
+
+        \subsubsection*{Unit Converter}
+            \addcontentsline{toc}{subsubsection}{Unit Converter}
+            Programma $\texttt{unitconverter.h}$ og $\texttt{unitconverter.cpp}$ skalerer einingane på dei fysiske verdiane slik at me arbeider me meir handterlege tal.
+            Dette gjer og moglegheita for store numeriske avrundingsfeil mykje mindre.
+
+        \subsubsection*{Integrator}
+            \addcontentsline{toc}{subsubsection}{Integrator}
+            Programma $\texttt{integrator.h}$ og $\texttt{integrator.cpp}$ utgjer ein superklasse som tillater oss å nytte forskjellige numeriske integrasjonsalgoritmar.
+
+        \subsubsection*{Velocity Verlet}
+            \addcontentsline{toc}{subsubsection}{Velocity Verlet}
+            Programma $\texttt{velocityverlet.h}$ og $\texttt{velocityverlet.cpp}$ er ein numerisk integrasjonsalgoritme som står forklart i algoritme seksjonen.
+
+        \subsubsection*{Random}
+            \addcontentsline{toc}{subsubsection}{Random}
+            Programma $\texttt{random.h}$ og $\texttt{random.cpp}$ utgjer ein random-generator som me nyttar når me set starthastigheita til kvart atom med 
+            Maxwell-Boltzmann distribusjon.
+
+        \subsubsection*{Vec3}
+            \addcontentsline{toc}{subsubsection}{Vec3}
+            Programma $\texttt{vec3.h}$ og $\texttt{vec3.cpp}$ er ein lett vektorklasse som implementerer vektoroperasjoner for tre-dimensjonale vektorar. Styrken til klassa 
+            er at me berre lagrar tre double-verdiar. Ho vil difor vere kjapp under runtime.
+
+        \subsubsection*{Potential}
+            \addcontentsline{toc}{subsubsection}{Potential}
+            Programma $\texttt{potential.h}$ og $\texttt{potential.cpp}$ er ein superklasse, som på same måte som $\texttt{integrator.h}$ tillater bruk av forskjellige
+            potensial. Klassa lagrar og den potensielle energien og summen av krafta og avstanden mellom atoma som me treng for å rekne ut trykket.
+
+        \subsubsection*{Lennard Jones}
+            \addcontentsline{toc}{subsubsection}{Lennard Jones}
+            Programma $\texttt{lennardjones.h}$ og $\texttt{lennardjones.cpp}$ implementerer Lennard Jones potensialet og uttrykket for krafta. Her ligg og implementasjonen 
+            av cellelister.
 
 
+    \subsection*{Python-rammeverk}
+        \addcontentsline{toc}{subsection}{Python-rammeverk}
+        Grunna storleiken på programmet og dei forskjellige simuleringane me vil gjere er det enklare å køyre main-metoden frå \verb!Python!. Rammeverket består av ein klasse
+        som køyrer kommandolinje-argument. Ho tek seg av køyring av Makefile og plottar og skriv ut til fil.
 \newpage
 
 

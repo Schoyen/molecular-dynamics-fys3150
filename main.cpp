@@ -102,15 +102,17 @@ int main(int argc, char *argv[])
     // Ending clock.
     auto finish = high_resolution_clock::now();
     double time = duration_cast<seconds>(finish - start).count();
-    double kiloAtomPerTimestep = 4 * numberOfFCCLattices * numberOfFCCLattices * numberOfFCCLattices * timesteps / time;
-    string filename = "build/DATA/kiloAtomTimestep.txt";
+    // Divided by a thousand?
+    double kiloAtomPerTimestep = 4 * numberOfFCCLattices * numberOfFCCLattices * numberOfFCCLattices * timesteps / time * 0.001;
+    int numberOfAtoms = (int) 4 * numberOfFCCLattices * numberOfFCCLattices * numberOfFCCLattices;
+    string filename = "build/DATA/kiloAtomTimestep-" + to_string(numberOfAtoms) + "-" + to_string(timesteps) + "-" + argv[11] + ".txt";
     ofstream file;
     file.open(filename);
     if (!file.is_open()) {
-        cerr << "Unable to write to build/DATA/kiloAtomTimestep.txt" << endl;
+        cerr << "Unable to write to " << filename << endl;
         exit(1);
     }
-    file << kiloAtomPerTimestep << "\n";
+    file << kiloAtomPerTimestep << "\t" << numberOfAtoms << "\n";
     file.close();
 
     movie->saveState(&system);
