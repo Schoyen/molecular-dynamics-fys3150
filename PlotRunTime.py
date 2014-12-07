@@ -11,16 +11,24 @@ class PlotRunTime:
         self.list_of_time = []
         self.number_of_atoms = []
 
-        for i in self.list_of_filenames:
+        index_dictionary = {}
+        for counter, i in enumerate(self.list_of_filenames):
             with open(i, 'r') as f:
                 for line in f:
                     self.list_of_KAT.append(float(line.split()[0]))
                     self.list_of_time.append(int(line.split()[1]))
                     self.number_of_atoms.append(int(line.split()[2]))
+                    index_dictionary[self.number_of_atoms[counter]] = counter
 
-        self.list_of_KAT = sorted(self.list_of_KAT)
-        self.list_of_time = sorted(self.list_of_time)
         self.number_of_atoms = sorted(self.number_of_atoms)
+        temp_list_of_KAT = []
+        temp_list_of_time = []
+        for i in self.number_of_atoms:
+            temp_list_of_KAT.append(self.list_of_KAT[index_dictionary[i]])
+            temp_list_of_time.append(self.list_of_time[index_dictionary[i]])
+
+        self.list_of_KAT = temp_list_of_KAT
+        self.list_of_time = temp_list_of_time
 
 
     def plot_values(self, TITLE, SAVE):

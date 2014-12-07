@@ -26,5 +26,5 @@ class PotentialCalculation:
         xlabel("relative distance r_ij/sigma")
         ylabel("potential U(r_ij)/epsilon")
         title(TITLE)
-        savefig('doc/potentialPlot.png')
+        savefig('doc/potentialPlot.pdf')
         show()

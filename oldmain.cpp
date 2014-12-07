@@ -54,18 +54,24 @@ int main()
     for(int timestep=0; timestep<1000; timestep++) {
         movie->saveState(&system);
         system.temperature = statisticsSampler->temperature();
+        system.step(dt);
+        /*
         if (timestep < 300) {
             system.step(dt);
         } else {
             system.setThermostatOn(true); // Figure out something smarter.
             system.step(dt);
         }
+        */
         statisticsSampler->sample(&system, timestep);
+        statisticsSampler->sampleKineticEnergySquared(&system);
+        statisticsSampler->sampleTotalKineticEnergy(&system);
 
         //std::cout << UnitConverter::energyToEv(statisticsSampler->totalEnergy()) << std::endl;
 
         cout << timestep << endl;
     }
+    statisticsSampler->sampleHeatCapacity(&system);
     movie->saveState(&system);
 
     auto finish = high_resolution_clock::now();

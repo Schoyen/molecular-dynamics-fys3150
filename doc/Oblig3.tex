@@ -13,8 +13,7 @@
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 
-\theoremstyle{definition}
-\newtheorem*{definition}{Teorem}
+\theoremstyle{definition} \newtheorem*{definition}{Teorem}
 
 \newcommand{\vb}{\mathbf}
 \newcommand{\lla}{\left \langle}
@@ -25,6 +24,8 @@
 \renewcommand{\abstractname}{Samandrag}
 
 \renewcommand{\figurename}{Figur}
+
+\renewcommand{\tablename}{Tabell}
 
 \makeatletter
 \newcommand{\newalgname}[1]{
@@ -158,7 +159,7 @@
             Eit plott over $U/\epsilon$ mot $r_{ij}/\sigma$ vil gje oss ein indikator kva tid krafta vil vere null.
             \begin{figure}[H]
                 \centering
-                \includegraphics[width=400px]{potentialPlot.png}
+                \includegraphics[width=400px]{potentialPlot.pdf}
                 \caption{I plottet kan me lett sjå kor dei tiltrekkjande og kor dei fråstøytande kreftene har sine styrker. Då krafta er gjeve som den negative gradienten til
                         potensialet vil me kunne sjå at i det atoma kjem veldig nære einannan vil det virke ei kraftig fråstøyting ($r_{ij}^{12}$-delen) medan det for større avstand
                         vil virke ei svakare, men med større rekkevidde, tiltrekkande kraft ($r_{ij}^6$-delen).}
@@ -211,8 +212,8 @@
             kvart tidssteg. Etterkvart vil me nå eit stabilt likevektspunkt kor temperaturen held seg nokonlunde jamnt.
 
 
-        \subsubsection*{Tettleik}
-            \addcontentsline{toc}{subsubsection}{Tettleik}
+        \subsubsection*{Nummertettleik}
+            \addcontentsline{toc}{subsubsection}{nummertettleik}
             Me vil måle tettleiken til systemet til å vere antal atomar delt på volumet til heile systemet. Dette vil vere ein konstant, men me vil sjå på korleis denne vil 
             endre seg som ein funksjon av konstanten $b$ som me nyttar ved konstruksjon av einingscellene til systemet. Storleiken på systemet vil vere gjeve ved
             \begin{align*}
@@ -222,7 +223,25 @@
             \begin{align*}
                 \rho_N = \frac{N}{V},
             \end{align*}
-            kor $N$ er antal atomar i systemet.
+            kor $N$ er antal atomar i systemet. Me vil og finne eit uttrykk for nummertettleiken som ein funksjon av konstanten $b$ som avgjer astand mellom atoma i 
+            einingscellene. Då får me at
+            \begin{align*}
+                \rho_N = \frac{N}{V} = \frac{N}{S_xS_yS_z}.
+            \end{align*}
+            Storleiken på systemet i dei forskjellige retningane er gjeve ved likningane
+            \begin{align*}
+                S_x &= bN_{FCCX}, \\
+                S_y &= bN_{FCCY}, \\
+                S_z &= bN_{FCCZ},
+            \end{align*}
+            kor $N_{FCC}$ avgjer kor mange einingsceller i kvar dimensjon me vil ha. Då ser me at 
+            \begin{align*}
+                \rho_N = \frac{N}{V} = \frac{4N_{FCCX}N_{FCCY}N_{FCCZ}}{b^3N_{FCCX}N_{FCCY}N_{FCCZ}},
+            \end{align*}
+            då fylgjer det at
+            \begin{align*}
+                \rho_N = \frac{4}{b^3}.
+            \end{align*}
 
 
         \subsubsection*{Trykk}
@@ -233,16 +252,14 @@
             \end{align*}
             kor $\rho_N$ er tettleiken, $k_B$ er Boltzmann konstanten, $T$ er temperaturen, $V$ er volumet til systemet og $\vb{F}_i$ og $\vb{r}_i$ er henholdsvis krafta
             og posisjonen til atom $i$. Då me nyttar Newtons tredje lov (N3L) i kraftutrekninga vår vil me kunne forenkle dette uttrykket og istaden rekne ho ut inne i kraftløkka.
-            Då 
+            Me kan for parvis interaksjon skrive krafta om til å vere
             \begin{align*}
-                \vb{F}_i\cdot\vb{r}_i = \sum_{j = 1, \ j \neq i}^{N}\vb{F}_{ij}\cdot\vb{r}_{ij},
+                \sum_i^N \vb{F}_i\cdot\vb{r}_i &= \sum_i\sum_{j\neq i}\vb{r}_i\cdot \vb{F}_{ij} \\
+                &= \frac{1}{2}\sum_i\sum_{j\neq i }\left( \vb{r}_i\cdot\vb{F}_{ij} + \vb{r}_j\cdot\vb{F}_ji \right) \\
+                &= \frac{1}{2}\sum_i\sum_{j\neq i} \vb{r}_{ij}\cdot\vb{F}_{ij} \\
+                &= \sum_i\sum_{j > i}\vb{r}_{ij}\cdot\vb{F}_{ij},
             \end{align*}
             kor $\vb{F}_{ij}$ og $\vb{r}_{ij}$ er krafta og avstanden mellom atom $i$ og $j$. Me set dette inn i uttrykket for trykk.
-            \begin{align*}
-                P = \rho_Nk_BT + \frac{1}{3V}\left \langle \sum_{i = 1}^N \sum_{j = 1, \ j \neq i}^{N}\vb{F}_{ij}\cdot\vb{r}_{ij} \right \rangle.
-            \end{align*}
-            No nyttar me N3L til å sjå at det held å rekne ut krafta for kvar $i$ og $j$ ein gong viss me nyttar at $\vb{F}_{ij} = -\vb{F}_{ji}$. Då vil me kunne stryke
-            mange ledd mot einannan då dei vil bli rekna ut to gonger. Istaden skriv me det om til
             \begin{align*}
                 P = \rho_Nk_BT + \frac{1}{3V}\left \langle \sum_{i > j}^N \vb{F}_{ij}\cdot\vb{r}_{ij} \right \rangle.
             \end{align*}
@@ -253,14 +270,14 @@
             Varmekapasiteten er eit mål på kor mykje varme eit materiale kan lagre medan det skjer ei temperaturendring. Me kan rekne ut varmekapasiteten ved å nytte variansen 
             i kinetisk energi. Me har då eit forhold som seier
             \begin{align*}
-                \lla E_k^2 \rra - \lla E_k \rra^2 = \frac{3k_BT^2}{2N}\left( 1 - \frac{3k_B}{2C_V} \right),
+                \lla E_k^2 \rra - \lla E_k \rra^2 = \frac{3Nk_B^2T^2}{2}\left( 1 - \frac{3Nk_B}{2C_V} \right),
             \end{align*}
             kor $k_B$ er Boltzmann konstanten, $T$ er temperatur og $C_V$ er varmekapasiteten. Me vil omforme denne likninga slik at me får varmekapasiteten for seg sjølv på 
             venstre sida. Me får då
             \begin{align*}
-                &\lla E_k^2 \rra - \lla E_k \rra^2 = \frac{3k_BT^2}{2N} - \frac{9k_B^2T^2}{4NC_V}, \\
-                &\Rightarrow \qquad -4NC_V\left( \lla E_k^2 \rra - \lla E_k \rra^2 -\frac{3k_BT^2}{2N}\right) = 9k_B^2T^2, \\
-                &\Rightarrow \qquad C_V = -\frac{9k_B^2T^2}{4N\left( \lla E_k^2 \rra - \lla E_k \rra^2 -\frac{3k_BT^2}{2N}\right)}.
+                &\lla E_k^2 \rra - \lla E_k \rra^2 = \frac{3Nk_B^2T^2}{2} - \frac{9N^2k_B^3T^2}{4C_V}, \\
+                &\Rightarrow \qquad -4C_V\left( \lla E_k^2 \rra - \lla E_k \rra^2 -\frac{3Nk_B^2T^2}{2}\right) = 9N^2k_B^3T^2, \\
+                &\Rightarrow \qquad C_V = -\frac{9N^2k_B^3T^2}{4\left( \lla E_k^2 \rra - \lla E_k \rra^2 -\frac{3Nk_B^2T^2}{2}\right)}.
             \end{align*}
             Me vil måle denne verdien i eininga $\frac{\text{J}}{\text{Kmol}}$ for å samanlikne med eksperimentelle verdiar. Boltzmann konstanten er gjeve ved
             \begin{align*}
@@ -268,9 +285,10 @@
             \end{align*}
             Då ser me at vermakapasiteten vil vere gjeve ved
             \begin{align*}
-                C_V \sim \frac{\left( \frac{\text{J}}{\text{K}} \right)^2\text{K}^2}{\text{J}^2 - \text{J}^2 - \frac{\text{J}}{K}\text{K}^2}
+                C_V \sim \frac{\left( \frac{\text{J}}{\text{K}} \right)^3\text{K}^2}{\text{J}^2 - \text{J}^2 - \left(\frac{\text{J}}{K})\right)^2\text{K}^2} 
+                \sim \frac{\text{J}}{\text{K}}.
             \end{align*}
-            Finn ut av denne\dots
+            For å finne mol må me difor gonge antal atomar med $\textbf{Avogrados konstant}$.
 
 
     \subsection*{Berendsen termostat}
@@ -282,7 +300,7 @@
         Skaleringsfaktoren $\gamma$ vil me gonge med hastigheita $\vb{v}$ til atoma i systemet. Her er $\tau$ ein parameter som avgjer kor kjapt temperaturen skal endrast.
         $T_{\text{bath}}$ er den ønska temperaturen medan $T$ er den noverande temperaturen. Me kan då sjå at $\gamma = 1$ for $T = T_{\text{bath}}$. Desverre er ikkje dette
         ein veldig realistisk termostat då temperaturen endrer seg mykje fortare enn det ville skjedd i virkelegheita. Dette gjer blant anna at me ikkje vil måle fysiske eigenskapar
-        så lenge termostaten er på. Me vil difor nytte ho for å nå ei ynskja temperatur for så å la systemet få svinge litt før me byrjar å måle verdiar.
+        så lenge termostaten er på. Me vil difor nytte ho for å nå ei ynskja temperatur for så å la systemet få stabilisere seg litt før me byrjar å måle verdiar.
 
 
 \newpage
@@ -489,18 +507,68 @@
 
 \section*{Resultat}
     \addcontentsline{toc}{section}{Resultat}
+    I resultata våre vil me sjå på både fysikken og køyretid på dei to forskjellige metodane me nyttar for å rekne ut krafta.
+
+    \subsection*{Køyretid}
+        \addcontentsline{toc}{subsection}{Køyretid}
+        På køyretida har me ei slags forventning over kva som vil skje. Eg valgte å køyre programmet for eit aukande antal atom kor me gjer nyttar 1000 tidsskritt. Resultatet ligg
+        i tabellen under.
+
+        \begin{table}[H]
+            \centering
+            \begin{tabular}{|l|l|l|}
+                \hline
+                Antal atomar & Kraft mellom kvart atom & Cellelister \\
+                \hline
+                864 & 11 & 11 \\
+                2048 & 42 & 24 \\
+                2916 & 77 & 31 \\
+                4000 & 136 & 39 \\
+                5324 & 228 & 58 \\
+                6912 & 365 & 69 \\
+                8788 & 576 & 85 \\
+                10976 & 881 & 114 \\
+                13500 & 1283 & 133 \\
+                16384 & 1860 & 173 \\
+                19652 & 2642 & 198 \\
+                23328 & 3772 & 241 \\
+                27436 & 5147 & 279 \\
+                32000 & 6749 & 316 \\
+                \hline
+            \end{tabular}
+            \caption{I tabellen står køyretida programmet treng for køyre antal atomar som står på venstre side. Antalet atom er bestemt ut frå likninga
+                     $N = 4L^3$, kor $L$ er antal FCC gitter. Køyretida er oppgjeven i sekund. Me kan tydeleg sjå korleis cellelister held ei lineær stigning i
+                     køyretid til skjelnad frå å rekne ut krafta mellom alle atoma.}
+        \end{table}
+
+        Plott desse verdiane \\ \\
+        Eg køyrde desse verdiane over 10 timar (HOLY SHIT) og har difor resultat frå høgare verdiar av cellelister. Diverre vert tida det tok å køyre programmet for den treige kraftmetoden
+        for stor. Eit interessant mål vil vere å sjå kiloatom per tidsskritt. Me ser med andre ord på kor mange tusen atom metoda klarer å rekne ut for per tidsskritt. Under 
+        fylgjer grafane for dei to metodane.
+
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=400px]{cellLists.pdf}
+            \caption{For cellelister kan me sjå at me i byrjinga får eit brått hopp opp. Dette skjer då metoda fyrst vert effektiv når me får ein viss storleik på cellelistene
+                     i forhold til antal atom. Ho vil difor etterkvart stabilisere seg rimelig jamnt. Me får fluktuasjonar som kan skyljast ujamnt antal atom i kvar celle.}
+        \end{figure}
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=400px]{oldForce.pdf}
+            \caption{Ved å rekne krafta mellom kvart atom kan me sjå at metoda kjapt vil bli treig. Etterkvart klarer ho ikkje å rekne ut krafta mellom mange nok atom. Når me auker
+                     antal atom vil ho slite med å rekne ut krafta mellom mange nok atom til at me vil klare å bli ferdige med utrekningane.}
+        \end{figure}
+
+
+    \subsection*{Fysikk}
+        \addcontentsline{toc}{subsection}{Fysikk}
+
 
     % Hugs å sjå på bevaring av energi for forskjellige val av dt.
+    % Plott kinetisk, potensiell og total energi, temperatur og trykk som funksjonar av tid.
     % Legg ved smeltetemperatur og stabilitetstemperatur.
     % Sjå på kvifor temperaturen synker og korleis fluktuasjonar avhenger av antal atom.
     % Finn ut korleis tettleiken avhenger av b.
     % Sjekk korleis trykket varierer og plott det mot tetleiken.
 
-
-
-\newpage
-
-
-\section*{Feilestimat}
-    \addcontentsline{toc}{section}{Feilestimat}
 \end{document}

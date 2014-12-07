@@ -7,10 +7,10 @@
 \contentsline {subsection}{Statistiske m\IeC {\r a}lingar}{8}
 \contentsline {subsubsection}{Energi}{8}
 \contentsline {subsubsection}{Temperatur}{8}
-\contentsline {subsubsection}{Tettleik}{9}
+\contentsline {subsubsection}{nummertettleik}{9}
 \contentsline {subsubsection}{Trykk}{9}
 \contentsline {subsubsection}{Varmekapasitet}{10}
-\contentsline {subsection}{Berendsen termostat}{10}
+\contentsline {subsection}{Berendsen termostat}{11}
 \contentsline {section}{Algoritmar}{12}
 \contentsline {subsection}{Simulering av eit uendeleg stort system}{12}
 \contentsline {subsubsection}{Periodiske randbetingelsar}{12}
@@ -35,4 +35,5 @@
 \contentsline {subsubsection}{Lennard Jones}{17}
 \contentsline {subsection}{Python-rammeverk}{17}
 \contentsline {section}{Resultat}{18}
-\contentsline {section}{Feilestimat}{19}
+\contentsline {subsection}{K\IeC {\o }yretid}{18}
+\contentsline {subsection}{Fysikk}{20}

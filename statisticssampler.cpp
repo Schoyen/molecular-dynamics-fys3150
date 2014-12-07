@@ -59,7 +59,6 @@ void StatisticsSampler::sample(System *system, int timestep)
     sampleTemperature(system);
     samplePressure(system);
     sampleTime(system);
-    sampleHeatCapacity(system);
     if (!m_sampledNetMomentum) {
         sampleNetMomentum(system);
         m_sampledNetMomentum = true;
@@ -203,12 +202,15 @@ void StatisticsSampler::sampleTotalKineticEnergy(System *system)
 
 void StatisticsSampler::sampleHeatCapacity(System *system)
 {   
-    double meanOfSquaredKineticEnergy = UnitConverter::energyToSI(m_kineticEnergySquared) / system->atoms().size();
-    double meanOfTotalKineticEnergy = UnitConverter::energyToSI(m_totalKineticEnergy) / system->atoms().size();
+    double avogadro = 6.02214129e23; // mol^-1
+    double meanOfSquaredKineticEnergy = UnitConverter::energyToSI(m_kineticEnergySquared) / (system->atoms().size() * avogadro);
+    double meanOfTotalKineticEnergy = UnitConverter::energyToSI(m_totalKineticEnergy) / (system->atoms().size() * avogadro);
     // Write out in J/(Kmol) units.
-    m_heatCapacity = - 9 * UnitConverter::kb * UnitConverter::kb * UnitConverter::temperatureToSI(system->temperature) * UnitConverter::temperatureToSI(system->temperature) 
-        / (4 * system->atoms().size() * (meanOfSquaredKineticEnergy - meanOfTotalKineticEnergy - 
-                     6 * UnitConverter::kb * UnitConverter::temperatureToSI(system->temperature) * UnitConverter::temperatureToSI(system->temperature)));
+    m_heatCapacity = - 9 * UnitConverter::kb * UnitConverter::kb * UnitConverter::kb * UnitConverter::temperatureToSI(system->temperature) * 
+        UnitConverter::temperatureToSI(system->temperature) * (system->atoms().size() * avogadro) * (system->atoms().size() * avogadro)
+        / (4 * (meanOfSquaredKineticEnergy - meanOfTotalKineticEnergy - 
+        (3.0/2.0) * (system->atoms().size() * avogadro) * UnitConverter::kb * UnitConverter::kb * UnitConverter::temperatureToSI(system->temperature) * 
+        UnitConverter::temperatureToSI(system->temperature)));
 
     if (!m_heatCapacityFile.is_open()) {
         cerr << "Unable to write to build/DATA/heatCapacity.txt" << endl;
