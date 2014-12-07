@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
         cerr << "Unable to write to " << filename << endl;
         exit(1);
     }
-    file << kiloAtomPerTimestep << "\t" << numberOfAtoms << "\n";
+    file << kiloAtomPerTimestep << "\t" << time << "\t" << numberOfAtoms << "\n";
     file.close();
 
     movie->saveState(&system);

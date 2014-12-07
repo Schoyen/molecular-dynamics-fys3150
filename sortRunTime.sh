@@ -1,3 +1,3 @@
 # Move files containing runtime.
 
-mv build/DATA/kiloAtomTimestep* doc/
+mv build/DATA/kiloAtomTimestep* doc/runtime/
