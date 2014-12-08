@@ -36,4 +36,6 @@
 \contentsline {subsection}{Python-rammeverk}{17}
 \contentsline {section}{Resultat}{18}
 \contentsline {subsection}{K\IeC {\o }yretid}{18}
-\contentsline {subsection}{Fysikk}{20}
+\contentsline {subsection}{Fysikk}{22}
+\contentsline {subsubsection}{Initial system}{22}
+\contentsline {subsubsection}{Variasjon i trykk mot tettleiken}{27}

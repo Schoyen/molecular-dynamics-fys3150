@@ -35,14 +35,14 @@ int main()
     double initialTemperature = 100.0; // In Kelvin.
     system.createFCCLattice(numberOfFCCLattices, UnitConverter::lengthFromAngstroms(5.26), UnitConverter::temperatureFromSI(initialTemperature), cellSize);
     double tbath = 1000;
-    double relaxationTime = 0.01; // Figure this one out.
+    double relaxationTime = 1.0; // Figure this one out.
     StatisticsSampler *statisticsSampler = new StatisticsSampler();
     system.setPotential(new LennardJones(3.405, 1.0));
     system.setIntegrator(new VelocityVerlet());
     system.setThermostat(new BerendsenThermostat(UnitConverter::temperatureFromSI(tbath), relaxationTime));
     system.removeMomentum();
     system.setForceCalculation(false);
-    system.setThermostatOn(false);
+    system.setThermostatOn(true);
 
     IO *movie = new IO(); // To write the state to file
     movie->open("movie.xyz");

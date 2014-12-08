@@ -170,13 +170,13 @@ void StatisticsSampler::sampleTemperature(System *system)
 
 void StatisticsSampler::sampleNumberDensity(System *system)
 {
-    m_numberDensity = system->atoms().size() / ((double) system->systemSize().x() * system->systemSize().y() * system->systemSize().z());
+    m_numberDensity = 4.0 / (system->latticeConstant() * system->latticeConstant() * system->latticeConstant());
 }
 
 void StatisticsSampler::samplePressure(System *system)
 {
-    m_pressure = system->potential()->pressure();
-    m_pressure = 1.0 / (3.0 * system->systemSize().x() * system->systemSize().y() * system->systemSize().z()) * (m_pressure / ((double) system->atoms().size())) + m_numberDensity * 1.0 * m_temperature;
+    double pressure = system->potential()->pressure();
+    m_pressure = 1.0 / (3.0 * system->systemSize().x() * system->systemSize().y() * system->systemSize().z()) * (pressure / ((double) system->atoms().size())) + m_numberDensity * 1.0 * m_temperature;
 }
 
 void StatisticsSampler::sampleTime(System *system)

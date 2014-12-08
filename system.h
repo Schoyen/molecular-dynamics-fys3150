@@ -20,6 +20,7 @@ private:
     Integrator *m_integrator;
     double m_currentTime;
     double m_rcut;
+    double m_latticeConstant;
     int m_steps;
     vec3 velocityOfCM;
     vec3 velocityOfCMAfter;
@@ -66,4 +67,5 @@ public:
     CellList *celllist() { return m_celllist; }
     void setThermostat(BerendsenThermostat *thermostat) {m_thermostat = thermostat;}
     BerendsenThermostat *berendsen() {return m_thermostat;}
+    double latticeConstant() {return m_latticeConstant;}
 };

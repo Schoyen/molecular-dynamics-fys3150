@@ -73,12 +73,11 @@
 \end{titlepage}
 
 \begin{abstract}
-    I dette prosjektet har me tatt for oss modellering av argon på atomært nivå. Me har vore interesserte i å lage eit program som skal lage ein atomstruktur etter eige ynskje.
-    I tillegg har me ville sjå på korleis eit slikt system utvikler seg over tid og måle statistiske eigenskapar ved det. For å modellere eit så realistisk resulatat innenfor
-    det som er mogleg å køyre på ein pc har me utnytta cellelister for å auke hastigheita på programmet. For krafta har me nytta Lennard Jones potensialet og som integrator
-    har me brukt Velocity Verlet-algoritma. Programma våre er objektorienter \verb!C++!-kode med eit \verb!Python! rammeverk som skal enklast mogleg køyre programmet vårt for forskjellige 
+    I dette prosjektet har me tatt for oss modellering av Argon på atomært nivå. Me har vore interesserte i å lage eit program som skal lage ein atomstruktur etter eige ynskje.
+    I tillegg har me ville sjå på korleis eit slikt system utvikler seg over tid og måle statistiske eigenskapar ved det. For å modellere eit så realistisk resultat
+    som mogleg har me nytta cellelister for å auke hastigheita på programmet. For krafta har me nytta Lennard Jones potensialet og som integrator
+    har me brukt Velocity Verlet-algoritma. Programma våre er objektorientert \verb!C++!-kode med eit \verb!Python! rammeverk som skal enklast mogleg køyre programmet vårt for forskjellige 
     parametrar og plotte verdiar. Me nyttar VMD for å visualisere atoma i rommet. All kjeldekode ligg på github.\\ \\
-    Rett litt på denne\dots \\ \\
     \texttt{https://github.com/Schoyen/molecular-dynamics-fys3150}
 \end{abstract}
 
@@ -88,7 +87,8 @@
 
 \section*{Introduksjon}
     \addcontentsline{toc}{section}{Introduksjon}
-    Oppgåva me er gjevne har gått ut på å modellere eit fysisk system samt bruke objektorientert programmering til å holde ein ryddig, oversiktlig, samt effektiv kode. 
+
+    I dette prosjektet har me modellert eit fysisk system samt bruke objektorientert programmering for å halde ein ryddig, oversiktlig, samt effektiv kode. 
     I byrjinga er me gjeve ein kode som lagar 100 argon atom og gjer dei ein tilfeldig retning og hastighet. Gjeve lang nok tid vil atoma drive vekk. Me vil difor nytte
     ``periodiske randbetingelsar'' for å halde atoma i nærleiken. Grunna hastigheitar gjevne frå Maxwell-Bolzmann distribusjon vil systemet ha ein ikkje-null
     rørslemengde som me vil fjerne. Me vil deretter lage ein krystallstruktur kor me startar simuleringa av atoma. I eit slik lukka system vil total energien vere bevart, 
@@ -255,13 +255,15 @@
             Me kan for parvis interaksjon skrive krafta om til å vere
             \begin{align*}
                 \sum_i^N \vb{F}_i\cdot\vb{r}_i &= \sum_i\sum_{j\neq i}\vb{r}_i\cdot \vb{F}_{ij} \\
-                &= \frac{1}{2}\sum_i\sum_{j\neq i }\left( \vb{r}_i\cdot\vb{F}_{ij} + \vb{r}_j\cdot\vb{F}_ji \right) \\
+                &= \frac{1}{2}\sum_i\sum_{j\neq i }\left( \vb{r}_i\cdot\vb{F}_{ij} + \vb{r}_j\cdot\vb{F}_{ji} \right) \\
+                &= \frac{1}{2}\sum_i\sum_{j\neq i}(\vb{r}_i\cdot\vb{F}_{ij} - \vb{r}_j\cdot\vb{F}_{ij}) \\
+                &= \frac{1}{2}\sum_i\sum_{j\neq i}( (\vb{r}_i - \vb{r}_j)\cdot\vb{F}_{ij}) \\
                 &= \frac{1}{2}\sum_i\sum_{j\neq i} \vb{r}_{ij}\cdot\vb{F}_{ij} \\
                 &= \sum_i\sum_{j > i}\vb{r}_{ij}\cdot\vb{F}_{ij},
             \end{align*}
             kor $\vb{F}_{ij}$ og $\vb{r}_{ij}$ er krafta og avstanden mellom atom $i$ og $j$. Me set dette inn i uttrykket for trykk.
             \begin{align*}
-                P = \rho_Nk_BT + \frac{1}{3V}\left \langle \sum_{i > j}^N \vb{F}_{ij}\cdot\vb{r}_{ij} \right \rangle.
+                P = \rho_Nk_BT + \frac{1}{3V}\left \langle \sum_{i > j} \vb{F}_{ij}\cdot\vb{r}_{ij} \right \rangle.
             \end{align*}
 
 
@@ -289,6 +291,10 @@
                 \sim \frac{\text{J}}{\text{K}}.
             \end{align*}
             For å finne mol må me difor gonge antal atomar med $\textbf{Avogrados konstant}$.
+            Denne er gjeve ved
+            \begin{align*}
+                k_A = 6.02214129\times10^{23}\text{ mol}^{-1}.
+            \end{align*}
 
 
     \subsection*{Berendsen termostat}
@@ -520,20 +526,20 @@
                 \hline
                 Antal atomar & Kraft mellom kvart atom & Cellelister \\
                 \hline
-                864 & 11 & 11 \\
-                2048 & 42 & 24 \\
-                2916 & 77 & 31 \\
-                4000 & 136 & 39 \\
-                5324 & 228 & 58 \\
-                6912 & 365 & 69 \\
-                8788 & 576 & 85 \\
-                10976 & 881 & 114 \\
-                13500 & 1283 & 133 \\
-                16384 & 1860 & 173 \\
-                19652 & 2642 & 198 \\
-                23328 & 3772 & 241 \\
-                27436 & 5147 & 279 \\
-                32000 & 6749 & 316 \\
+                864 & 11\text{s} & 11 \text{s}\\
+                2048 & 42 \text{s}& 24 \text{s}\\
+                2916 & 77 \text{s}& 31 \text{s}\\
+                4000 & 136 \text{s}& 39 \text{s}\\
+                5324 & 228 \text{s}& 58 \text{s}\\
+                6912 & 365 \text{s}& 69 \text{s}\\
+                8788 & 576 \text{s}& 85 \text{s}\\
+                10976 & 881 \text{s}& 114 \text{s}\\
+                13500 & 1283 \text{s}& 133 \text{s}\\
+                16384 & 1860 \text{s}& 173 \text{s}\\
+                19652 & 2642 \text{s}& 198 \text{s}\\
+                23328 & 3772 \text{s}& 241 \text{s}\\
+                27436 & 5147 \text{s}& 279 \text{s}\\
+                32000 & 6749 \text{s}& 316 \text{s}\\
                 \hline
             \end{tabular}
             \caption{I tabellen står køyretida programmet treng for køyre antal atomar som står på venstre side. Antalet atom er bestemt ut frå likninga
@@ -541,7 +547,18 @@
                      køyretid til skjelnad frå å rekne ut krafta mellom alle atoma.}
         \end{table}
 
-        Plott desse verdiane \\ \\
+        Eit plott over desse verdiane fylgjer under.
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=400px]{cellListsTime.pdf}
+            \caption{Her kan me sjå korleis cellelisten stig lineært med antal atom. Dette gjeld for dei betingelsane me har satt for $r_{cut}$.}
+        \end{figure}
+
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=400px]{oldForceTime.pdf}
+            \caption{Me kan sjå at tida det tek å rekne ut krafta veldig fort vert stor.}
+        \end{figure}
         Eg køyrde desse verdiane over 10 timar (HOLY SHIT) og har difor resultat frå høgare verdiar av cellelister. Diverre vert tida det tok å køyre programmet for den treige kraftmetoden
         for stor. Eit interessant mål vil vere å sjå kiloatom per tidsskritt. Me ser med andre ord på kor mange tusen atom metoda klarer å rekne ut for per tidsskritt. Under 
         fylgjer grafane for dei to metodane.
@@ -563,12 +580,50 @@
     \subsection*{Fysikk}
         \addcontentsline{toc}{subsection}{Fysikk}
 
+        \subsubsection*{Initial system}
+            \addcontentsline{toc}{subsubsection}{Initial system}
+            For å gje oss indikator av kva som skjer i simuleringa vår vil me køyre ein enkel, men lang, simulering kor me måler og analyserer dataene me får ut.
+            Me set opp eit system på 4000 atomar og med ein starttemperatur på 300 K. Me simulerer for 20000 tidssteg.
+            Då kan me sjå på korleis temperatur, trykk og energi utviklar seg over tid. Dei fyrste 1000 tidsstega vil gå til å stabilisere systemet før me 
+            etterkvart får ein jamn utvikling.
+            \begin{figure}[H]
+                \centering
+                \includegraphics[width=400px]{temperature.pdf}
+                \caption{Her har me eit plott som viser korleis temperaturen endrer seg over tid i systemet vårt. Me kan sjå at systemet droppar frå starttemperaturen til
+                         ein tredjedel før systemet byrjar å stige mot ein stabil temperatur. Denne er omtrent halvparten av starttemperaturen.}
+            \end{figure}
+            Atoma er gjevne hastigheitar frå Maxwell-Boltzmann distribusjon i byrjinga. Då $T \propto E_k \propto v^2$, kor $v$ vil vere gjeven frå ein tilfeldig distribusjon
+            vil systemet motvirke denne effekten ved å senke temperaturen slik at det vert stabilt. Etterkvart vil systemet nå ein relativt stabil verdi for temperatur. 
+            Me veit i tillegg at $T \propto \frac{1}{N}$. Jo fleire atom me har jo mindre fluktuasjonar (mindre amplitude) vil me få for temperaturen.
+            Me vil difor, ved bruk av termostat, la systemet få hjelp til å nå den ynskja temperaturen. Når me då slår av termostaten vil me la systemet bruke litt på å 
+            stabilisere seg.
+            \begin{figure}[H]
+                \centering
+                \includegraphics[width=400px]{pressure.pdf}
+                \caption{Ikkje overraskande nok vil trykket fylgje ei liknande rørsle som temperaturen då $P \propto T$}
+            \end{figure}
+            \begin{figure}[H]
+                \centering
+                \includegraphics[width=400px]{kineticEnergy.pdf}
+                \caption{Då $T \propto E_k$ vil dette og gjere at me kjenner igjen fluktuasjonane frå temperaturplottet.}
+            \end{figure}
+            \begin{figure}[H]
+                \centering
+                \includegraphics[width=400px]{potentialEnergy.pdf}
+                \caption{Siden total energien skal vere bevart må den potensielle energien fluktuere mot den kinetiske energien.}
+            \end{figure}
+            \begin{figure}[H]
+                \centering
+                \includegraphics[width=400px]{totalEnergy.pdf}
+                \caption{Her kan me sjå at for nokre få startverdiar vil total energien fluktuere i ein magnitude på $1.0\times10^{-3}$. Etterkvart får me ein veldig stabil
+                         verdi, slik me ynskjer.}
+            \end{figure}
 
+        \subsubsection*{Variasjon i trykk mot tettleiken}
+            \addcontentsline{toc}{subsubsection}{Variasjon i trykk mot tettleiken}
     % Hugs å sjå på bevaring av energi for forskjellige val av dt.
-    % Plott kinetisk, potensiell og total energi, temperatur og trykk som funksjonar av tid.
     % Legg ved smeltetemperatur og stabilitetstemperatur.
     % Sjå på kvifor temperaturen synker og korleis fluktuasjonar avhenger av antal atom.
-    % Finn ut korleis tettleiken avhenger av b.
-    % Sjekk korleis trykket varierer og plott det mot tetleiken.
+    % Sjekk korleis trykket varierer og plott det mot tettleiken.
 
 \end{document}

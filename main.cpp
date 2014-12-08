@@ -20,8 +20,7 @@ using namespace chrono;
  * double tbath
  * double relaxationTime
  * int timestep
- * int timestepStartThermostat
- * int timestepEndThermostat
+ * int timestepWithThermostat
  * double latticeConstant
  * double rcut
  * bool oldForceCalculation
@@ -30,21 +29,20 @@ using namespace chrono;
  */
 int main(int argc, char *argv[])
 {
-    if (argc < 12) {
+    if (argc < 11) {
         cout << "\n==================================" << endl;
         cout << "Not enough command line arguments." << endl;
-        cout << "Usage: " << argv[0] << " 1 2 3 4 5 6 7 8 9 10 11 12 13\n"
+        cout << "Usage: " << argv[0] << " 1 2 3 4 5 6 7 8 9 10 \n"
              << "1: double dt\n"
              << "2: int number of FCC lattices\n"
              << "3: double initial temperature\n"
              << "4: double t_bath\n"
              << "5: double relaxation time\n"
              << "6: int number of timesteps\n"
-             << "7: int number of timesteps before turning on the thermostat\n"
-             << "8: int number of timesteps before turning off the thermostat\n"
-             << "9: double latticConstant\n"
-             << "10: double rcut\n"
-             << "11: bool 1='true' for old force calculation and 0 (or anything) ='false' for cell lists"
+             << "7: int number of timesteps with thermostat\n"
+             << "8: double latticConstant\n"
+             << "9: double rcut\n"
+             << "10: bool 1='true' for old force calculation and 0 (or anything) ='false' for cell lists"
              << endl;
         cout << "==================================\n" << endl;
         exit(1);
@@ -56,15 +54,14 @@ int main(int argc, char *argv[])
     double tbath = atof(argv[4]);
     double relaxationTime = atof(argv[5]);
     int timesteps = atoi(argv[6]);
-    int timestepStartThermostat = atoi(argv[7]);
-    int timestepEndThermostat = atoi(argv[8]);
-    double latticeConstant = atof(argv[9]);
-    double rcut = atof(argv[10]);
+    int timestepWithThermostat = atoi(argv[7]);
+    double latticeConstant = atof(argv[8]);
+    double rcut = atof(argv[9]);
     bool oldForceCalculation;
-    if (atoi(argv[11]) == 1) oldForceCalculation = true;
+    if (atoi(argv[10]) == 1) oldForceCalculation = true;
     else oldForceCalculation = false;
     double sigma = 3.405; // From assignment text.
-    double epsilon = 1.0;
+    double epsilon = 1.0; // This should maybe be 119.8 K.
 
     IO *movie = new IO();
     movie->open("movie.xyz");
@@ -80,41 +77,71 @@ int main(int argc, char *argv[])
     system.setForceCalculation(oldForceCalculation);
     system.setThermostatOn(false);
     statisticsSampler->createFiles();
-
+    string filename = "thermostat.txt";
     // Starting clock.
-    auto start = high_resolution_clock::now();
-    for (int i = 0; i < timesteps; i++) {
-        movie->saveState(&system);
-        system.temperature = statisticsSampler->temperature();
+    if (argc == 11) {
+        auto start = high_resolution_clock::now();
+        for (int i = 0; i < timesteps; i++) {
+            movie->saveState(&system);
+            statisticsSampler->sample(&system, i);
+            system.temperature = statisticsSampler->temperature();
+            system.step(dt);
+            statisticsSampler->sampleKineticEnergySquared(&system);
+            statisticsSampler->sampleTotalKineticEnergy(&system);
+            statisticsSampler->sampleKineticEnergy(&system);
+            statisticsSampler->sampleTemperature(&system);
+        }
+        statisticsSampler->sampleHeatCapacity(&system);
 
-        // timestepStartThermostat == -1 if the thermostat should be off for all calculations.
-        // These are not working properly.
-        //if (i == timestepStartThermostat) system.setThermostatOn(true);
-        //if (i == timestepEndThermostat) system.setThermostatOn(false);
-        system.step(dt);
-        statisticsSampler->sampleKineticEnergySquared(&system);
-        statisticsSampler->sampleTotalKineticEnergy(&system);
-
-        // Sampling every 100'th step.
-        if (i % 100 == 0) statisticsSampler->sample(&system, i);
+        // Ending clock.
+        auto finish = high_resolution_clock::now();
+        double time = duration_cast<seconds>(finish - start).count();
+        // Divided by a thousand?
+        double kiloAtomPerTimestep = 4 * numberOfFCCLattices * numberOfFCCLattices * numberOfFCCLattices * timesteps / time * 0.001;
+        int numberOfAtoms = (int) 4 * numberOfFCCLattices * numberOfFCCLattices * numberOfFCCLattices;
+        string filename = "build/DATA/kiloAtomTimestep-" + to_string(numberOfAtoms) + "-" + to_string(timesteps) + "-" + argv[10] + ".txt";
+        ofstream file;
+        file.open(filename);
+        if (!file.is_open()) {
+            cerr << "Unable to write to " << filename << endl;
+            exit(1);
+        }
+        file << kiloAtomPerTimestep << "\t" << time << "\t" << numberOfAtoms << "\n";
+        file.close();
+    } else if (atoi(argv[11]) == 1) {
+        // Running the thermostat and saving the state after finishing.
+        system.setThermostatOn(true);
+        for (int i = 0; i < timestepWithThermostat; i++) {
+            movie->saveState(&system);
+            statisticsSampler->sample(&system, i);
+            system.temperature = statisticsSampler->temperature();
+            system.step(dt);
+            statisticsSampler->sampleKineticEnergy(&system);
+            statisticsSampler->sampleTemperature(&system);
+        }
+        // Allowing the system to equilibrate.
+        system.setThermostatOn(false);
+        for (int i = 0; i < 500; i++) {
+            movie->saveState(&system);
+            statisticsSampler->sample(&system, i);
+            system.temperature = statisticsSampler->temperature();
+            system.step(dt);
+            statisticsSampler->sampleKineticEnergy(&system);
+            statisticsSampler->sampleTemperature(&system);
+        }
+        system.save(filename);
+    } else {
+        // Loading the state and running the program.
+        system.load(filename);
+        for (int i = 0; i < timesteps; i++) {
+            movie->saveState(&system);
+            statisticsSampler->sample(&system, i);
+            system.temperature = statisticsSampler->temperature();
+            statisticsSampler->sampleKineticEnergy(&system);
+            statisticsSampler->sampleTemperature(&system);
+        }
+        statisticsSampler->sampleHeatCapacity(&system);
     }
-    statisticsSampler->sampleHeatCapacity(&system);
-
-    // Ending clock.
-    auto finish = high_resolution_clock::now();
-    double time = duration_cast<seconds>(finish - start).count();
-    // Divided by a thousand?
-    double kiloAtomPerTimestep = 4 * numberOfFCCLattices * numberOfFCCLattices * numberOfFCCLattices * timesteps / time * 0.001;
-    int numberOfAtoms = (int) 4 * numberOfFCCLattices * numberOfFCCLattices * numberOfFCCLattices;
-    string filename = "build/DATA/kiloAtomTimestep-" + to_string(numberOfAtoms) + "-" + to_string(timesteps) + "-" + argv[11] + ".txt";
-    ofstream file;
-    file.open(filename);
-    if (!file.is_open()) {
-        cerr << "Unable to write to " << filename << endl;
-        exit(1);
-    }
-    file << kiloAtomPerTimestep << "\t" << time << "\t" << numberOfAtoms << "\n";
-    file.close();
 
     movie->saveState(&system);
     statisticsSampler->closeFiles();

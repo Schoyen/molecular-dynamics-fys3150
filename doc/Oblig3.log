@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014/Arch Linux) (preloaded format=pdflatex 2014.11.19)  7 DEC 2014 17:39
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014/Arch Linux) (preloaded format=pdflatex 2014.11.19)  8 DEC 2014 08:30
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -538,12 +538,7 @@ LaTeX Font Info:    Try loading font information for T1+cmtt on input line 79.
 (/usr/share/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
-Underfull \hbox (badness 10000) in paragraph at lines 76--83
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 76--83
+Underfull \hbox (badness 10000) in paragraph at lines 76--82
 
  []
 
@@ -561,104 +556,175 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 \openout3 = `Oblig3.toc'.
 
  [3]
-Underfull \hbox (badness 10000) in paragraph at lines 91--101
+Underfull \hbox (badness 10000) in paragraph at lines 90--100
 
  []
 
 [4]
-Underfull \hbox (badness 10000) in paragraph at lines 124--126
+Underfull \hbox (badness 10000) in paragraph at lines 123--125
 
  []
 
 
-Overfull \hbox (17.39503pt too wide) in paragraph at lines 129--130
+Overfull \hbox (17.39503pt too wide) in paragraph at lines 128--129
 \T1/cmr/m/n/12 Etter at atoma vert plasserte i ein-ings-cel-lene vil me gje dei
  ein liten starthastighet
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 138--141
+Underfull \hbox (badness 10000) in paragraph at lines 137--140
 
  []
 
 [5] <potentialPlot.pdf, id=40, 578.16pt x 433.62pt>
 File: potentialPlot.pdf Graphic file (type pdf)
  <use potentialPlot.pdf>
-Package pdftex.def Info: potentialPlot.pdf used on input line 162.
+Package pdftex.def Info: potentialPlot.pdf used on input line 161.
 (pdftex.def)             Requested size: 401.50146pt x 301.12352pt.
 
-Overfull \hbox (11.50146pt too wide) in paragraph at lines 162--165
+Overfull \hbox (11.50146pt too wide) in paragraph at lines 161--164
  [][] 
  []
 
 [6] [7 <./potentialPlot.pdf>]
-Underfull \hbox (badness 10000) in paragraph at lines 190--193
+Underfull \hbox (badness 10000) in paragraph at lines 189--192
 
  []
 
 [8] [9] [10] [11] [12] [13] [14]
-Overfull \hbox (14.3819pt too wide) in paragraph at lines 460--461
+Overfull \hbox (14.3819pt too wide) in paragraph at lines 465--466
 \T1/cmr/m/n/12 Programma $[]$ og $[]$ in-neheld meto-
  []
 
-[15] [16] [17]
-Underfull \hbox (badness 10000) in paragraph at lines 544--548
+[15] [16] [17] <cellListsTime.pdf, id=127, 578.16pt x 433.62pt>
+File: cellListsTime.pdf Graphic file (type pdf)
 
- []
-
-<cellLists.pdf, id=127, 578.16pt x 433.62pt>
-File: cellLists.pdf Graphic file (type pdf)
- <use cellLists.pdf>
-Package pdftex.def Info: cellLists.pdf used on input line 551.
+<use cellListsTime.pdf>
+Package pdftex.def Info: cellListsTime.pdf used on input line 552.
 (pdftex.def)             Requested size: 401.50146pt x 301.12352pt.
 
-Overfull \hbox (11.50146pt too wide) in paragraph at lines 551--553
+Overfull \hbox (11.50146pt too wide) in paragraph at lines 552--553
  [][] 
  []
 
-<oldForce.pdf, id=128, 578.16pt x 433.62pt>
+[18] <oldForceTime.pdf, id=132, 578.16pt x 433.62pt>
+File: oldForceTime.pdf Graphic file (type pdf)
+ <use oldForceTime.pdf>
+Package pdftex.def Info: oldForceTime.pdf used on input line 558.
+(pdftex.def)             Requested size: 401.50146pt x 301.12352pt.
+
+Overfull \hbox (11.50146pt too wide) in paragraph at lines 558--559
+ [][] 
+ []
+
+[19 <./cellListsTime.pdf>] <cellLists.pdf, id=167, 578.16pt x 433.62pt>
+File: cellLists.pdf Graphic file (type pdf)
+
+<use cellLists.pdf>
+Package pdftex.def Info: cellLists.pdf used on input line 567.
+(pdftex.def)             Requested size: 401.50146pt x 301.12352pt.
+
+Overfull \hbox (11.50146pt too wide) in paragraph at lines 567--569
+ [][] 
+ []
+
+<oldForce.pdf, id=168, 578.16pt x 433.62pt>
 File: oldForce.pdf Graphic file (type pdf)
  <use oldForce.pdf>
-Package pdftex.def Info: oldForce.pdf used on input line 557.
+Package pdftex.def Info: oldForce.pdf used on input line 573.
 (pdftex.def)             Requested size: 401.50146pt x 301.12352pt.
 
-Overfull \hbox (11.50146pt too wide) in paragraph at lines 557--559
+Overfull \hbox (11.50146pt too wide) in paragraph at lines 573--575
  [][] 
  []
 
-[18] [19 <./cellLists.pdf>] [20 <./oldForce.pdf>] (./Oblig3.aux) ) 
+[20 <./oldForceTime.pdf>] [21 <./cellLists.pdf>]
+<temperature.pdf, id=241, 578.16pt x 433.62pt>
+File: temperature.pdf Graphic file (type pdf)
+ <use temperature.pdf>
+Package pdftex.def Info: temperature.pdf used on input line 590.
+(pdftex.def)             Requested size: 401.50146pt x 301.12352pt.
+
+Overfull \hbox (11.50146pt too wide) in paragraph at lines 590--592
+ [][] 
+ []
+
+[22 <./oldForce.pdf>] <pressure.pdf, id=278, 578.16pt x 433.62pt>
+File: pressure.pdf Graphic file (type pdf)
+
+<use pressure.pdf>
+Package pdftex.def Info: pressure.pdf used on input line 601.
+(pdftex.def)             Requested size: 401.50146pt x 301.12352pt.
+
+Overfull \hbox (11.50146pt too wide) in paragraph at lines 601--602
+ [][] 
+ []
+
+<kineticEnergy.pdf, id=279, 578.16pt x 433.62pt>
+File: kineticEnergy.pdf Graphic file (type pdf)
+ <use kineticEnergy.pdf>
+Package pdftex.def Info: kineticEnergy.pdf used on input line 606.
+(pdftex.def)             Requested size: 401.50146pt x 301.12352pt.
+
+Overfull \hbox (11.50146pt too wide) in paragraph at lines 606--607
+ [][] 
+ []
+
+[23 <./temperature.pdf>] <potentialEnergy.pdf, id=314, 578.16pt x 433.62pt>
+File: potentialEnergy.pdf Graphic file (type pdf)
+
+<use potentialEnergy.pdf>
+Package pdftex.def Info: potentialEnergy.pdf used on input line 611.
+(pdftex.def)             Requested size: 401.50146pt x 301.12352pt.
+
+Overfull \hbox (11.50146pt too wide) in paragraph at lines 611--612
+ [][] 
+ []
+
+[24 <./pressure.pdf>] <totalEnergy.pdf, id=354, 578.16pt x 433.62pt>
+File: totalEnergy.pdf Graphic file (type pdf)
+
+<use totalEnergy.pdf>
+Package pdftex.def Info: totalEnergy.pdf used on input line 616.
+(pdftex.def)             Requested size: 401.50146pt x 301.12352pt.
+
+Overfull \hbox (11.50146pt too wide) in paragraph at lines 616--618
+ [][] 
+ []
+
+[25 <./kineticEnergy.pdf>] [26 <./potentialEnergy.pdf>] [27 <./totalEnergy.pdf>
+] (./Oblig3.aux) ) 
 Here is how much of TeX's memory you used:
- 4812 strings out of 493108
- 67250 string characters out of 6140724
+ 4846 strings out of 493108
+ 67923 string characters out of 6140724
  135621 words of memory out of 5000000
- 8162 multiletter control sequences out of 15000+600000
+ 8189 multiletter control sequences out of 15000+600000
  21270 words of font info for 53 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  38i,17n,38p,609b,392s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/t
-exmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}</usr/share/texmf-dist/fonts
-/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-dist/fonts/type1/public/
-amsfonts/cm/cmbx8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cme
-x10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/
-share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texmf-dis
-t/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texmf-dist/fonts/type1/p
-ublic/amsfonts/cm/cmr12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/
-cm/cmr6.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></us
-r/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-
-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texmf-dist/fonts/type
-1/public/cm-super/sfbx1095.pfb></usr/share/texmf-dist/fonts/type1/public/cm-sup
-er/sfbx1200.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb
-></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1728.pfb></usr/share/te
-xmf-dist/fonts/type1/public/cm-super/sfbx2488.pfb></usr/share/texmf-dist/fonts/
-type1/public/cm-super/sfrm0800.pfb></usr/share/texmf-dist/fonts/type1/public/cm
--super/sfrm1000.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1095
-.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/shar
-e/texmf-dist/fonts/type1/public/cm-super/sftt1095.pfb></usr/share/texmf-dist/fo
-nts/type1/public/cm-super/sftt1200.pfb>
-Output written on Oblig3.pdf (21 pages, 427660 bytes).
+{/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.e
+nc}</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/share/texmf-dist/fon
+ts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf-dist/fonts/type1/publi
+c/amsfonts/cm/cmmi12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/
+cmmi6.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr
+/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texmf-dist/fonts/type1/p
+ublic/amsfonts/cm/cmr8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmsy10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></
+usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1095.pfb></usr/share/texmf
+-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/share/texmf-dist/fonts/typ
+e1/public/cm-super/sfbx1440.pfb></usr/share/texmf-dist/fonts/type1/public/cm-su
+per/sfbx1728.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx2488.pf
+b></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm0800.pfb></usr/share/t
+exmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/share/texmf-dist/fonts
+/type1/public/cm-super/sfrm1095.pfb></usr/share/texmf-dist/fonts/type1/public/c
+m-super/sfrm1200.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sftt109
+5.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sftt1200.pfb>
+Output written on Oblig3.pdf (28 pages, 527018 bytes).
 PDF statistics:
- 275 PDF objects out of 1000 (max. 8388607)
- 134 compressed objects within 2 object streams
+ 543 PDF objects out of 1000 (max. 8388607)
+ 191 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 21 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 56 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -97,6 +97,7 @@ void System::resetForcesOnAllAtoms() {
 
 void System::createFCCLattice(int numberOfUnitCellsEachDimension, double latticeConstant, double iT, double rcut) {
     int totalNumberOfUnitCells = numberOfUnitCellsEachDimension * numberOfUnitCellsEachDimension * numberOfUnitCellsEachDimension;
+    m_latticeConstant = latticeConstant;
     m_systemSize = vec3(latticeConstant * numberOfUnitCellsEachDimension, latticeConstant * numberOfUnitCellsEachDimension, latticeConstant * numberOfUnitCellsEachDimension);
     m_rcut = rcut;
     vec3 r1 = vec3(0.0, 0.0, 0.0);

@@ -38,3 +38,11 @@ class PlotRunTime:
         ylabel("Kilo atoms per timestep")
         savefig(SAVE)
         show()
+
+    def plot_time(self, TITLE, SAVE):
+        plot(self.number_of_atoms, self.list_of_time)
+        title(TITLE)
+        xlabel("Number of atoms")
+        ylabel("Time spent in seconds")
+        savefig(SAVE)
+        show()
