@@ -1,0 +1,2 @@
+Net momentum before removal: 7.308299
+Net momentum after removal: 0.000000

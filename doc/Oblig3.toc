@@ -7,7 +7,7 @@
 \contentsline {subsection}{Statistiske m\IeC {\r a}lingar}{8}
 \contentsline {subsubsection}{Energi}{8}
 \contentsline {subsubsection}{Temperatur}{8}
-\contentsline {subsubsection}{nummertettleik}{9}
+\contentsline {subsubsection}{Nummertettleik}{9}
 \contentsline {subsubsection}{Trykk}{9}
 \contentsline {subsubsection}{Varmekapasitet}{10}
 \contentsline {subsection}{Berendsen termostat}{11}

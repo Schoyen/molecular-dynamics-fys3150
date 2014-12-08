@@ -56,19 +56,21 @@ old_force_calculation   = %g
                       self.t_bath, self.relaxation_time, self.timesteps,\
                       self.timesteps_with_thermo, self.lattice_constant, self.r_cut,\
                       self.old_force_calculation)) # *cringe*
-        system("./build/maincpp %g %g %g %g %g %g %g %g %g %g" % (self.dt,\
+        system("./build/MAINCPP %g %g %g %g %g %g %g %g %g %g" % (self.dt,\
                self.fcc_lattice, self.initial_temp, self.t_bath, self.relaxation_time,\
                self.timesteps, self.timesteps_with_thermo,\
                self.lattice_constant, self.r_cut, self.old_force_calculation))
 
     def initial_behaviour(self):
         self.run_MD_simulation()
+        """
         system("mv build/DATA/time.txt doc/initialbehaviour/")
         system("mv build/DATA/kineticEnergy.txt doc/initialbehaviour/")
         system("mv build/DATA/potentialEnergy.txt doc/initialbehaviour/")
         system("mv build/DATA/totalEnergy.txt doc/initialbehaviour/")
         system("mv build/DATA/pressure.txt doc/initialbehaviour/")
         system("mv build/DATA/temperature.txt doc/initialbehaviour/")
+        """
         
         time = self.reader("doc/initialbehaviour/time.txt")
         kinetic = self.reader("doc/initialbehaviour/kineticEnergy.txt")

@@ -87,16 +87,17 @@
 
 \section*{Introduksjon}
     \addcontentsline{toc}{section}{Introduksjon}
+    I dette prosjektet tek me for oss eit system med Argon (Ar) atom. Me vil modellere og sjå korleis eit slikt system utvikler seg over tid.
+    Me vil sjå korleis ein slik modellering kan gjerast numerisk for å gje eit bra resultat. Grunna mangel på prossesorkraft må me gjere nokre triks og antakelsar
+    som hjelper oss med å visualisere eit ``uendeleg'' system av atomar. For å auke hastigheita på koda vil me nytte cellelister til å dele systemet i mindre bitar.
+    Eit godt mål på den potensielle energien og ein god måte å rekne ut krafta mellom atoma på vil vere med ``Lennard Jones''-potensialet. Då systemet vårt er 
+    uendeleg stort ved hjelp av randbetingelsar vil me sjå at den totale energien er bevart. Dette er og grunnen til at me vil nytte ``Velocity Verlet'' til å 
+    tidsintegrere oss fram i tid. \\ \\
 
-    I dette prosjektet har me modellert eit fysisk system samt bruke objektorientert programmering for å halde ein ryddig, oversiktlig, samt effektiv kode. 
-    I byrjinga er me gjeve ein kode som lagar 100 argon atom og gjer dei ein tilfeldig retning og hastighet. Gjeve lang nok tid vil atoma drive vekk. Me vil difor nytte
-    ``periodiske randbetingelsar'' for å halde atoma i nærleiken. Grunna hastigheitar gjevne frå Maxwell-Bolzmann distribusjon vil systemet ha ein ikkje-null
-    rørslemengde som me vil fjerne. Me vil deretter lage ein krystallstruktur kor me startar simuleringa av atoma. I eit slik lukka system vil total energien vere bevart, 
-    men grunna numerisk avrunding er det ikkje alltid dette held mål. Ein stabil alogritme som me vil nytte er ``Velocity Verlet'' som er ein symplektisk integrator. % Forklar dette.
-    Me vil no byrje å måle statistiske eigenskapar som energi og temperatur. For å kunne køyre koden for store system vil me derimot utvikle ein kjappar algoritme når 
-    me rekner ut krafta mellom atompara. Dette løyser me med cellelister. Til slutt, i fyrste del av prosjektet, legg me til ein termostat som let oss kontrollere 
-    temperaturen i systemet. \\ \\
-    % Fyll in for del 2 av prosjektet.
+    Programma er objektorientert \verb!C++!-kode med eit \verb!Python!-rammeverk som gjer det enklare for oss å plotte og køyre simuleringar.
+    Me vil teste og rapportere om køyretida til programma for forskjellige verdiar. Til slutt ser me på korleis eit enkelt system vil sjå ut samt korleis trykk
+    varierar mot tettleiken til atoma i systemet. \\ \\
+
     God lesning!
 
 
@@ -114,7 +115,7 @@
 
         \subsubsection*{Face-Centered Cubic Lattice}
             \addcontentsline{toc}{subsubsection}{Face-Centered Cubic Lattice}
-            Det fyrste me vil gjere å plassera atom i ein krystallstruktur. For Argon
+            Det fyrste me vil gjere å plassera atoma i ein krystallstruktur. For Argon
             vil me då nytte ``face-centered cubic lattice'' (FCC). Me plasserer fire og fire atom i ei einingscelle. Posisjonane til kvart atom vil vere gjeve ved
             \begin{align*}
                 &\vb{r}_1 = 0\vb{i} + 0\vb{j} + 0\vb{k}, \\
@@ -126,11 +127,14 @@
 
         \subsubsection*{Maxwell-Boltzmann og fartsmoment}
             \addcontentsline{toc}{subsubsection}{Maxwell-Boltzmann og fartsmoment}
-            Etter at atoma vert plasserte i einingscellene vil me gje dei ein liten starthastighet kor me nyttar Maxwell-Boltzmann distribusjon. Då vil
+            Etter at atoma vert plasserte i einingscellene vil me gje dei ein liten starthastighet kor me nyttar Maxwell-Boltzmann distribusjon. Denne beskriver 
+            hastigheita til partiklar i ``ideal'' gassar. Ho beskriv korleis partiklar beveger seg fritt inn i ein stajsonær behalder uten å røre einannan, med unntak 
+            av ein og annan kollisjon kor energien og rørslemengda vil vere bevart.
+            Då vil
             \begin{align*}
-                \vb{v} \propto \sqrt{T}.
+                \|\vb{v}\| \propto \sqrt{T}.
             \end{align*}
-            Hastigheita til atoma vil bli fordelte tilfeldig i rommet. Resultatet er at systemet har eit ikkje-null fartsmoment. Før me byrjar å rekne ut nye posisjonar vil
+            Hastigheita til atoma vil bli fordelt tilfeldig i rommet. Resultatet er at systemet har eit ikkje-null fartsmoment. Før me byrjar å rekne ut nye posisjonar vil
             me fjerne dette fartsmomentet. Me vil då finne den totale hastigheita til systemet og trekke denne frå kvart atom.
             \begin{align*}
                 &\vb{V} = \frac{1}{M}\sum_i^N m_i\vb{v}_{i}^{\text{før}}, \\
@@ -144,7 +148,7 @@
         \subsubsection*{Lennard Jones}
             \addcontentsline{toc}{subsubsection}{Lennard Jones}
             For å få ein fysisk effekt på systemet må me byrje å rekne ut krafta mellom atoma. Me nyttar Lennard Jones potensialet for å finne krafta mellom atompara.
-            Lennard Jones har den eigenskapen at potensialet tek med den fråstøytande og den tiltrekkande krafta mellom para. Potensialet er gjeve ved
+            Lennard Jones har den eigenskapa at potensialet tek med den fråstøytande og den tiltrekkjande krafta mellom para. Potensialet er gjeve ved
             \begin{align*}
                 U(r_{ij}) = 4\epsilon\left[ \left( \frac{\sigma}{r_{ij}} \right)^{12} - \left( \frac{\sigma}{r_{ij}} \right)^{6} \right],
             \end{align*}
@@ -154,15 +158,15 @@
                 \vb{F}(\vb{r}_{ij}) &= -\nabla U(r_{ij}) = -\frac{\partial U(r_{ij})}{\partial r_{ij}} \\
                 &= -4\epsilon\left[ 12\left( \frac{\sigma^{12}}{r_{ij}^{14}} \right) - 6\left( \frac{\sigma^6}{r_{ij}^8} \right) \right]\vb{r_{ij}}.
             \end{align*}
-            Grunna dei høge potensane kan me sjå at denne krafta vil kjapt gå mot null. Denne eigenskapen gjer at me kan effektivisere koda vår ved berre å rekne ut krafta 
-            mellom atom kor avstanden mellom dei er innenfor ein radius $r_{\text{cut}}$.
+            Grunna dei høge potensane kan me sjå at denne krafta kjapt vil gå mot null. Denne eigenskapen gjer at me kan effektivisere koda vår ved berre å rekne ut krafta 
+            mellom atoma kor avstanden mellom dei er innenfor ein radius $r_{\text{cut}}$.
             Eit plott over $U/\epsilon$ mot $r_{ij}/\sigma$ vil gje oss ein indikator kva tid krafta vil vere null.
             \begin{figure}[H]
                 \centering
                 \includegraphics[width=400px]{potentialPlot.pdf}
                 \caption{I plottet kan me lett sjå kor dei tiltrekkjande og kor dei fråstøytande kreftene har sine styrker. Då krafta er gjeve som den negative gradienten til
                         potensialet vil me kunne sjå at i det atoma kjem veldig nære einannan vil det virke ei kraftig fråstøyting ($r_{ij}^{12}$-delen) medan det for større avstand
-                        vil virke ei svakare, men med større rekkevidde, tiltrekkande kraft ($r_{ij}^6$-delen).}
+                        vil virke ei svakare, men med større rekkevidde, tiltrekkjande kraft ($r_{ij}^6$-delen).}
             \end{figure}
             Frå figuren les me av 
             \begin{align*}
@@ -189,7 +193,7 @@
                 E = E_{k} + U.
             \end{align*}
             For eit system av atom med dei randbetingelsane me har satt forventer me energibevaring. Grunna numerisk avrunding vil det alltid oppstå små fluktuasjonar,
-            men desse forventer knapt skal vere synlege. \\
+            men desse vil knapt vere synlege. \\
 
             Då me ikkje reknar krafta mellom atompar utanfor $r_{\text{cut}}$ må me endre litt på Lennard Jones potensialet slik at me har energibevaring. 
             Potensialet vil nå bli skalert etter likninga
@@ -203,27 +207,27 @@
 
         \subsubsection*{Temperatur}
             \addcontentsline{toc}{subsubsection}{Temperatur}
-            Temperaturen speler ei stor rolle i systemet vårt. Me er interesserte i å finne ut kva tid strukturen smelter og kor tid ho held seg stabil. Me finn ho 
+            Me er interesserte i å finne ut kva tid strukturen smelter og kor tid ho held seg stabil. Me finn ho 
             ved ekvipartisjonsteoremet som seier
             \begin{align*}
                 &\left \langle E_{k} \right \rangle = \frac{3}{2} Nk_{B}T \qquad \Rightarrow \qquad T = \frac{2}{3}\frac{E_{k}}{Nk_{B}},
             \end{align*}
-            kor $T$ då angjer den momentane temperaturen då me ikkje tek gjennomsnittet av $E_{k}$. Temperaturen vil fluktuere då den kinetiske energien vil endre seg for
+            kor $T$ då angjer den momentane temperaturen då me ikkje tek gjennomsnittet av $E_{k}$. Temperaturen vil fluktuere siden den kinetiske energien vil endre seg for
             kvart tidssteg. Etterkvart vil me nå eit stabilt likevektspunkt kor temperaturen held seg nokonlunde jamnt.
 
 
         \subsubsection*{Nummertettleik}
-            \addcontentsline{toc}{subsubsection}{nummertettleik}
+            \addcontentsline{toc}{subsubsection}{Nummertettleik}
             Me vil måle tettleiken til systemet til å vere antal atomar delt på volumet til heile systemet. Dette vil vere ein konstant, men me vil sjå på korleis denne vil 
             endre seg som ein funksjon av konstanten $b$ som me nyttar ved konstruksjon av einingscellene til systemet. Storleiken på systemet vil vere gjeve ved
             \begin{align*}
                 V = S_xS_yS_z,
             \end{align*}
-            kor $V$ er volumet til systemet og $S_x$, $S_y$ og $S_z$ er lengda til kvar av sidene til systemet. Då finner me tettleiken ved
+            kor $V$ er volumet og $S_x$, $S_y$ og $S_z$ er lengda til kvar av sidene til systemet. Då finner me tettleiken ved
             \begin{align*}
                 \rho_N = \frac{N}{V},
             \end{align*}
-            kor $N$ er antal atomar i systemet. Me vil og finne eit uttrykk for nummertettleiken som ein funksjon av konstanten $b$ som avgjer astand mellom atoma i 
+            kor $N$ er antal atomar i systemet. Me vil og finne eit uttrykk for nummertettleiken som ein funksjon av konstanten $b$ som avgjer avstand mellom atoma i 
             einingscellene. Då får me at
             \begin{align*}
                 \rho_N = \frac{N}{V} = \frac{N}{S_xS_yS_z}.
@@ -238,7 +242,7 @@
             \begin{align*}
                 \rho_N = \frac{N}{V} = \frac{4N_{FCCX}N_{FCCY}N_{FCCZ}}{b^3N_{FCCX}N_{FCCY}N_{FCCZ}},
             \end{align*}
-            då fylgjer det at
+            og det fylgjer at
             \begin{align*}
                 \rho_N = \frac{4}{b^3}.
             \end{align*}
@@ -323,10 +327,10 @@
             \addcontentsline{toc}{subsubsection}{Periodiske randbetingelsar}
             Viss eit atom har ein 
             posisjon som ligg utanfor storleiken på systemet vårt vil me flytte atomet slik at det kjem inn frå den andre sida av systemet. For eit stort system kan dette 
-            vere ei god tilnærming då det heile tida forsvinn atom ut frå eit lite område, men samstundes kjem det inn nye atom slik at tettheten er jamn. Dette vil og vere med
-            på å gje oss bevaring av total energi då det ikkje går noko tap til vegger og liknande. Periodiske randbetingelsar vil vere gjeve ved formelen
+            vere ei god tilnærming då det heile tida forsvinn atom ut frå eit lite område, medan det samstundes kjem inn nye atom slik at tettleiken er jamn. Dette vil og vere med
+            på å gje oss bevaring av total energi då det ikkje går noko tap til vegger. Periodiske randbetingelsar vil vere gjeve ved formelen
             \begin{align*}
-                \vb{r}_i = x_i\vb{i} + y_i\vb{j} + z_i\vb{k}, \qquad i \in [1, N],
+                \vb{r}_i = x\vb{i} + y\vb{j} + z\vb{k}, \qquad i \in [1, N],
             \end{align*}
             kor $N$ er antal atom i systemet. Då vil kvar komponent i $\vb{r}_i$ vere gjeve ved
             \begin{align*}
@@ -345,8 +349,8 @@
             \addcontentsline{toc}{subsubsection}{Avstand frå endepunkta}
             Frå analogien ved bruk av periodiske randbetingelsar må me ta hensyn til at avstand mellom atompar ikkje nødvendigvis stemmer. Argumentet vårt er at 
             atoma som ligg heilt i kanten av systemet har ``tvillingar'' som kjem inn frå andre sida på nøyaktig same tid og med dei same parametrane som seg sjølve.
-            Når me då rekner avstand mellom atoma vil me sjekke om eigentleg ligg mykje nærare viss det eine atomet vert flytta over på den andre sida av systemet.
-            Me kjem til å nytte ``Minimum Image Criterion'' for å sjekke om dette er oppfylt. Me definerer
+            Når me då rekner avstand mellom atoma vil me sjekke om dei eigentleg ligg mykje nærare viss det eine atomet vert flytta over på den andre sida av systemet.
+            Me kjem til å nytte ``$\textbf{Minimum Image Criterion}$'' for å sjekke om dette er oppfylt. Me definerer
             \begin{align*}
                 \Delta \vb{R} = \vb{r}_i - \vb{r}_j, \qquad i \neq j, \qquad i, j \in [1, N],
             \end{align*}
@@ -371,7 +375,7 @@
         \addcontentsline{toc}{subsection}{Velocity Verlet}
         Idet systemet vårt er satt opp med ein starthastighet for kvart atom vil me tidsintegrere oss fram i tid for å sjå korleis det utvikler seg. Då systemet vårt er pakka
         inn med periodiske randbetingelser og biletekriterie vil me nytte ein algoritme som bevarer energien. Velocity Verlet er ein $\textbf{symplektisk integrator}$ som 
-        bevarer total energien (Hamiltonian er bevart, men denne tilsvarer ofte total energien i eit system). Velocity Verlet er i tillegg ein enkel og kompakt algoritme med
+        bevarer total energien. Velocity Verlet er i tillegg ein enkel og kompakt algoritme med
         eit feilledd som går som $\mathcal{O}(\Delta t^2)$. Integrasjonen består av tre ledd
         \begin{align*}
             \vb{v}(t + \Delta t/2) &= \vb{v}(t) + \frac{\vb{F}(t)}{m}\frac{\Delta t}{2}, \\
@@ -430,11 +434,11 @@
 \section*{Struktur}
     \addcontentsline{toc}{section}{Struktur}
     I dette prosjektet har me nytta objektorientering for å halde styr på simuleringa vår. Simuleringane vert køyrde i \verb!C++!. Me har bygd eit rammeverk med 
-    \verb!Python! som tek seg av køyringa i \verb!C++! for å gje eit betre overblikk. Litt diverse \verb!bash!-script rydder og strukturer utskriftar.
+    \verb!Python! som tek seg av køyringa i \verb!C++! for å gje eit betre overblikk.
 
     \subsection*{Objektar i C++}
         \addcontentsline{toc}{subsection}{Objektar i C++}
-        Under fylgjer ein kort oversikt over objekt me nyttar og formålet deira.
+        Under fylgjer ein kort oversikt over objekta me nyttar og formålet deira.
 
         \subsubsection*{Atom}
             \addcontentsline{toc}{subsubsection}{Atom}
@@ -459,7 +463,7 @@
 
         \subsubsection*{IO}
             \addcontentsline{toc}{subsubsection}{IO}
-            Programma $\texttt{io.h}$ og $\texttt{io.cpp}$ tek seg av utskrift til fil i \verb!.xyz!-formatet. Dette formatet vert lese av VMD for visualisering av atoma.
+            Programma $\texttt{io.h}$ og $\texttt{io.cpp}$ tek seg av utskrift til fil i \verb!.xyz!-formatet. Dette formatet vert lese av VMD for visualisering.
 
         \subsubsection*{Statistics Sampler}
             \addcontentsline{toc}{subsubsection}{Statistics Sampler}
@@ -472,7 +476,7 @@
 
         \subsubsection*{Unit Converter}
             \addcontentsline{toc}{subsubsection}{Unit Converter}
-            Programma $\texttt{unitconverter.h}$ og $\texttt{unitconverter.cpp}$ skalerer einingane på dei fysiske verdiane slik at me arbeider me meir handterlege tal.
+            Programma $\texttt{unitconverter.h}$ og $\texttt{unitconverter.cpp}$ skalerer einingane på dei fysiske verdiane slik at me arbeider med meir handterlege tal.
             Dette gjer og moglegheita for store numeriske avrundingsfeil mykje mindre.
 
         \subsubsection*{Integrator}
@@ -507,17 +511,18 @@
     \subsection*{Python-rammeverk}
         \addcontentsline{toc}{subsection}{Python-rammeverk}
         Grunna storleiken på programmet og dei forskjellige simuleringane me vil gjere er det enklare å køyre main-metoden frå \verb!Python!. Rammeverket består av ein klasse
-        som køyrer kommandolinje-argument. Ho tek seg av køyring av Makefile og plottar og skriv ut til fil.
+        som køyrer kommandolinje-argument. Ho tek seg av køyring av Makefile og plottar og skriv ut til fil. Det er i tillegg ein del mindre klassar som tek seg av plotting
+        av forskjellige verdiar.
 \newpage
 
 
 \section*{Resultat}
     \addcontentsline{toc}{section}{Resultat}
-    I resultata våre vil me sjå på både fysikken og køyretid på dei to forskjellige metodane me nyttar for å rekne ut krafta.
+    I resultata våre vil me sjå på både fysikken bak MD-simuleringane, samt køyretida på dei to forskjellige metodane me nyttar for å rekne ut krafta.
 
     \subsection*{Køyretid}
         \addcontentsline{toc}{subsection}{Køyretid}
-        På køyretida har me ei slags forventning over kva som vil skje. Eg valgte å køyre programmet for eit aukande antal atom kor me gjer nyttar 1000 tidsskritt. Resultatet ligg
+        På køyretida har me ei slags forventning over kva som vil skje. Eg valgte å køyre programmet for eit aukande antal atom kor me gjer 1000 tidsskritt. Resultatet ligg
         i tabellen under.
 
         \begin{table}[H]
@@ -551,7 +556,7 @@
         \begin{figure}[H]
             \centering
             \includegraphics[width=400px]{cellListsTime.pdf}
-            \caption{Her kan me sjå korleis cellelisten stig lineært med antal atom. Dette gjeld for dei betingelsane me har satt for $r_{cut}$.}
+            \caption{Her kan me sjå korleis cellelista stig lineært med antal atomar. Dette gjeld for dei betingelsane me har satt for $r_{cut}$.}
         \end{figure}
 
         \begin{figure}[H]
@@ -559,7 +564,7 @@
             \includegraphics[width=400px]{oldForceTime.pdf}
             \caption{Me kan sjå at tida det tek å rekne ut krafta veldig fort vert stor.}
         \end{figure}
-        Eg køyrde desse verdiane over 10 timar (HOLY SHIT) og har difor resultat frå høgare verdiar av cellelister. Diverre vert tida det tok å køyre programmet for den treige kraftmetoden
+        Eg køyrde desse verdiane over 10 timar og har difor resultat frå høgare verdiar av cellelister. Diverre vert tida det tok å køyre programmet for den treige kraftmetoden
         for stor. Eit interessant mål vil vere å sjå kiloatom per tidsskritt. Me ser med andre ord på kor mange tusen atom metoda klarer å rekne ut for per tidsskritt. Under 
         fylgjer grafane for dei to metodane.
 
@@ -582,9 +587,9 @@
 
         \subsubsection*{Initial system}
             \addcontentsline{toc}{subsubsection}{Initial system}
-            For å gje oss indikator av kva som skjer i simuleringa vår vil me køyre ein enkel, men lang, simulering kor me måler og analyserer dataene me får ut.
-            Me set opp eit system på 4000 atomar og med ein starttemperatur på 300 K. Me simulerer for 20000 tidssteg.
-            Då kan me sjå på korleis temperatur, trykk og energi utviklar seg over tid. Dei fyrste 1000 tidsstega vil gå til å stabilisere systemet før me 
+            For å gje oss ein indikator av kva som skjer i simuleringa vår vil me køyre ein enkel, men lang, simulering kor me måler og analyserer dataene me får ut.
+            Me set opp eit system på 4000 atomar med ein starttemperatur på 300 K. Me simulerer for 20000 tidssteg.
+            Då kan me sjå på korleis temperatur, trykk og energi utviklar seg over tid. Dei fyrste $\sim 500$ tidsstega vil gå til å stabilisere systemet før me 
             etterkvart får ein jamn utvikling.
             \begin{figure}[H]
                 \centering
@@ -621,9 +626,21 @@
 
         \subsubsection*{Variasjon i trykk mot tettleiken}
             \addcontentsline{toc}{subsubsection}{Variasjon i trykk mot tettleiken}
-    % Hugs å sjå på bevaring av energi for forskjellige val av dt.
-    % Legg ved smeltetemperatur og stabilitetstemperatur.
-    % Sjå på kvifor temperaturen synker og korleis fluktuasjonar avhenger av antal atom.
-    % Sjekk korleis trykket varierer og plott det mot tettleiken.
-
+            Til slutt i prosjektet har me sett på korleis trykket varierer som ein funksjon av temperatur og tettleik. Eg har då køyrd programmet for $T \in [100, 300]$ og 
+            $\rho_N \in [4, 10]$.
+            \begin{figure}[H]
+                \centering
+                \includegraphics[width=400px]{PD100.pdf}
+                \caption{Ein kan tydeleg sjå korleis trykket stig når tettleiken aukar. Eit stort høgare tall for $\rho_N$ vert ustabilt.}
+            \end{figure}
+            \begin{figure}[H]
+                \centering
+                \includegraphics[width=400px]{PD200.pdf}
+                \caption{For høgare temperatur vil trykket nærmast doblast.}
+            \end{figure}
+            \begin{figure}[H]
+                \centering
+                \includegraphics[width=400px]{PD300.pdf}
+                \caption{Her kan me og sjå korleis trykket nærmast er tre gonger trykket me fekk for $T = 100$.}
+            \end{figure}
 \end{document}
